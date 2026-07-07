@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Elias Elloumi — Portfolio
 
-## Getting Started
+A portfolio that reads like an illustrated book: each chapter is a full page that turns as you scroll — from a kid discovering Minecraft on his first PC to a data engineering & AI agent developer at Nokia and co-founder of 3geeks.
 
-First, run the development server:
+## Stack
+
+- [Next.js](https://nextjs.org) (App Router) + TypeScript
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [GSAP + ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) — pinned story, page-turn crossfades, snap-to-page, evolving ambient tone
+- [Framer Motion](https://motion.dev) — section reveal animations
+- Character illustrations generated with AI from real photos
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy on Vercel (free)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Option 1 — CLI:
 
-## Learn More
+```bash
+npx vercel
+```
 
-To learn more about Next.js, take a look at the following resources:
+Option 2 — Git: push this repo to GitHub, then import it on [vercel.com/new](https://vercel.com/new). Every push deploys automatically. No environment variables needed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `app/` — layout, page, global styles
+- `components/` — `Hero`, `Story` (the horizontal scrollytelling), `Skills`, `Projects`, `Contact`
+- `lib/data.ts` — all content: chapters, skills, projects, contact info (edit this to update the site)
+- `public/story/` — chapter illustrations
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Desktop (≥1024px): the story section pins; scrolling turns full-screen pages (crossfade + slow cinematic drift) and always snaps to a full page, so it feels like reading, not scrolling. The navbar hides while the book is open.
+- Mobile: the story falls back to a clean vertical flow, the ambient tone still evolves per chapter.

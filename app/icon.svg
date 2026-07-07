@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#120e20"/>
+  <!-- Pixelated "E"  a little Minecraft nod -->
+  <g fill="#a78bfa">
+    <rect x="9" y="7" width="4" height="18"/>
+    <rect x="13" y="7" width="10" height="4"/>
+    <rect x="13" y="14" width="8" height="4"/>
+    <rect x="13" y="21" width="10" height="4"/>
+  </g>
+  <rect x="23" y="21" width="4" height="4" fill="#fbbf24"/>
+</svg>
