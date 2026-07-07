@@ -1,3 +1,13 @@
+export type ChapterAnimation = {
+  /** Timeline position where scrub begins (pages before current) */
+  scrubIn?: number;
+  /** Duration of the scrub window in timeline units */
+  scrubSpan?: number;
+  driftFrom?: number;
+  driftTo?: number;
+  transition?: "dissolve" | "pushUp" | "pushLeft";
+};
+
 export type Chapter = {
   id: string;
   years: string;
@@ -12,7 +22,21 @@ export type Chapter = {
   bgB: string;
   /** Accent color used for the chapter kicker */
   accent: string;
+  animation?: ChapterAnimation;
 };
+
+export function getChapterAnimation(ch: Chapter, index: number) {
+  // Ch.1 = Runway cinemagraph → subtle GSAP drift complements the clip.
+  // Ch.2+ = Ken Burns clips → motion lives in the video; extra drift doubles the zoom.
+  const runwayStyle = index === 0;
+  return {
+    scrubIn: ch.animation?.scrubIn ?? (runwayStyle ? 0 : index - 0.45),
+    scrubSpan: ch.animation?.scrubSpan ?? 0.55,
+    driftFrom: ch.animation?.driftFrom ?? (runwayStyle ? 1.09 : 1),
+    driftTo: ch.animation?.driftTo ?? 1,
+    transition: ch.animation?.transition ?? "dissolve",
+  } as Required<ChapterAnimation>;
+}
 
 export const chapters: Chapter[] = [
   {
@@ -33,6 +57,7 @@ export const chapters: Chapter[] = [
     title: "First Lines of Code",
     text: "Playing was no longer enough — I wanted to make the machine obey. Redstone contraptions became little scripts, scripts became projects. I visited the IoT Valley startups in Toulouse to poke at connected objects, then walked into Nokia Paris-Saclay for a discovery internship. I remember thinking: one day, I'll work in a place like this.",
     image: "/story/chapter-2.jpg",
+    video: "/story/chapter-2.mp4",
     imageAlt: "Teenage Elias writing his first lines of code",
     bgA: "#0a2328",
     bgB: "#051215",
@@ -44,6 +69,7 @@ export const chapters: Chapter[] = [
     title: "Tinkering Becomes Engineering",
     text: "In high school I chose STI2D, option SIN — the path of electronics and code. Soldering irons, logic gates, embedded systems: little by little, playing turned into building, and building turned into engineering. Baccalauréat in hand, I knew exactly where I was heading.",
     image: "/story/chapter-3.jpg",
+    video: "/story/chapter-3.mp4",
     imageAlt: "Elias soldering electronics in his high school tech lab",
     bgA: "#0e3028",
     bgB: "#071812",
@@ -55,6 +81,7 @@ export const chapters: Chapter[] = [
     title: "Data & AI at ECE Paris",
     text: "At ECE Paris I dove into data and artificial intelligence. With my team, I built an intent-based travel planner powered by Gemini — it was elected best Bachelor project of the school and took us to Web Summit Lisbon. Somewhere between the pipelines and the demos, 'coding' quietly became 'shipping'.",
     image: "/story/chapter-4.jpg",
+    video: "/story/chapter-4.mp4",
     imageAlt: "Elias presenting his AI travel planner on stage",
     bgA: "#241246",
     bgB: "#100722",

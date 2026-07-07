@@ -107,19 +107,26 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <motion.div
+        <motion.button
+          type="button"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.95, duration: 0.9 }}
-          className="mt-14 flex flex-col items-center gap-3 text-muted"
+          className="mt-14 flex flex-col items-center gap-3 text-muted cursor-pointer group"
+          onClick={() => {
+            document
+              .getElementById("story")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          aria-label="Scroll to open the story"
         >
-          <span className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em]">
+          <span className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] group-hover:text-foreground transition-colors">
             Scroll to open the story
           </span>
-          <div className="h-9 w-6 rounded-full border-2 border-muted/40 flex justify-center pt-1.5">
+          <div className="h-9 w-6 rounded-full border-2 border-muted/40 group-hover:border-accent/50 flex justify-center pt-1.5 transition-colors">
             <div className="h-2 w-1 rounded-full bg-accent animate-wheel" />
           </div>
-        </motion.div>
+        </motion.button>
       </div>
     </section>
   );

@@ -6,10 +6,10 @@ A portfolio that reads like an illustrated book: each chapter is a full page tha
 
 - [Next.js](https://nextjs.org) (App Router) + TypeScript
 - [Tailwind CSS v4](https://tailwindcss.com)
-- [GSAP + ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) — pinned story, page-turn crossfades, snap-to-page, evolving ambient tone
+- [GSAP + ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) — pinned story, cinematic page turns, scroll-scrubbed cinemagraphs, snap-to-page, evolving ambient tone
 - [Framer Motion](https://motion.dev) — section reveal animations
 - Character illustrations generated with AI from real photos
-- Chapter illustrations animated into cinemagraph clips (Higgsfield AI, image-to-video), **scrubbed by the scroll position** on desktop and re-encoded with dense keyframes (`-g 3`) for instant seeking
+- 7 chapter cinemagraph clips (`chapter-1.mp4` … `chapter-7.mp4`), scrubbed by scroll on desktop and looped on mobile
 - Branded Open Graph card generated at build time with `next/og` (`app/opengraph-image.tsx`)
 
 ## Run locally
@@ -34,14 +34,15 @@ Option 2 — Git: push this repo to GitHub, then import it on [vercel.com/new](h
 ## Structure
 
 - `app/` — layout, page, global styles, Open Graph image
-- `components/` — `Hero`, `Story` (the scrollytelling book), `Skills`, `Projects`, `Contact`
+- `components/story/` — modular story book: `StorySection`, `StoryPage`, `StoryVideo`, `StoryProgress`, `useStoryScroll`
+- `components/` — `Hero`, `Skills`, `Projects`, `Contact`
 - `lib/data.ts` — all content: chapters, skills, projects, contact info (edit this to update the site)
 - `public/story/` — chapter illustrations + cinemagraph clips
 - `assets/fonts/` — TTFs embedded in the Open Graph card
 
 ## Notes
 
-- Desktop (≥1024px): the story section pins; scrolling turns full-screen pages (crossfade + slow cinematic drift) and always snaps to a full page, so it feels like reading, not scrolling. The navbar hides while the book is open. Chapters with a clip are scroll-scrubbed: the scene literally plays as you scroll, forward and backward.
-- Mobile: the story falls back to a clean vertical flow; clips play as gentle loops when their page is in view.
-- Chapters 2–4 still use static illustrations (video credits ran out) — regenerate their clips and add `video: "/story/chapter-N.mp4"` in `lib/data.ts` when credits refresh.
-- Reduced motion: scrubbing and loops are disabled, illustrations stay static.
+- Desktop (≥1024px): the story section pins; scrolling turns full-screen pages with cinematic dissolve transitions (blur, wipe accent, parallax text) and always snaps to a full page. The navbar hides while the book is open. All 7 clips are scroll-scrubbed with adaptive smoothing — the scene plays forward and backward as you scroll. Keyboard: Arrow Up/Down, Page Up/Down, Home, End.
+- Mobile: vertical flow with fade-in scale on illustrations; clips loop when in view; compact chapter dots for navigation.
+- Reduced motion: scrubbing, loops, and video layers are disabled; illustrations stay static with instant page cuts.
+- Regenerate Ken Burns fallback clips: `node gen-cinemagraphs.mjs` (chapters 2–7 from JPG sources).

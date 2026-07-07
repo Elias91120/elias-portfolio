@@ -68,10 +68,56 @@ body {
 .story-bg {
   --bg-a: #2b1708;
   --bg-b: #160b03;
+  --bg-accent: #f59e0b;
   background:
+    radial-gradient(ellipse 90% 70% at 80% 20%, color-mix(in srgb, var(--bg-accent) 18%, transparent), transparent 65%),
     radial-gradient(ellipse 120% 90% at 50% 10%, var(--bg-a), transparent 70%),
     var(--bg-b);
   transition: none;
+}
+
+.story-section {
+  transform-origin: center center;
+}
+
+.story-grain {
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.story-vignette {
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    transparent 35%,
+    color-mix(in srgb, var(--vignette-color, #000) 55%, transparent) 100%
+  );
+  opacity: 0.45;
+}
+
+.page-wipe {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    color-mix(in srgb, var(--wipe-accent, #fff) 35%, transparent) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.story-kicker {
+  text-shadow: 0 0 24px color-mix(in srgb, var(--kicker-accent, #fff) 45%, transparent);
+}
+
+.story-page.is-transitioning .page-img {
+  will-change: transform, opacity, filter;
+}
+
+.story-video {
+  will-change: opacity;
 }
 
 /* Before GSAP takes over on desktop, only the first page shows
@@ -173,5 +219,13 @@ body[data-story] .site-nav {
   .aurora,
   .aurora-slow {
     animation: none;
+  }
+
+  .story-video {
+    display: none;
+  }
+
+  .story-page.is-transitioning .page-img {
+    will-change: auto;
   }
 }
