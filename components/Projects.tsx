@@ -21,13 +21,16 @@ export default function Projects() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="font-display text-sm font-semibold tracking-widest text-accent">
+          <span className="section-kicker font-display text-xs sm:text-sm font-semibold tracking-[0.3em] text-accent">
             SHIPPED
           </span>
-          <h2 className="font-display mt-3 text-3xl sm:text-5xl font-bold tracking-tight text-white">
-            Things I&apos;ve built
+          <h2 className="font-display mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white">
+            Things I&apos;ve{" "}
+            <span className="font-serif italic font-semibold text-[#f5f0e4]">
+              built
+            </span>
           </h2>
-          <p className="mt-4 max-w-2xl text-muted leading-relaxed">
+          <p className="mt-5 max-w-2xl text-muted leading-relaxed">
             Client products in production, internal platforms used daily by
             teams, and open tools built in public with 3geeks.
           </p>
@@ -52,15 +55,23 @@ export default function Projects() {
                         rel: "noopener noreferrer",
                       }
                     : {})}
-                  className={`group flex h-full flex-col rounded-3xl bg-card ring-1 ring-white/8 p-7 transition-all duration-300 ${
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-white/8 p-7 transition-all duration-300 ${
                     project.link
                       ? "hover:-translate-y-1.5 hover:ring-white/20 cursor-pointer"
-                      : ""
+                      : "hover:ring-white/15"
                   }`}
                   style={{
                     boxShadow: `0 20px 60px -32px ${project.accent}40`,
                   }}
                 >
+                  {/* Accent wash revealed on hover */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-28 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    style={{
+                      background: `linear-gradient(to bottom, ${project.accent}14, transparent)`,
+                    }}
+                  />
                   <div className="flex items-start justify-between gap-3">
                     <div
                       className="h-1.5 w-10 rounded-full mt-2"

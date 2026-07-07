@@ -30,10 +30,13 @@ export default function Contact() {
           Open to apprenticeship — 2026/2027
         </span>
 
-        <h2 className="font-display mt-6 text-4xl sm:text-6xl font-bold tracking-tight text-white">
+        <h2 className="font-display mt-6 text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.08]">
           Let&apos;s write the
           <br />
-          next chapter together
+          <span className="font-serif italic font-semibold text-[#f5f0e4]">
+            next chapter
+          </span>{" "}
+          together
         </h2>
 
         <p className="mt-6 text-lg text-muted leading-relaxed max-w-xl mx-auto">

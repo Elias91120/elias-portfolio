@@ -13,13 +13,17 @@ export default function Skills() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
         >
-          <span className="font-display text-sm font-semibold tracking-widest text-accent">
+          <span className="section-kicker font-display text-xs sm:text-sm font-semibold tracking-[0.3em] text-accent">
             TOOLBOX
           </span>
-          <h2 className="font-display mt-3 text-3xl sm:text-5xl font-bold tracking-tight text-white">
-            What I work with
+          <h2 className="font-display mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-white">
+            What I{" "}
+            <span className="font-serif italic font-semibold text-[#f5f0e4]">
+              work
+            </span>{" "}
+            with
           </h2>
-          <p className="mt-4 max-w-2xl text-muted leading-relaxed">
+          <p className="mt-5 max-w-2xl text-muted leading-relaxed">
             Turning raw data into practical, well-designed solutions — from
             pipelines and AI agents to the interfaces people actually use.
           </p>
@@ -49,7 +53,7 @@ export default function Skills() {
                   {group.skills.map((skill) => (
                     <li
                       key={skill}
-                      className="rounded-full bg-white/5 px-3.5 py-1.5 text-sm text-[#cfcae3] ring-1 ring-white/10"
+                      className="rounded-full bg-white/5 px-3.5 py-1.5 text-sm text-[#cfcae3] ring-1 ring-white/10 transition-colors duration-300 hover:bg-white/10 hover:text-white hover:ring-white/25"
                     >
                       {skill}
                     </li>

@@ -5,6 +5,8 @@ export type Chapter = {
   text: string;
   image: string;
   imageAlt: string;
+  /** Optional cinemagraph clip scrubbed by the scroll */
+  video?: string;
   /** Gradient endpoints for the evolving background */
   bgA: string;
   bgB: string;
@@ -19,6 +21,7 @@ export const chapters: Chapter[] = [
     title: "The Beginning",
     text: "One evening, my dad came home carrying a big box — our first real computer. I was eight. Someone showed me Minecraft, and that was it: I spent hours building worlds block by block, wondering how a machine could hold entire universes inside. I didn't have the words for it yet, but I had just fallen in love with computers.",
     image: "/story/chapter-1.jpg",
+    video: "/story/chapter-1.mp4",
     imageAlt: "Young Elias discovering Minecraft on his first computer",
     bgA: "#2b1708",
     bgB: "#160b03",
@@ -63,6 +66,7 @@ export const chapters: Chapter[] = [
     title: "Nokia, the Turning Point",
     text: "A six-month internship became a full apprenticeship — and the chapter where everything accelerated. I built and shipped a FastAPI + React platform that analyzes features end-to-end, weaving seven data sources into one real-time dashboard, and automated workflows entire teams rely on daily. Then I led the adoption of Cursor: a knowledge portal, a RAG assistant, demos team after team. The intern had become the person teams call to move faster with AI.",
     image: "/story/chapter-5.jpg",
+    video: "/story/chapter-5.mp4",
     imageAlt: "Elias presenting data dashboards at Nokia",
     bgA: "#062037",
     bgB: "#030f1d",
@@ -74,6 +78,7 @@ export const chapters: Chapter[] = [
     title: "Three Friends, One Studio",
     text: "Meanwhile, with Noam and Charles, our little collective webgen grew into 3geeks — our own studio, made in France. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, and launched tools like PromptOptim in the open. Three friends, real clients, real code.",
     image: "/story/chapter-6.jpg",
+    video: "/story/chapter-6.mp4",
     imageAlt: "Elias, Noam and Charles celebrating a launch at 3geeks",
     bgA: "#1d1240",
     bgB: "#0c0720",
@@ -85,6 +90,7 @@ export const chapters: Chapter[] = [
     title: "Now & Next",
     text: "Next comes a Master in Data & AI at ECE Paris — and an apprenticeship for 2026-2027, somewhere data, AI and craft meet. The eight-year-old in front of the Minecraft screen is still here. He just ships to production now.",
     image: "/story/chapter-7.jpg",
+    video: "/story/chapter-7.mp4",
     imageAlt: "Elias looking at a futuristic city skyline at dawn",
     bgA: "#131643",
     bgB: "#070818",

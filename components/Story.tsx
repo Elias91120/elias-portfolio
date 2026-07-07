@@ -15,6 +15,7 @@ export default function Story() {
   const pagesRef = useRef<HTMLDivElement | null>(null);
   const bgRef = useRef<HTMLDivElement | null>(null);
   const stRef = useRef<ScrollTrigger | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [active, setActive] = useState(0);
 
   useLayoutEffect(() => {
@@ -24,6 +25,21 @@ export default function Story() {
     if (!section || !wrap || !bg) return;
 
     const mm = gsap.matchMedia();
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Reveal a video only once it can render frames (its first frame
+    // matches the illustration, so the hand-off is invisible).
+    const armVideo = (v: HTMLVideoElement) => {
+      if (v.dataset.armed) return;
+      v.dataset.armed = "1";
+      const show = () => gsap.to(v, { opacity: 1, duration: 0.45 });
+      if (v.readyState >= 2) show();
+      else v.addEventListener("loadeddata", show, { once: true });
+      v.preload = "auto";
+      v.load();
+    };
 
     // ----- Desktop: the section pins and each chapter is a full page that
     // ----- turns (crossfade) — the scroll itself stays invisible.
@@ -31,6 +47,43 @@ export default function Story() {
       const pages = gsap.utils.toArray<HTMLElement>(".story-page", wrap);
       const last = pages.length - 1;
       gsap.set(pages.slice(1), { autoAlpha: 0 });
+
+      // --- Scroll-scrubbing: scroll position drives each clip's playhead.
+      const targets = new Array(chapters.length).fill(0);
+      let rafId = 0;
+      let scrubbing = false;
+      const tick = () => {
+        videoRefs.current.forEach((v, i) => {
+          if (!v || !v.duration || !v.dataset.armed) return;
+          const target = targets[i] * Math.max(v.duration - 0.08, 0);
+          const delta = target - v.currentTime;
+          if (Math.abs(delta) > 0.01) {
+            v.currentTime = v.currentTime + delta * 0.28;
+          }
+        });
+        rafId = requestAnimationFrame(tick);
+      };
+      const startScrub = () => {
+        if (!scrubbing && !reduceMotion) {
+          scrubbing = true;
+          rafId = requestAnimationFrame(tick);
+        }
+      };
+      const stopScrub = () => {
+        scrubbing = false;
+        cancelAnimationFrame(rafId);
+      };
+
+      // Preload the clips as the reader approaches the book
+      const preloadST = ScrollTrigger.create({
+        trigger: section,
+        start: "top 130%",
+        once: true,
+        onEnter: () => {
+          if (reduceMotion) return;
+          videoRefs.current.forEach((v) => v && armVideo(v));
+        },
+      });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -52,10 +105,19 @@ export default function Story() {
           onUpdate: (self) => {
             const idx = Math.round(self.progress * last);
             setActive((prev) => (prev === idx ? prev : idx));
+            // Map the reading position of each page to its clip playhead
+            const t = self.progress * last;
+            for (let i = 0; i < chapters.length; i++) {
+              const from = i === 0 ? 0 : i - 0.45;
+              const span = i === 0 ? 0.55 : 1;
+              targets[i] = gsap.utils.clamp(0, 1, (t - from) / span);
+            }
           },
           // Hide the site chrome while reading the book
           onToggle: (self) => {
             document.body.toggleAttribute("data-story", self.isActive);
+            if (self.isActive) startScrub();
+            else stopScrub();
           },
         },
       });
@@ -119,21 +181,25 @@ export default function Story() {
       stRef.current = tl.scrollTrigger ?? null;
 
       return () => {
+        stopScrub();
+        preloadST.kill();
         document.body.removeAttribute("data-story");
         stRef.current = null;
       };
     });
 
-    // ----- Mobile / tablet: pages flow vertically, tone still evolves
+    // ----- Mobile / tablet: pages flow vertically, tone still evolves.
+    // ----- Clips play as gentle loops when their page is in view.
     mm.add("(max-width: 1023px)", () => {
       const pages = gsap.utils.toArray<HTMLElement>(".story-page", wrap);
 
       pages.forEach((page, i) => {
         ScrollTrigger.create({
           trigger: page,
-          start: "top 55%",
-          end: "bottom 55%",
+          start: "top 75%",
+          end: "bottom 25%",
           onToggle: (self) => {
+            const v = videoRefs.current[i];
             if (self.isActive) {
               gsap.to(bg, {
                 "--bg-a": chapters[i].bgA,
@@ -142,6 +208,13 @@ export default function Story() {
                 overwrite: "auto",
               });
               setActive(i);
+              if (v && !reduceMotion) {
+                armVideo(v);
+                v.loop = true;
+                v.play().catch(() => {});
+              }
+            } else if (v) {
+              v.pause();
             }
           },
         });
@@ -190,7 +263,8 @@ export default function Story() {
             key={ch.id}
             className="story-page relative lg:absolute lg:inset-0"
           >
-            {/* Full-bleed illustration */}
+            {/* Full-bleed illustration — the clip fades in over it and is
+                driven by the scroll, so the page truly comes alive */}
             <div className="relative h-[54svh] lg:h-full lg:absolute lg:inset-0 overflow-hidden">
               <div className="page-img absolute inset-0 will-change-transform">
                 <Image
@@ -202,6 +276,21 @@ export default function Story() {
                   loading="eager"
                   quality={90}
                 />
+                {ch.video && (
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[i] = el;
+                    }}
+                    className="absolute inset-0 h-full w-full object-cover opacity-0"
+                    src={ch.video}
+                    muted
+                    playsInline
+                    preload="none"
+                    disablePictureInPicture
+                    aria-hidden
+                    tabIndex={-1}
+                  />
+                )}
               </div>
               {/* Scrim so the words sit quietly on the picture */}
               <div

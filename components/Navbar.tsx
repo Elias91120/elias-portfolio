@@ -30,9 +30,19 @@ export default function Navbar() {
       <nav className="mx-auto max-w-6xl px-5 h-14 flex items-center justify-between">
         <a
           href="#top"
-          className="font-display text-lg font-semibold tracking-tight text-white"
+          className="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight text-white"
         >
-          elias<span className="text-accent">.</span>
+          <span className="relative h-7 w-7 overflow-hidden rounded-full ring-1 ring-accent/40 transition-transform duration-300 group-hover:scale-110">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/story/avatar-hero.jpg"
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          </span>
+          <span>
+            elias<span className="text-accent">.</span>
+          </span>
         </a>
         <ul className="flex items-center gap-1 sm:gap-2">
           {links.map((l) => (
