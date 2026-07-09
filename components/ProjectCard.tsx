@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { Project } from "@/lib/data";
 
@@ -61,10 +62,21 @@ export default function ProjectCard({
         />
 
         <div className="flex items-start justify-between gap-3">
-          <div
-            className={`rounded-full mt-2 ${isFeatured ? "h-2 w-12" : "h-1.5 w-10"}`}
-            style={{ backgroundColor: project.accent }}
-          />
+          <div className="flex flex-col gap-3 min-w-0">
+            {project.logo && (
+              <Image
+                src={project.logo}
+                alt={`${project.name} logo`}
+                width={140}
+                height={40}
+                className="h-8 w-auto object-contain object-left"
+              />
+            )}
+            <div
+              className={`rounded-full ${project.logo ? "" : "mt-2"} ${isFeatured ? "h-2 w-12" : "h-1.5 w-10"}`}
+              style={{ backgroundColor: project.accent }}
+            />
+          </div>
           <span
             className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ${
               statusStyles[project.status]

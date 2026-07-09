@@ -27,7 +27,7 @@ export default function Contact() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
-          Open to apprenticeship — 2026/2027
+          Actively seeking apprenticeship — 2026–2028
         </span>
 
         <h2 className="font-display mt-6 text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.08]">
@@ -40,9 +40,12 @@ export default function Contact() {
         </h2>
 
         <p className="mt-6 text-lg text-muted leading-relaxed max-w-xl mx-auto">
-          Master in Data &amp; AI at ECE Paris starting September 2026. Data
-          engineering, AI-powered products, or anything where code meets real
-          impact — I&apos;d love to talk.
+          Starting September 2026: M.Sc. Data Engineering &amp; AI at EFREI Paris
+          — data infrastructure, structural AI, and cloud governance (RNCP level
+          7).{" "}
+          <span className="text-foreground">Apprenticeship is my priority</span>{" "}
+          for 2026–2028. I&apos;m also open to freelance missions through webgen
+          or on Fiverr.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -93,6 +96,25 @@ export default function Contact() {
             </svg>
             {contact.location}
           </span>
+          <span className="inline-flex items-center gap-2">
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m5 8 6 6" />
+              <path d="m4 14 6-6 2-3" />
+              <path d="M2 5h12" />
+              <path d="M7 2h1" />
+              <path d="M22 22l-5-10-5 10" />
+              <path d="M14 18h6" />
+            </svg>
+            {contact.languages}
+          </span>
           <a
             href={contact.studio}
             target="_blank"
@@ -112,6 +134,27 @@ export default function Contact() {
               <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
             </svg>
             {contact.studioLabel}
+          </a>
+          <a
+            href={contact.fiverr}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 hover:text-white transition-colors"
+          >
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 3h6v6" />
+              <path d="M10 14 21 3" />
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            </svg>
+            {contact.fiverrLabel}
           </a>
         </div>
       </motion.div>

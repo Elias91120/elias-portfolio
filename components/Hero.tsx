@@ -76,19 +76,29 @@ export default function Hero() {
           <br />
           to a{" "}
           <span className="font-serif italic font-semibold bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text text-transparent">
-            Data &amp; AI engineer
+            Full-Stack Developer
           </span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.7, ease }}
-          className="mt-7 max-w-xl text-base sm:text-lg text-muted leading-relaxed"
+          transition={{ delay: 0.45, duration: 0.7, ease }}
+          className="mt-4 text-sm sm:text-base font-medium tracking-wide text-sky-300/90"
         >
-          Data engineering &amp; AI agent developer at{" "}
-          <span className="text-foreground">Nokia</span>, co-founder of{" "}
-          <span className="text-foreground">3geeks</span>. This is the story of
+          Data Engineering &amp; AI Agents
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.7, ease }}
+          className="mt-5 max-w-xl text-base sm:text-lg text-muted leading-relaxed"
+        >
+          Professional vibe coder from the fresh new wave — building data
+          pipelines, AI agents, and production products at{" "}
+          <span className="text-foreground">Nokia</span> and{" "}
+          <span className="text-foreground">webgen</span>. This is the story of
           how I got here — one scroll at a time.
         </motion.p>
 
@@ -103,7 +113,7 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            Open to apprenticeship — 2026/2027
+            Actively seeking apprenticeship — 2026–2028
           </span>
         </motion.div>
 

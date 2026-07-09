@@ -24,12 +24,12 @@ export default function Skills() {
             with
           </h2>
           <p className="mt-5 max-w-2xl text-muted leading-relaxed">
-            Turning raw data into practical, well-designed solutions — from
-            pipelines and AI agents to the interfaces people actually use.
+            I ship through AI-native engineering — Cursor, Claude, MCP skills —
+            across data pipelines, agents, and interfaces people actually use.
           </p>
         </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {skillGroups.map((group, gi) => {
             const accent = group.accent;
             return (

@@ -91,25 +91,26 @@ export default function Projects() {
           kicker="CLIENT SHIPPED"
           title="Real projects,"
           titleAccent="already live"
-          description="Three public projects that show the kind of web and app experiences we can design, build, and launch."
+          description="Public projects that show the kind of web and app experiences we can design, build, and launch."
           projects={clientLiveProjects}
           variant="featured"
           gridClassName="grid-cols-1 lg:grid-cols-3"
         />
 
         <ProjectSection
-          kicker="GREEN STACK"
-          title="Open source lab by 3geeks"
-          description="Alongside client work, we build useful AI tools around digital sobriety, project planning, and developer workflows."
+          kicker="WEBGEN LAB"
+          title="Studio lab by"
+          titleAccent="webgen"
+          description="Web-Gen is the flagship — an intent-to-website generator. Alongside it, we build open AI tools around digital sobriety, project planning, and developer workflows."
           projects={greenStackProjects}
           variant="featured"
-          gridClassName="grid-cols-1 md:grid-cols-2"
+          gridClassName="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
         />
 
         <ProjectSection
           kicker="BEHIND THE SCENES"
           title="Professional work"
-          description="Internal platforms and award-winning school projects built inside Nokia and ECE Paris."
+          description="Internal platforms and award-winning school projects built inside Nokia and at ECE Paris."
           projects={professionalProjects}
           variant="compact"
           gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"

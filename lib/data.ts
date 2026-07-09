@@ -67,7 +67,7 @@ export const chapters: Chapter[] = [
     id: "sti2d",
     years: "2020 — 2023",
     title: "Tinkering Becomes Engineering",
-    text: "In high school I chose STI2D, option SIN — the path of electronics and code. Soldering irons, logic gates, embedded systems: little by little, playing turned into building, and building turned into engineering. Baccalauréat in hand, I knew exactly where I was heading.",
+    text: "In high school I chose STI2D, option SIN at Lycée Parc de Vilgenis in Massy — the path of electronics and code. Soldering irons, logic gates, embedded systems: little by little, playing turned into building, and building turned into engineering. Baccalauréat in hand, I knew exactly where I was heading.",
     image: "/story/chapter-3.jpg",
     video: "/story/chapter-3.mp4",
     imageAlt: "Elias soldering electronics in his high school tech lab",
@@ -103,7 +103,7 @@ export const chapters: Chapter[] = [
     id: "3geeks",
     years: "2025 — now",
     title: "Three Friends, One Studio",
-    text: "Meanwhile, with Noam and Charles, our little collective webgen grew into 3geeks — our own studio, made in France. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, and launched tools like PromptOptim in the open. Three friends, real clients, real code.",
+    text: "Meanwhile, with Noam and Charles, webgen became our studio — made in France, built around Web-Gen, our intent-to-website generator. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, and launched tools like PromptOptim in the open. Three friends, real clients, real code.",
     image: "/story/chapter-6.jpg",
     video: "/story/chapter-6.mp4",
     imageAlt: "Elias, Noam and Charles celebrating a launch at 3geeks",
@@ -113,9 +113,9 @@ export const chapters: Chapter[] = [
   },
   {
     id: "future",
-    years: "2026 →",
+    years: "2026 — 2028",
     title: "Now & Next",
-    text: "Next comes a Master in Data & AI at ECE Paris — and an apprenticeship for 2026-2027, somewhere data, AI and craft meet. The eight-year-old in front of the Minecraft screen is still here. He just ships to production now.",
+    text: "Next comes the M.Sc. Data Engineering & AI at EFREI Paris — RNCP level 7, built around data architecture, structural AI, and cloud governance. I'm actively looking for a two-year work-study company (2026–2028) where pipelines, agents, and production craft meet. Meanwhile, webgen keeps shipping real products with Noam and Charles. The eight-year-old in front of the Minecraft screen is still here. He just ships to production now.",
     image: "/story/chapter-7.jpg",
     video: "/story/chapter-7.mp4",
     imageAlt: "Elias looking at a futuristic city skyline at dawn",
@@ -133,6 +133,20 @@ export type SkillGroup = {
 
 export const skillGroups: SkillGroup[] = [
   {
+    title: "AI-Native Engineering",
+    accent: "#4ade80",
+    skills: [
+      "Vibe coding",
+      "Cursor",
+      "Claude",
+      "MCP servers & skills",
+      "Prompt engineering",
+      "AI-assisted dev at scale",
+      "Polyglot development",
+      "Any language via AI orchestration",
+    ],
+  },
+  {
     title: "Data & AI",
     accent: "#38bdf8",
     skills: [
@@ -142,8 +156,10 @@ export const skillGroups: SkillGroup[] = [
       "LLM & RAG integration",
       "AI agents",
       "Power BI",
+      "DAX",
       "SQL / MySQL",
       "NoSQL / MongoDB",
+      "Data governance",
     ],
   },
   {
@@ -154,24 +170,27 @@ export const skillGroups: SkillGroup[] = [
       "Next.js",
       "TypeScript",
       "FastAPI",
-      "Node.js / Vite",
+      "Flask",
+      "Django",
+      "Node.js",
+      "Streamlit",
       "Tailwind CSS",
-      "UI/UX design",
       "REST APIs",
+      "UI/UX design",
     ],
   },
   {
-    title: "Engineering Practices",
-    accent: "#4ade80",
+    title: "Cloud & Engineering",
+    accent: "#fbbf24",
     skills: [
-      "AI-assisted development (Cursor)",
-      "Workflow automation",
-      "Cross-system integration",
-      "Monitoring & self-healing infra",
+      "AWS (EC2 · S3 · IAM)",
       "Git",
-      "JIRA API",
-      "Agile / sprints",
+      "GitLab CI",
+      "Monitoring & self-healing infra",
+      "Cross-system integration",
+      "Agile / JIRA",
       "Technical mentoring",
+      "Workflow automation",
     ],
   },
 ];
@@ -187,6 +206,11 @@ export const certifications = [
     issuer: "DataScientest",
     year: "2025",
   },
+  {
+    name: "AI & GenAI — Prompt Engineering",
+    issuer: "Nokia",
+    year: "2024",
+  },
 ];
 
 export type ProjectCategory = "client-live" | "green-stack" | "professional";
@@ -200,6 +224,7 @@ export type Project = {
   link?: string;
   linkLabel?: string;
   ctaLabel?: string;
+  logo?: string;
   status: "Live" | "Beta" | "App Store" | "Award" | "Internal";
   accent: string;
   category: ProjectCategory;
@@ -208,13 +233,13 @@ export type Project = {
 export const projects: Project[] = [
   {
     name: "Express Divorce USA",
-    role: "Legal services platform",
+    role: "Legal-tech SaaS · 3geeks",
     description:
-      "A reassuring platform that guides users through a sensitive legal journey with clarity.",
+      "Live legal-tech SaaS with real users — simplifying US divorce journeys across multiple states. Built for regulated-sector constraints: multi-state compliance, personal-data security, and data sovereignty.",
     highlights: [
-      "Clearer client journey",
-      "Reassuring steps before contact",
-      "Public project live online",
+      "In production with real users",
+      "Multi-state US compliance",
+      "Data sovereignty & personal-data security",
     ],
     tags: ["Next.js", "Production", "Legal tech"],
     link: "https://expressdivorceusa.co",
@@ -259,6 +284,25 @@ export const projects: Project[] = [
     status: "App Store",
     accent: "#2dd4bf",
     category: "client-live",
+  },
+  {
+    name: "Web-Gen",
+    role: "webgen · AI web generation",
+    description:
+      "Intent-to-website generator: a text brief becomes a fully laid-out site. Flagship product of the studio — LLM orchestration meets UI generation.",
+    highlights: [
+      "Brief → structured layout in one flow",
+      "LLM + GenUI orchestration with Next.js",
+      "Studio flagship — the product webgen was built around",
+    ],
+    tags: ["LLM", "GenUI", "Next.js", "webgen"],
+    link: "https://web-gen-lyart.vercel.app",
+    linkLabel: "web-gen-lyart.vercel.app",
+    ctaLabel: "Open Web-Gen",
+    logo: "/3geeks-logo.png",
+    status: "Live",
+    accent: "#4ade80",
+    category: "green-stack",
   },
   {
     name: "Prompt Hub",
@@ -342,7 +386,10 @@ export const contact = {
   email: "e.elloumi15@gmail.com",
   linkedin: "https://www.linkedin.com/in/elias-elloumi/",
   linkedinLabel: "linkedin.com/in/elias-elloumi",
-  location: "Paris area, France",
+  location: "Palaiseau (91), France",
   studio: "https://web-gen-lyart.vercel.app",
-  studioLabel: "3geeks studio",
+  studioLabel: "webgen studio",
+  fiverr: "https://www.fiverr.com/three_geeks",
+  fiverrLabel: "@three_geeks",
+  languages: "FR native · EN C1 · AR fluent",
 };

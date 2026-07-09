@@ -22,18 +22,22 @@ const serif = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL("https://elias-elloumi.vercel.app"),
   title: {
-    default: "Elias Elloumi — Data & AI Engineer",
+    default: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
     template: "%s · Elias Elloumi",
   },
   description:
-    "From a Minecraft kid to a data & AI engineer at Nokia and co-founder of 3geeks. A portfolio that reads like an illustrated book — one scroll at a time.",
+    "Professional vibe coder building data pipelines, AI agents & production products at Nokia and webgen. A portfolio that reads like an illustrated book — one scroll at a time.",
   keywords: [
     "Elias Elloumi",
-    "Data Engineer",
+    "Full-Stack Developer",
+    "Data Engineering",
     "AI Engineer",
+    "Vibe coding",
     "Portfolio",
     "Nokia",
-    "3geeks",
+    "webgen",
+    "Web-Gen",
+    "EFREI Paris",
     "ECE Paris",
     "Data & AI",
   ],
@@ -45,15 +49,15 @@ export const metadata: Metadata = {
     url: "https://elias-elloumi.vercel.app",
     siteName: "Elias Elloumi — Portfolio",
     locale: "en_US",
-    title: "Elias Elloumi — Data & AI Engineer",
+    title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
     description:
-      "From a Minecraft kid to a data & AI engineer at Nokia and co-founder of 3geeks. A story that reads like an illustrated book.",
+      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and webgen. A story that reads like an illustrated book.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elias Elloumi — Data & AI Engineer",
+    title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
     description:
-      "From a Minecraft kid to a data & AI engineer at Nokia and co-founder of 3geeks. A story that reads like an illustrated book.",
+      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and webgen. A story that reads like an illustrated book.",
   },
   robots: {
     index: true,
@@ -66,10 +70,22 @@ const personJsonLd = {
   "@type": "Person",
   name: "Elias Elloumi",
   url: "https://elias-elloumi.vercel.app",
-  jobTitle: "Data Engineering & AI Agent Developer",
+  jobTitle: "Full-Stack Developer · Data Engineering & AI Agent Developer",
   worksFor: { "@type": "Organization", name: "Nokia" },
-  alumniOf: { "@type": "CollegeOrUniversity", name: "ECE Paris" },
-  sameAs: ["https://www.linkedin.com/in/elias-elloumi/"],
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "ECE Paris" },
+    { "@type": "CollegeOrUniversity", name: "EFREI Paris" },
+  ],
+  knowsAbout: [
+    "Data Engineering",
+    "Artificial Intelligence",
+    "Vibe coding",
+    "Web Development",
+  ],
+  sameAs: [
+    "https://www.linkedin.com/in/elias-elloumi/",
+    "https://www.fiverr.com/three_geeks",
+  ],
 };
 
 export default function RootLayout({

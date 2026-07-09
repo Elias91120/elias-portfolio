@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const alt =
-  "Elias Elloumi — Data & AI Engineer. A portfolio that reads like an illustrated book.";
+  "Elias Elloumi — Full-Stack Developer · Data Engineering & AI. A portfolio that reads like an illustrated book.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -72,7 +72,7 @@ export default async function OpenGraphImage() {
               letterSpacing: -1,
             }}
           >
-            From a Minecraft kid to a Data & AI engineer.
+            From a Minecraft kid to a Full-Stack Developer.
           </div>
 
           <div
@@ -83,7 +83,7 @@ export default async function OpenGraphImage() {
               lineHeight: 1.5,
             }}
           >
-            Nokia · 3geeks · ECE Paris — a story that reads like an illustrated
+            Nokia · webgen · EFREI Paris — a story that reads like an illustrated
             book, one scroll at a time.
           </div>
 
