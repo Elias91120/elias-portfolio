@@ -12,33 +12,25 @@ import {
   useDeveloperMode,
   hasVisitedDevMode,
   markDevModeVisited,
-  highlightProjectCard,
 } from "@/components/DeveloperModeProvider";
 import {
   runCommand,
   getAutocomplete,
+  formatPrompt,
+  getWelcomeText,
   type TerminalAction,
 } from "@/lib/dev-terminal-commands";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
+import { highlightProjectCard } from "@/lib/highlight-project";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const PROMPT = "elias@portfolio:~$";
 const MAX_HISTORY = 20;
 
 type HistoryLine = {
   type: "output" | "command" | "banner";
   text: string;
+  prompt?: string;
 };
-
-function getWelcomeBanner(): string {
-  if (hasVisitedDevMode()) {
-    return "Welcome back. Type help.";
-  }
-  return `Welcome to Developer Mode.
-Type help for commands — or try the classics:
-  whoami, ls projects/, cat nokia/dashboard.ts
-This is a simulated shell. Nothing executes for real.`;
-}
 
 function highlightOutput(text: string): React.ReactNode[] {
   const lines = text.split("\n");
@@ -130,6 +122,7 @@ function applyAction(action: TerminalAction, closeTerminal: () => void): void {
 
 export default function DevTerminal() {
   const { isOpen, closeTerminal, lastSource } = useDeveloperMode();
+  const [cwd, setCwd] = useState("~");
   const [lines, setLines] = useState<HistoryLine[]>([]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -138,6 +131,7 @@ export default function DevTerminal() {
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const reduced = prefersReducedMotion();
+  const prompt = formatPrompt(cwd);
 
   const appendOutput = useCallback((text: string) => {
     if (!text) return;
@@ -149,35 +143,41 @@ export default function DevTerminal() {
       const trimmed = raw.trim();
       if (!trimmed) return;
 
-      setLines((prev) => [...prev, { type: "command", text: trimmed }]);
+      const commandPrompt = formatPrompt(cwd);
+      setLines((prev) => [
+        ...prev,
+        { type: "command", text: trimmed, prompt: commandPrompt },
+      ]);
       setHistory((prev) => {
         const next = [...prev.filter((c) => c !== trimmed), trimmed];
         return next.slice(-MAX_HISTORY);
       });
       setHistoryIndex(-1);
 
-      const result = runCommand(trimmed);
+      const result = runCommand(trimmed, { cwd });
 
-      if ("action" in result && result.action?.type === "clear") {
+      if (result.action?.type === "clear") {
         setLines([]);
         return;
       }
 
-      if ("output" in result && result.output) {
+      if (result.cwd) setCwd(result.cwd);
+
+      if (result.output) {
         appendOutput(result.output);
       }
 
-      if ("action" in result && result.action && result.action.type !== "clear") {
+      if (result.action) {
         applyAction(result.action, closeTerminal);
       }
     },
-    [appendOutput, closeTerminal]
+    [appendOutput, closeTerminal, cwd]
   );
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const banner = getWelcomeBanner();
+    const banner = getWelcomeText(hasVisitedDevMode());
     const initial: HistoryLine[] = [{ type: "banner", text: banner }];
 
     if (lastSource === "avatar") {
@@ -187,6 +187,7 @@ export default function DevTerminal() {
       });
     }
 
+    setCwd("~");
     setLines(initial);
     setInput("");
     setHistoryIndex(-1);
@@ -282,7 +283,7 @@ export default function DevTerminal() {
 
     if (e.key === "Tab") {
       e.preventDefault();
-      const matches = getAutocomplete(input);
+      const matches = getAutocomplete(input, { cwd });
       if (matches.length === 1) {
         const parts = input.trim().split(/\s+/);
         if (parts.length <= 1) {
@@ -370,7 +371,7 @@ export default function DevTerminal() {
                 <div key={i} className="mb-1">
                   {line.type === "command" ? (
                     <div>
-                      <span className="text-accent">{PROMPT} </span>
+                      <span className="text-accent">{line.prompt ?? prompt} </span>
                       <span>{line.text}</span>
                     </div>
                   ) : (
@@ -385,7 +386,7 @@ export default function DevTerminal() {
             {/* Input */}
             <div className="shrink-0 border-t border-white/8 px-4 py-3">
               <div className="flex items-center gap-2 font-mono text-base sm:text-sm">
-                <span className="shrink-0 text-accent">{PROMPT}</span>
+                <span className="shrink-0 text-accent">{prompt}</span>
                 <input
                   ref={inputRef}
                   type="text"

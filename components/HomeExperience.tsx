@@ -9,6 +9,7 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import AskWidget from "@/components/AskWidget";
+import { AgentChatProvider } from "@/components/AgentChatProvider";
 import StatsBand from "@/components/StatsBand";
 import ScrollProgress from "@/components/ScrollProgress";
 import CinematicIntro, { shouldPlayIntro } from "@/components/CinematicIntro";
@@ -101,30 +102,32 @@ function HomeSections({
       <ScrollProgress />
       <Navbar />
       {isHiring && <HiringStrip />}
-      <Hero ready={heroReady} />
-      <div className="flex flex-col">
-        <div style={{ order: isHiring ? 1 : 2 }}>
-          <StatsBand />
+      <AgentChatProvider>
+        <Hero ready={heroReady} />
+        <div className="flex flex-col">
+          <div style={{ order: isHiring ? 1 : 2 }}>
+            <StatsBand />
+          </div>
+          <div style={{ order: isHiring ? 2 : 4 }}>
+            <Projects />
+          </div>
+          <div style={{ order: 3 }}>
+            <Skills />
+          </div>
+          <div style={{ order: isHiring ? 4 : 5 }}>
+            <Contact />
+          </div>
+          <div style={{ order: isHiring ? 5 : 1 }}>
+            <Story
+              collapsed={storyCollapsed}
+              enabled={storyEnabled}
+              onExpand={handleStoryExpand}
+            />
+          </div>
         </div>
-        <div style={{ order: isHiring ? 2 : 4 }}>
-          <Projects />
-        </div>
-        <div style={{ order: 3 }}>
-          <Skills />
-        </div>
-        <div style={{ order: isHiring ? 4 : 5 }}>
-          <Contact />
-        </div>
-        <div style={{ order: isHiring ? 5 : 1 }}>
-          <Story
-            collapsed={storyCollapsed}
-            enabled={storyEnabled}
-            onExpand={handleStoryExpand}
-          />
-        </div>
-      </div>
-      <Footer />
-      <AskWidget />
+        <Footer />
+        <AskWidget />
+      </AgentChatProvider>
     </>
   );
 }

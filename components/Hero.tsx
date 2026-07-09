@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import PathSelector from "@/components/PathSelector";
+import HeroAgentBlock from "@/components/HeroAgentBlock";
 import { useDeveloperMode } from "@/components/DeveloperModeProvider";
 import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
@@ -204,6 +205,8 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
         </motion.div>
 
         <PathSelector ready={ready} />
+
+        <HeroAgentBlock ready={ready} />
 
         <motion.p
           initial={{ opacity: 0, y: 8 }}

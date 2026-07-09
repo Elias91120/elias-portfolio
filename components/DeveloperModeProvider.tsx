@@ -210,9 +210,4 @@ export function useDeveloperMode() {
   return ctx;
 }
 
-export function highlightProjectCard(slug: string, durationMs = 2000): void {
-  const el = document.querySelector(`[data-project-slug="${slug}"]`);
-  if (!el) return;
-  el.classList.add("dev-terminal-highlight");
-  window.setTimeout(() => el.classList.remove("dev-terminal-highlight"), durationMs);
-}
+export { highlightProjectCard } from "@/lib/highlight-project";

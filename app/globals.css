@@ -227,13 +227,94 @@ body[data-dev-terminal] .ask-widget {
   pointer-events: none;
 }
 
-/* Project card highlight from `open <slug>` */
+/* Portfolio agent — rendered markdown in chat bubbles */
+.agent-message {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #d4d0e8;
+  letter-spacing: 0.01em;
+}
+
+.agent-message-p + .agent-message-p,
+.agent-message-list + .agent-message-p,
+.agent-message-p + .agent-message-list {
+  margin-top: 0.75rem;
+}
+
+.agent-message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 1.125rem;
+}
+
+.agent-message-list-ul {
+  list-style: disc;
+}
+
+.agent-message-list-ol {
+  list-style: decimal;
+}
+
+.agent-message-li::marker {
+  color: rgba(167, 139, 250, 0.75);
+}
+
+.agent-message-li > .agent-message-p {
+  margin-top: 0;
+}
+
+.agent-bubble-assistant {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 24px -16px rgba(0, 0, 0, 0.55);
+}
+
+.agent-bubble-user {
+  background: linear-gradient(
+    135deg,
+    rgba(167, 139, 250, 0.22) 0%,
+    rgba(167, 139, 250, 0.1) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 20px -14px rgba(167, 139, 250, 0.35);
+}
+
+/* Project card highlight from agent or `open <slug>` */
+[data-project-slug].agent-highlight [class*="rounded-3xl"],
 [data-project-slug].dev-terminal-highlight [class*="rounded-3xl"] {
   --tw-ring-color: rgba(167, 139, 250, 0.8);
   box-shadow:
     0 0 0 2px rgba(167, 139, 250, 0.65),
     0 20px 60px -32px rgba(167, 139, 250, 0.35) !important;
   transition: box-shadow 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-project-slug].agent-highlight [class*="rounded-3xl"] {
+    animation: agent-highlight-pulse 2.5s ease-in-out;
+  }
+}
+
+@keyframes agent-highlight-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px rgba(167, 139, 250, 0.65),
+      0 20px 60px -32px rgba(167, 139, 250, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(167, 139, 250, 0.9),
+      0 24px 72px -24px rgba(167, 139, 250, 0.55);
+  }
 }
 
 /* Soft floating animation for the hero avatar */
