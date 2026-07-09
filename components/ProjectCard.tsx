@@ -21,6 +21,7 @@ type ProjectCardProps = {
   project: Project;
   index: number;
   variant?: "featured" | "compact";
+  mobile?: boolean;
 };
 
 function CardWrapper({
@@ -70,8 +71,9 @@ export default function ProjectCard({
   project,
   index,
   variant = "featured",
+  mobile = false,
 }: ProjectCardProps) {
-  const isFeatured = variant === "featured";
+  const isFeatured = variant === "featured" && !mobile;
   const clickable = Boolean(project.link || project.caseStudy);
   const caseStudySlug = getCaseStudySlug(project);
   const projectSlug = getProjectSlug(project);
@@ -230,7 +232,8 @@ export default function ProjectCard({
 
           {isFeatured && project.highlights && project.highlights.length > 0 && (
             <ul className="mt-5 space-y-2">
-              {project.highlights.map((highlight) => (
+              {(mobile ? project.highlights.slice(0, 2) : project.highlights).map(
+                (highlight) => (
                 <li
                   key={highlight}
                   className="flex items-start gap-2.5 text-sm text-[#d4d0e8]"
@@ -246,7 +249,7 @@ export default function ProjectCard({
           )}
 
           <div className={`flex flex-wrap gap-2 ${isFeatured ? "mt-6" : "mt-5"}`}>
-            {project.tags.map((tag) => (
+            {(mobile ? project.tags.slice(0, 3) : project.tags).map((tag) => (
               <span
                 key={tag}
                 className="rounded-full bg-white/5 px-3 py-1 text-xs text-[#b8b3cf] ring-1 ring-white/10"

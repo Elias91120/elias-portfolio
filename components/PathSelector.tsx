@@ -11,9 +11,10 @@ const baseBtn =
 
 type PathSelectorProps = {
   ready: boolean;
+  compact?: boolean;
 };
 
-export default function PathSelector({ ready }: PathSelectorProps) {
+export default function PathSelector({ ready, compact = false }: PathSelectorProps) {
   const { mode, setMode, hydrated } = useVisitorMode();
 
   if (!hydrated || mode !== null) return null;
@@ -34,18 +35,26 @@ export default function PathSelector({ ready }: PathSelectorProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
       transition={{ delay: ready ? 0.72 : 0, duration: 0.6, ease }}
-      className="mt-8 w-full max-w-lg"
+      className={`w-full max-w-lg ${compact ? "mt-5" : "mt-8"}`}
       role="group"
       aria-label="Choose how to explore the portfolio"
     >
-      <p className="mb-3 text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] text-muted">
+      <p
+        className={`mb-3 uppercase tracking-[0.3em] text-muted ${
+          compact ? "text-[0.6rem]" : "text-[0.65rem] sm:text-xs"
+        }`}
+      >
         How would you like to explore?
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div
+        className={`grid grid-cols-1 gap-3 ${compact ? "" : "sm:grid-cols-2"}`}
+      >
         <button
           type="button"
           onClick={chooseHiring}
-          className={`${baseBtn} bg-accent/10 ring-1 ring-accent/25 hover:bg-accent/16 hover:ring-accent/45 hover:-translate-y-0.5 shadow-[0_0_0_0_rgba(167,139,250,0)] hover:shadow-[0_12px_40px_-16px_rgba(167,139,250,0.45)]`}
+          className={`${baseBtn} ${
+            compact ? "min-h-[3.5rem] px-4 py-3" : ""
+          } bg-accent/10 ring-1 ring-accent/25 hover:bg-accent/16 hover:ring-accent/45 hover:-translate-y-0.5 shadow-[0_0_0_0_rgba(167,139,250,0)] hover:shadow-[0_12px_40px_-16px_rgba(167,139,250,0.45)]`}
         >
           <span
             aria-hidden
@@ -54,21 +63,27 @@ export default function PathSelector({ ready }: PathSelectorProps) {
           <span className="font-medium text-foreground transition-colors group-hover:text-white">
             I&apos;m hiring
           </span>
-          <span className="mt-0.5 text-xs text-muted transition-colors group-hover:text-accent/80">
-            Stats, projects &amp; contact — fast path
-          </span>
+          {!compact && (
+            <span className="mt-0.5 text-xs text-muted transition-colors group-hover:text-accent/80">
+              Stats, projects &amp; contact — fast path
+            </span>
+          )}
         </button>
         <button
           type="button"
           onClick={chooseBrowsing}
-          className={`${baseBtn} bg-card/90 ring-1 ring-white/10 hover:bg-white/[0.07] hover:ring-white/22 hover:-translate-y-0.5`}
+          className={`${baseBtn} ${
+            compact ? "min-h-[3.5rem] px-4 py-3" : ""
+          } bg-card/90 ring-1 ring-white/10 hover:bg-white/[0.07] hover:ring-white/22 hover:-translate-y-0.5`}
         >
           <span className="font-medium text-foreground transition-colors group-hover:text-white">
             Just browsing
           </span>
-          <span className="mt-0.5 text-xs text-muted transition-colors group-hover:text-foreground/70">
-            The full scroll story
-          </span>
+          {!compact && (
+            <span className="mt-0.5 text-xs text-muted transition-colors group-hover:text-foreground/70">
+              The full scroll story
+            </span>
+          )}
         </button>
       </div>
     </motion.div>

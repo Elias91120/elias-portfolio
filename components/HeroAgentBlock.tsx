@@ -173,33 +173,33 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
       transition={{ delay: ready ? 0.66 : 0, duration: 0.6, ease }}
       role="region"
       aria-label="Portfolio AI assistant"
-      className="relative z-10 mt-8 w-full max-w-lg"
+      className="relative z-10 mt-6 w-full max-w-md"
     >
-      <div className="rounded-3xl bg-card/80 backdrop-blur-md p-5 ring-1 ring-accent/30 shadow-[0_16px_48px_-20px_rgba(167,139,250,0.35)]">
-        <div className="flex items-center gap-3">
-          <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-1 ring-accent/40">
+      <div className="rounded-2xl bg-card/40 backdrop-blur-sm p-3.5 ring-1 ring-white/8">
+        <div className="flex items-center gap-2.5">
+          <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-white/15">
             <Image
               src="/story/avatar-hero.jpg"
               alt=""
               fill
-              sizes="2.25rem"
+              sizes="1.75rem"
               className="object-cover"
             />
           </span>
-          <div className="min-w-0 text-left">
-            <h2 className="font-display text-sm font-semibold text-white">
+          <div className="min-w-0 flex-1 text-left">
+            <h2 className="font-display text-xs font-medium text-white/90">
               Ask me anything about my work
             </h2>
-            <p className="flex items-center gap-1.5 text-xs text-muted">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              AI agent · built by Elias · powered by Mistral
+            <p className="flex items-center gap-1 text-[0.65rem] text-muted/80">
+              <span className="h-1 w-1 rounded-full bg-emerald-400/80" />
+              AI agent · Mistral
             </p>
           </div>
           {speaking && (
             <button
               type="button"
               onClick={stopSpeaking}
-              className="ml-auto shrink-0 rounded-full bg-white/8 px-2.5 py-1 text-[0.65rem] font-medium text-accent ring-1 ring-accent/30 transition-colors hover:bg-white/12"
+              className="shrink-0 rounded-full bg-white/6 px-2 py-0.5 text-[0.6rem] font-medium text-accent/80 ring-1 ring-white/10 transition-colors hover:bg-white/10"
               aria-label="Stop reading response"
             >
               Stop
@@ -208,7 +208,7 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
         </div>
 
         <form
-          className="mt-4 flex items-center gap-2"
+          className="mt-3 flex items-center gap-1.5"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
@@ -220,7 +220,7 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
             placeholder="Ask about Elias…"
             maxLength={500}
             disabled={busy}
-            className="min-h-11 min-w-0 flex-1 rounded-full bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-muted/70 ring-1 ring-white/10 outline-none transition-all focus:ring-accent/40 disabled:opacity-60"
+            className="min-h-9 min-w-0 flex-1 rounded-full bg-white/4 px-3.5 py-2 text-sm text-white placeholder:text-muted/60 ring-1 ring-white/8 outline-none transition-all focus:ring-accent/30 disabled:opacity-60"
           />
           {showMic && (
             <button
@@ -233,14 +233,14 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
                   ? "Voice search works best on Chrome desktop"
                   : "Ask with your voice"
               }
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ring-1 transition-all disabled:opacity-40 cursor-pointer disabled:cursor-default ${
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ring-1 transition-all disabled:opacity-40 cursor-pointer disabled:cursor-default ${
                 recording && !reducedMotion
-                  ? "bg-red-500/20 text-red-400 ring-red-400/50 animate-pulse"
-                  : "bg-white/5 text-muted ring-white/10 hover:bg-white/10 hover:text-white hover:ring-white/25"
+                  ? "bg-red-500/15 text-red-400 ring-red-400/40 animate-pulse"
+                  : "bg-white/4 text-muted/80 ring-white/8 hover:bg-white/8 hover:text-white hover:ring-white/15"
               }`}
             >
               <svg
-                className="h-4.5 w-4.5"
+                className="h-4 w-4"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -257,11 +257,11 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
           <button
             type="submit"
             disabled={busy || !input.trim()}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-[#0c0a16] transition-all hover:brightness-110 disabled:opacity-40 disabled:hover:brightness-100 cursor-pointer disabled:cursor-default"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/90 text-[#0c0a16] transition-all hover:bg-accent disabled:opacity-40 cursor-pointer disabled:cursor-default"
             aria-label="Send"
           >
             <svg
-              className="h-4 w-4"
+              className="h-3.5 w-3.5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -274,41 +274,44 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
           </button>
         </form>
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          {suggestions.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => handleSubmit(s)}
-              disabled={busy}
-              className="min-h-11 rounded-full bg-white/5 px-3 py-2 text-left text-xs text-[#cfcae3] ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:text-white hover:ring-white/25 disabled:opacity-50 cursor-pointer disabled:cursor-default"
-            >
-              {s}
-            </button>
-          ))}
-        </div>
+        {!showInlineResponse && (
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
+            {suggestions.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => handleSubmit(s)}
+                disabled={busy}
+                className="rounded-full bg-white/4 px-2.5 py-1.5 text-left text-[0.7rem] leading-snug text-muted/90 ring-1 ring-white/8 transition-colors hover:bg-white/8 hover:text-white/90 hover:ring-white/15 disabled:opacity-50 cursor-pointer disabled:cursor-default"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
 
         {showInlineResponse && (
-          <div className="agent-bubble-assistant mt-4 rounded-2xl px-4 py-3.5 ring-1 ring-white/10">
+          <div className="mt-2.5 overflow-hidden rounded-xl bg-white/3 px-3 py-2.5 ring-1 ring-white/6">
             {busy && !lastAssistant?.content ? (
               <AgentTypingIndicator />
             ) : (
-              <div className="line-clamp-6">
+              <div className="line-clamp-3 text-left text-xs leading-relaxed text-white/85 [&_.agent-message-p]:text-xs [&_.agent-message-p]:leading-relaxed">
                 <AgentMessageContent content={lastAssistant?.content ?? ""} />
               </div>
-            )}
-            {hasConversation && !busy && (
-              <button
-                type="button"
-                onClick={openPanel}
-                className="mt-3 text-xs font-medium text-accent underline-offset-4 transition-colors hover:text-white hover:underline"
-              >
-                View full conversation
-              </button>
             )}
           </div>
         )}
       </div>
+
+      {hasConversation && !busy && (
+        <button
+          type="button"
+          onClick={openPanel}
+          className="mx-auto mt-2 block text-[0.65rem] text-muted/70 underline-offset-2 transition-colors hover:text-accent hover:underline"
+        >
+          View full conversation
+        </button>
+      )}
 
       <p className="sr-only" aria-live="polite">
         {announcement}

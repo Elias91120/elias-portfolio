@@ -1,11 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { skillGroups, certifications } from "@/lib/data";
 
-export default function Skills() {
+export default function Skills({ compact = false }: { compact?: boolean }) {
+  const [expanded, setExpanded] = useState(false);
+  const visibleGroups = compact && !expanded ? skillGroups.slice(0, 2) : skillGroups;
+
   return (
-    <section id="skills" className="relative py-28 px-5">
+    <section
+      id="skills"
+      className={`relative px-5 ${compact ? "py-16" : "py-28"}`}
+    >
       <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -23,14 +30,18 @@ export default function Skills() {
             </span>{" "}
             with
           </h2>
-          <p className="mt-5 max-w-2xl text-muted leading-relaxed">
+          <p
+            className={`mt-5 max-w-2xl text-muted leading-relaxed ${
+              compact ? "text-sm hidden" : ""
+            }`}
+          >
             I ship through AI-native engineering — Cursor, Claude, MCP skills —
             across data pipelines, agents, and interfaces people actually use.
           </p>
         </motion.div>
 
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skillGroups.map((group, gi) => {
+          {visibleGroups.map((group, gi) => {
             const accent = group.accent;
             return (
               <motion.div
@@ -50,7 +61,8 @@ export default function Skills() {
                   {group.title}
                 </h3>
                 <ul className="mt-5 flex flex-wrap gap-2">
-                  {group.skills.map((skill) => (
+                  {(compact ? group.skills.slice(0, 6) : group.skills).map(
+                    (skill) => (
                     <li
                       key={skill}
                       className="rounded-full bg-white/5 px-3.5 py-1.5 text-sm text-[#cfcae3] ring-1 ring-white/10 transition-colors duration-300 hover:bg-white/10 hover:text-white hover:ring-white/25"
@@ -63,6 +75,16 @@ export default function Skills() {
             );
           })}
         </div>
+
+        {compact && !expanded && skillGroups.length > 2 && (
+          <button
+            type="button"
+            onClick={() => setExpanded(true)}
+            className="mt-6 min-h-11 w-full rounded-full bg-white/5 px-5 py-2.5 text-sm font-medium text-white ring-1 ring-white/10 transition-colors hover:bg-white/10"
+          >
+            Voir toutes les compétences
+          </button>
+        )}
 
         {/* Certifications */}
         <motion.div

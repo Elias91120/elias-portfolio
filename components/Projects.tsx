@@ -17,6 +17,7 @@ type ProjectSectionProps = {
   variant: "featured" | "compact";
   gridClassName: string;
   subdued?: boolean;
+  compact?: boolean;
 };
 
 function ProjectSection({
@@ -28,6 +29,7 @@ function ProjectSection({
   variant,
   gridClassName,
   subdued = false,
+  compact = false,
 }: ProjectSectionProps) {
   return (
     <div className={subdued ? "mt-24" : "mt-0"}>
@@ -62,8 +64,8 @@ function ProjectSection({
         </h2>
         <p
           className={`mt-5 max-w-2xl text-muted leading-relaxed ${
-            subdued ? "text-sm" : ""
-          }`}
+            subdued || compact ? "text-sm" : ""
+          } ${compact ? "hidden" : ""}`}
         >
           {description}
         </p>
@@ -76,6 +78,7 @@ function ProjectSection({
             project={project}
             index={i}
             variant={variant}
+            mobile={compact}
           />
         ))}
       </div>
@@ -83,9 +86,14 @@ function ProjectSection({
   );
 }
 
-export default function Projects() {
+export default function Projects({ compact = false }: { compact?: boolean }) {
+  const cardVariant = compact ? "compact" : "featured";
+
   return (
-    <section id="projects" className="relative py-28 px-5">
+    <section
+      id="projects"
+      className={`relative px-5 ${compact ? "py-16" : "py-28"}`}
+    >
       <div className="mx-auto max-w-6xl">
         <ProjectSection
           kicker="CLIENT SHIPPED"
@@ -93,8 +101,9 @@ export default function Projects() {
           titleAccent="already live"
           description="Public projects that show the kind of web and app experiences we can design, build, and launch."
           projects={clientLiveProjects}
-          variant="featured"
+          variant={cardVariant}
           gridClassName="grid-cols-1 lg:grid-cols-3"
+          compact={compact}
         />
 
         <ProjectSection
@@ -103,8 +112,10 @@ export default function Projects() {
           titleAccent="webgen"
           description="Web-Gen is the flagship — an intent-to-website generator. Alongside it, we build open AI tools around digital sobriety, project planning, and developer workflows."
           projects={greenStackProjects}
-          variant="featured"
+          variant={cardVariant}
           gridClassName="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          subdued={!compact}
+          compact={compact}
         />
 
         <ProjectSection
@@ -115,6 +126,7 @@ export default function Projects() {
           variant="compact"
           gridClassName="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           subdued
+          compact={compact}
         />
       </div>
     </section>

@@ -51,18 +51,18 @@ export default function Navbar() {
 
   return (
     <header
-      className={`site-nav fixed top-0 inset-x-0 z-50 ${
+      className={`site-nav fixed top-0 inset-x-0 z-50 overflow-hidden ${
         scrolled
           ? "bg-[#08060f]/70 backdrop-blur-md border-b border-white/5"
           : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto max-w-6xl px-5 h-14 flex items-center justify-between gap-3">
+      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-5">
         <a
           href="#top"
-          className="group flex shrink-0 items-center gap-2.5 font-display text-lg font-semibold tracking-tight text-white"
+          className="group flex min-w-0 shrink-0 items-center gap-2 font-display text-base font-semibold leading-none tracking-tight text-white sm:gap-2.5 sm:text-lg"
         >
-          <span className="relative h-7 w-7 overflow-hidden rounded-full ring-1 ring-accent/40 transition-transform duration-300 group-hover:scale-110">
+          <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-accent/40 transition-transform duration-300 group-hover:scale-105">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/story/avatar-hero.jpg"

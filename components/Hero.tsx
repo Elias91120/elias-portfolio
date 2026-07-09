@@ -70,7 +70,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-5"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-x-hidden px-5 pt-20 pb-24 sm:pt-24 sm:pb-28"
     >
       {/* Ambient aurora */}
       <div aria-hidden className="absolute inset-0 overflow-hidden">
@@ -104,7 +104,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
               : { opacity: 0, scale: 0.85 }
           }
           transition={{ duration: 0.8, ease }}
-          className="animate-float"
+          className="animate-float mt-2 sm:mt-4"
         >
           <button
             type="button"
@@ -254,7 +254,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
             initial={{ opacity: 0 }}
             animate={ready ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: ready ? 0.95 : 0, duration: 0.9 }}
-            className="mt-14 flex flex-col items-center gap-3 text-muted cursor-pointer group"
+            className="mt-8 sm:mt-10 flex flex-col items-center gap-2.5 text-muted cursor-pointer group"
             onClick={() =>
               scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
             }

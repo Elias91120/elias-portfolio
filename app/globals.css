@@ -324,7 +324,7 @@ body[data-dev-terminal] .ask-widget {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-12px);
+    transform: translateY(-8px);
   }
 }
 .animate-float {

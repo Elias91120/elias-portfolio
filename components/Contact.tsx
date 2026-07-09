@@ -5,14 +5,17 @@ import { contact } from "@/lib/data";
 import Magnetic from "@/components/Magnetic";
 import { useVisitorMode } from "@/components/VisitorModeProvider";
 
-export default function Contact() {
+export default function Contact({ compact = false }: { compact?: boolean }) {
   const { mode, hydrated } = useVisitorMode();
   const isHiring = hydrated && mode === "hiring";
   const showCv = isHiring && Boolean(contact.cvPath);
   const showCal = isHiring && Boolean(contact.calUrl);
 
   return (
-    <section id="contact" className="relative py-28 px-5 overflow-hidden">
+    <section
+      id="contact"
+      className={`relative px-5 overflow-hidden ${compact ? "py-16" : "py-28"}`}
+    >
       {/* Ambient glow */}
       <div
         aria-hidden
@@ -37,22 +40,46 @@ export default function Contact() {
           Actively seeking apprenticeship — 2026–2028
         </span>
 
-        <h2 className="font-display mt-6 text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.08]">
+        <h2
+          className={`font-display mt-6 font-bold tracking-tight text-white leading-[1.08] ${
+            compact ? "text-3xl" : "text-4xl sm:text-6xl"
+          }`}
+        >
           Let&apos;s write the
-          <br />
+          {!compact && (
+            <>
+              <br />
+            </>
+          )}{" "}
           <span className="font-serif italic font-semibold text-[#f5f0e4]">
             next chapter
           </span>{" "}
           together
         </h2>
 
-        <p className="mt-6 text-lg text-muted leading-relaxed max-w-xl mx-auto">
-          Starting September 2026: M.Sc. Data Engineering &amp; AI at EFREI Paris
-          — data infrastructure, structural AI, and cloud governance (RNCP level
-          7).{" "}
-          <span className="text-foreground">Apprenticeship is my priority</span>{" "}
-          for 2026–2028. I&apos;m also open to freelance missions through webgen
-          or on Fiverr.
+        <p
+          className={`mt-6 text-muted leading-relaxed max-w-xl mx-auto ${
+            compact ? "text-sm" : "text-lg"
+          }`}
+        >
+          {compact ? (
+            <>
+              Alternance 2026–2028 — M.Sc. Data Engineering &amp; AI at EFREI
+              Paris.{" "}
+              <span className="text-foreground">Open to apprenticeship.</span>
+            </>
+          ) : (
+            <>
+              Starting September 2026: M.Sc. Data Engineering &amp; AI at EFREI
+              Paris — data infrastructure, structural AI, and cloud governance
+              (RNCP level 7).{" "}
+              <span className="text-foreground">
+                Apprenticeship is my priority
+              </span>{" "}
+              for 2026–2028. I&apos;m also open to freelance missions through
+              webgen or on Fiverr.
+            </>
+          )}
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -62,7 +89,7 @@ export default function Contact() {
             className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 font-medium text-[#0c0a16] transition-transform duration-300 hover:scale-[1.03]"
           >
             <svg
-              className="h-4.5 w-4.5"
+              className="h-4.5 w-4.5 shrink-0"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -73,7 +100,7 @@ export default function Contact() {
               <rect x="2" y="4" width="20" height="16" rx="3" />
               <path d="m2 7 10 7L22 7" />
             </svg>
-            {contact.email}
+            {compact ? "Email" : contact.email}
           </a>
           </Magnetic>
           <Magnetic>
@@ -146,6 +173,35 @@ export default function Contact() {
           </div>
         )}
 
+        {compact ? (
+          <details className="mt-8 text-left">
+            <summary className="cursor-pointer text-center text-sm text-muted hover:text-white">
+              Plus d&apos;infos
+            </summary>
+            <div className="mt-4 flex flex-col items-center gap-2 text-sm text-muted">
+              <span className="inline-flex items-center gap-2">
+                {contact.location}
+              </span>
+              <span>{contact.languages}</span>
+              <a
+                href={contact.studio}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                {contact.studioLabel}
+              </a>
+              <a
+                href={contact.fiverr}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                {contact.fiverrLabel}
+              </a>
+            </div>
+          </details>
+        ) : (
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-x-8 gap-y-2 text-sm text-muted">
           <span className="inline-flex items-center gap-2">
             <svg
@@ -223,6 +279,7 @@ export default function Contact() {
             {contact.fiverrLabel}
           </a>
         </div>
+        )}
       </motion.div>
     </section>
   );

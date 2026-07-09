@@ -23,6 +23,8 @@ import {
   DeveloperModeProvider,
 } from "@/components/DeveloperModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
+import { useIsMobile } from "@/lib/use-is-mobile";
+import MobileHomeSections from "@/components/mobile/MobileHomeSections";
 import type { VisitorMode } from "@/lib/visitor-mode";
 
 type HomeExperienceProps = {
@@ -56,6 +58,16 @@ export default function HomeExperience({
   }, [showIntro]);
 
   const introComplete = showIntro === false;
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (isMobile) {
+      document.body.setAttribute("data-mobile-layout", "");
+    } else {
+      document.body.removeAttribute("data-mobile-layout");
+    }
+    return () => document.body.removeAttribute("data-mobile-layout");
+  }, [isMobile]);
 
   return (
     <DeveloperModeProvider introComplete={introComplete}>
@@ -63,8 +75,15 @@ export default function HomeExperience({
         {showIntro === true && (
           <CinematicIntro onComplete={() => setShowIntro(false)} />
         )}
-        <HomeSections showIntro={showIntro} initialMode={initialMode} />
-        <DevTerminal />
+        {isMobile ? (
+          <MobileHomeSections
+            showIntro={showIntro}
+            initialMode={initialMode}
+          />
+        ) : (
+          <HomeSections showIntro={showIntro} initialMode={initialMode} />
+        )}
+        {isMobile === false && <DevTerminal />}
       </VisitorModeProvider>
     </DeveloperModeProvider>
   );
