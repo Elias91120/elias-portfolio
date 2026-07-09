@@ -80,7 +80,7 @@ export default function AskWidget() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.4, duration: 0.6 }}
-        className="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-full bg-[#181230] px-4 py-3 text-sm font-medium text-white ring-1 ring-accent/40 shadow-[0_8px_40px_-8px_rgba(167,139,250,0.45)] transition-all duration-300 hover:ring-accent/70 hover:shadow-[0_8px_48px_-6px_rgba(167,139,250,0.6)] cursor-pointer"
+        className="ask-widget fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-full bg-[#181230] px-4 py-3 text-sm font-medium text-white ring-1 ring-accent/40 shadow-[0_8px_40px_-8px_rgba(167,139,250,0.45)] transition-all duration-300 hover:ring-accent/70 hover:shadow-[0_8px_48px_-6px_rgba(167,139,250,0.6)] cursor-pointer"
         aria-label={open ? "Close the portfolio assistant" : "Ask my portfolio — AI assistant"}
       >
         <svg
@@ -106,7 +106,7 @@ export default function AskWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-20 right-5 z-50 flex max-h-[min(34rem,calc(100svh-7rem))] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-[#120e20] ring-1 ring-white/12 shadow-[0_32px_80px_-24px_rgba(0,0,0,0.8)]"
+            className="ask-widget fixed bottom-20 right-5 z-50 flex max-h-[min(34rem,calc(100svh-7rem))] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-[#120e20] ring-1 ring-white/12 shadow-[0_32px_80px_-24px_rgba(0,0,0,0.8)]"
             role="dialog"
             aria-label="Portfolio AI assistant"
           >

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export default function Hero() {
+export default function Hero({ ready = true }: { ready?: boolean }) {
   return (
     <section
       id="top"
@@ -37,7 +37,11 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center text-center max-w-4xl">
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
+          animate={
+            ready
+              ? { opacity: 1, scale: 1 }
+              : { opacity: 0, scale: 0.85 }
+          }
           transition={{ duration: 0.8, ease }}
           className="animate-float"
         >
@@ -55,8 +59,8 @@ export default function Hero() {
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ delay: ready ? 0.2 : 0, duration: 0.7, ease }}
           className="mt-8 flex items-center gap-3 text-accent"
         >
           <span className="h-px w-8 bg-accent/40" />
@@ -68,8 +72,8 @@ export default function Hero() {
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7, ease }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ delay: ready ? 0.35 : 0, duration: 0.7, ease }}
           className="font-display mt-5 text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.05]"
         >
           From a Minecraft kid
@@ -82,8 +86,8 @@ export default function Hero() {
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.7, ease }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ delay: ready ? 0.45 : 0, duration: 0.7, ease }}
           className="mt-4 text-sm sm:text-base font-medium tracking-wide text-sky-300/90"
         >
           Data Engineering &amp; AI Agents
@@ -91,8 +95,8 @@ export default function Hero() {
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.7, ease }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ delay: ready ? 0.5 : 0, duration: 0.7, ease }}
           className="mt-5 max-w-xl text-base sm:text-lg text-muted leading-relaxed"
         >
           Professional vibe coder from the fresh new wave — building data
@@ -104,8 +108,8 @@ export default function Hero() {
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.62, duration: 0.6, ease }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={{ delay: ready ? 0.62 : 0, duration: 0.6, ease }}
           className="mt-8"
         >
           <span className="inline-flex items-center gap-2.5 rounded-full bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/25">
@@ -120,8 +124,8 @@ export default function Hero() {
         <motion.button
           type="button"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.95, duration: 0.9 }}
+          animate={ready ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: ready ? 0.95 : 0, duration: 0.9 }}
           className="mt-14 flex flex-col items-center gap-3 text-muted cursor-pointer group"
           onClick={() => {
             document
