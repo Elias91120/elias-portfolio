@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
+import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
 
 export const metadata: Metadata = {
   title: "Web-Gen — Case Study",
@@ -48,10 +49,14 @@ export default function WebGenCaseStudy() {
   return (
     <main className="relative min-h-screen">
       {/* Minimal chrome — this page is a reading room, not the homepage */}
-      <header className="fixed inset-x-0 top-0 z-50 bg-[#08060f]/70 backdrop-blur-md border-b border-white/5">
+      <header
+        className="fixed inset-x-0 top-0 z-50 bg-[#08060f]/70 backdrop-blur-md border-b border-white/5"
+        style={{ viewTransitionName: "site-header" }}
+      >
         <nav className="mx-auto flex h-14 max-w-4xl items-center justify-between px-5">
           <Link
             href="/#projects"
+            transitionTypes={["nav-back"]}
             className="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-white"
           >
             <span className="transition-transform duration-300 group-hover:-translate-x-0.5">
@@ -72,44 +77,39 @@ export default function WebGenCaseStudy() {
 
       <article className="mx-auto max-w-4xl px-5 pb-28 pt-28">
         {/* Hero */}
-        <span className="section-kicker font-display text-xs font-semibold tracking-[0.3em] text-[#4ade80]">
-          CASE STUDY
-        </span>
-        <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-          Web-Gen —{" "}
-          <span className="font-serif italic font-semibold text-[#f5f0e4]">
-            intent to website
-          </span>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-          The flagship of webgen, our three-person studio: describe the site
-          you want in plain words, and Web-Gen turns that brief into a fully
-          laid-out, ready-to-ship website.
-        </p>
-
-        <div className="mt-10 overflow-hidden rounded-3xl ring-1 ring-white/12">
-          <div className="flex items-center gap-2 border-b border-white/5 bg-white/[0.04] px-4 py-2.5">
-            <span className="flex gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+        <ViewTransition enter="case-study-content-enter" default="none">
+          <div>
+            <span className="section-kicker font-display text-xs font-semibold tracking-[0.3em] text-[#4ade80]">
+              CASE STUDY
             </span>
-            <span className="mx-auto rounded-full bg-black/30 px-3 py-0.5 font-mono text-[0.65rem] text-muted">
-              web-gen-lyart.vercel.app
-            </span>
-            <span className="w-8" aria-hidden />
+            <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              Web-Gen —{" "}
+              <span className="font-serif italic font-semibold text-[#f5f0e4]">
+                intent to website
+              </span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+              The flagship of webgen, our three-person studio: describe the site
+              you want in plain words, and Web-Gen turns that brief into a fully
+              laid-out, ready-to-ship website.
+            </p>
           </div>
-          <Image
-            src="/projects/web-gen.webp"
-            alt="Screenshot of the Web-Gen studio site"
-            width={1400}
-            height={875}
-            className="w-full"
-            priority
-          />
-        </div>
+        </ViewTransition>
 
-        {/* The problem */}
+        <ProjectBrowserPreview
+          slug="web-gen"
+          imageSrc="/projects/web-gen.webp"
+          imageAlt="Screenshot of the Web-Gen studio site"
+          linkLabel="web-gen-lyart.vercel.app"
+          priority
+          className="mt-10"
+        />
+
+        <ViewTransition
+          enter="case-study-content-enter-delay"
+          default="none"
+        >
+          <div>
         <section className="mt-20">
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
             The problem
@@ -232,6 +232,8 @@ export default function WebGenCaseStudy() {
             </Link>
           </div>
         </section>
+          </div>
+        </ViewTransition>
       </article>
     </main>
   );

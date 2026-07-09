@@ -233,6 +233,8 @@ export type Project = {
   image?: string;
   /** Internal case-study route — when set, the card navigates here instead of the live link */
   caseStudy?: string;
+  /** Slug for shared-element view transitions (defaults to last segment of caseStudy) */
+  caseStudySlug?: string;
   status: "Live" | "Beta" | "App Store" | "Award" | "Internal";
   accent: string;
   category: ProjectCategory;
@@ -313,6 +315,7 @@ export const projects: Project[] = [
     logo: "/3geeks-logo.png",
     image: "/projects/web-gen.webp",
     caseStudy: "/projects/web-gen",
+    caseStudySlug: "web-gen",
     status: "Live",
     accent: "#4ade80",
     category: "green-stack",

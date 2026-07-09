@@ -11,6 +11,9 @@
   --spotlight-y: 50vh;
   --spotlight-accent: #a78bfa;
   --spotlight-radius: 160px;
+  --vt-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --vt-duration-page: 200ms;
+  --vt-duration-morph: 400ms;
 }
 
 @theme inline {
@@ -304,7 +307,105 @@ body[data-intro] .ask-widget {
   animation: wheel 1.8s ease-out infinite;
 }
 
+/* ── View Transitions (Web-Gen case study morph) ── */
+@view-transition {
+  navigation: auto;
+}
+
+/* Stable dark background — no white flash between routes */
+::view-transition-old(root),
+::view-transition-new(root) {
+  background-color: #08060f;
+}
+
+/* Shared browser preview morph (all case studies via share="morph") */
+::view-transition-group(.morph) {
+  animation-duration: var(--vt-duration-morph);
+  animation-timing-function: var(--vt-ease);
+}
+
+@media (max-width: 767px) {
+  ::view-transition-group(.morph) {
+    animation-duration: 350ms;
+  }
+}
+
+::view-transition-image-pair(.morph) {
+  animation-name: vt-morph-via-blur;
+}
+
+@keyframes vt-morph-via-blur {
+  40% {
+    filter: blur(2px);
+  }
+}
+
+/* Page crossfade on forward / back navigation */
+::view-transition-old(.page-exit),
+::view-transition-old(.page-exit-back) {
+  animation: var(--vt-duration-page) var(--vt-ease) both vt-page-fade-out;
+}
+
+::view-transition-new(.page-enter),
+::view-transition-new(.page-enter-back) {
+  animation: var(--vt-duration-page) var(--vt-ease) both vt-page-fade-in;
+}
+
+@keyframes vt-page-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Card text fades out during forward nav morph */
+::view-transition-old(.card-content-exit) {
+  animation: 180ms var(--vt-ease) both vt-page-fade-out;
+}
+
+/* Case study copy fades in after morph */
+::view-transition-new(.case-study-content-enter) {
+  animation: 220ms var(--vt-ease) 180ms both vt-page-fade-in;
+}
+
+::view-transition-new(.case-study-content-enter-delay) {
+  animation: 220ms var(--vt-ease) 260ms both vt-page-fade-in;
+}
+
+::view-transition-old(.case-study-content-enter),
+::view-transition-old(.case-study-content-enter-delay) {
+  animation: 150ms var(--vt-ease) both vt-page-fade-out;
+}
+
+/* Keep fixed chrome above transition layers */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+
   .animate-float,
   .animate-wheel,
   .aurora,

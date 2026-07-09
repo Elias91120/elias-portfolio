@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, Fraunces } from "next/font/google";
 import SpotlightCursor from "@/components/SpotlightCursor";
+import ViewTransitionRoot from "@/components/ViewTransitionRoot";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -104,7 +105,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        {children}
+        <ViewTransitionRoot>{children}</ViewTransitionRoot>
         <SpotlightCursor />
       </body>
     </html>

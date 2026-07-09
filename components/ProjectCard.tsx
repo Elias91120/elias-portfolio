@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { motion } from "framer-motion";
 import type { Project } from "@/lib/data";
+import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
+import { getCaseStudySlug } from "@/lib/view-transitions";
 
 const statusStyles: Record<string, string> = {
   Live: "bg-emerald-400/10 text-emerald-300 ring-emerald-400/30",
@@ -32,7 +35,12 @@ function CardWrapper({
 }) {
   if (project.caseStudy) {
     return (
-      <Link href={project.caseStudy} className={className} style={style}>
+      <Link
+        href={project.caseStudy}
+        transitionTypes={["nav-forward"]}
+        className={className}
+        style={style}
+      >
         {children}
       </Link>
     );
@@ -64,6 +72,9 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const isFeatured = variant === "featured";
   const clickable = Boolean(project.link || project.caseStudy);
+  const caseStudySlug = getCaseStudySlug(project);
+  const useMorphPreview =
+    isFeatured && project.image && project.caseStudy && caseStudySlug;
 
   return (
     <motion.div
@@ -87,7 +98,17 @@ export default function ProjectCard({
         }}
       >
         {/* Live product preview, framed like a browser window */}
-        {isFeatured && project.image && (
+        {isFeatured && project.image && useMorphPreview && (
+          <ProjectBrowserPreview
+            slug={caseStudySlug}
+            imageSrc={project.image}
+            imageAlt={`Screenshot of ${project.name}`}
+            linkLabel={project.linkLabel}
+            status={project.status}
+            variant="card"
+          />
+        )}
+        {isFeatured && project.image && !useMorphPreview && (
           <div className="relative">
             <div className="flex items-center gap-2 border-b border-white/5 bg-white/[0.04] px-4 py-2.5">
               <span className="flex gap-1.5">
@@ -140,9 +161,10 @@ export default function ProjectCard({
           </div>
         )}
 
-        <div
-          className={`flex flex-1 flex-col ${isFeatured ? "p-7 pt-5" : ""}`}
-        >
+        <ViewTransition exit="card-content-exit" default="none">
+          <div
+            className={`flex flex-1 flex-col ${isFeatured ? "p-7 pt-5" : ""}`}
+          >
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -245,7 +267,8 @@ export default function ProjectCard({
               {project.linkLabel}
             </div>
           )}
-        </div>
+          </div>
+        </ViewTransition>
       </CardWrapper>
     </motion.div>
   );
