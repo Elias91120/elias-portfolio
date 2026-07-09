@@ -104,7 +104,7 @@ export default async function OpenGraphImage() {
               }}
             />
             <div style={{ fontSize: 21, color: "#e9e3d3" }}>
-              elias-elloumi.vercel.app
+              elias-elloumi.com
             </div>
           </div>
         </div>

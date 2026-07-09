@@ -20,7 +20,7 @@ const serif = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://elias-elloumi.vercel.app"),
+  metadataBase: new URL("https://elias-elloumi.com"),
   title: {
     default: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
     template: "%s · Elias Elloumi",
@@ -41,12 +41,12 @@ export const metadata: Metadata = {
     "ECE Paris",
     "Data & AI",
   ],
-  authors: [{ name: "Elias Elloumi", url: "https://elias-elloumi.vercel.app" }],
+  authors: [{ name: "Elias Elloumi", url: "https://elias-elloumi.com" }],
   creator: "Elias Elloumi",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: "https://elias-elloumi.vercel.app",
+    url: "https://elias-elloumi.com",
     siteName: "Elias Elloumi — Portfolio",
     locale: "en_US",
     title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
@@ -69,7 +69,7 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Elias Elloumi",
-  url: "https://elias-elloumi.vercel.app",
+  url: "https://elias-elloumi.com",
   jobTitle: "Full-Stack Developer · Data Engineering & AI Agent Developer",
   worksFor: { "@type": "Organization", name: "Nokia" },
   alumniOf: [
