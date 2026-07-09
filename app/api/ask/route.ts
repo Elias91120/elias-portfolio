@@ -1,12 +1,18 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { Mistral } from "@mistralai/mistralai";
 import { buildSystemPrompt } from "@/lib/agent-context";
 
 export const runtime = "nodejs";
 
+const MODEL = "mistral-small-latest";
 const MAX_MESSAGES = 16;
 const MAX_MESSAGE_LENGTH = 2000;
 
 type IncomingMessage = { role: "user" | "assistant"; content: string };
+
+function textFromDelta(content: unknown): string {
+  if (typeof content === "string") return content;
+  return "";
+}
 
 function sanitizeMessages(raw: unknown): IncomingMessage[] | null {
   if (!Array.isArray(raw) || raw.length === 0) return null;
@@ -14,8 +20,8 @@ function sanitizeMessages(raw: unknown): IncomingMessage[] | null {
     if (
       typeof m !== "object" ||
       m === null ||
-      (m as IncomingMessage).role !== "user" &&
-        (m as IncomingMessage).role !== "assistant" ||
+      ((m as IncomingMessage).role !== "user" &&
+        (m as IncomingMessage).role !== "assistant") ||
       typeof (m as IncomingMessage).content !== "string"
     ) {
       return null;
@@ -31,7 +37,7 @@ function sanitizeMessages(raw: unknown): IncomingMessage[] | null {
 }
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.MISTRAL_API_KEY) {
     return Response.json(
       { error: "The assistant is not configured yet." },
       { status: 503 },
@@ -50,40 +56,31 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid messages." }, { status: 400 });
   }
 
-  const client = new Anthropic();
-
-  const stream = client.messages.stream({
-    model: "claude-opus-4-8",
-    max_tokens: 800,
-    system: [
-      {
-        type: "text",
-        text: buildSystemPrompt(),
-        cache_control: { type: "ephemeral" },
-      },
-    ],
-    messages,
-  });
+  const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
 
   const encoder = new TextEncoder();
   const readable = new ReadableStream({
     async start(controller) {
       try {
+        const stream = await client.chat.stream({
+          model: MODEL,
+          maxTokens: 800,
+          messages: [
+            { role: "system", content: buildSystemPrompt() },
+            ...messages,
+          ],
+        });
+
         for await (const event of stream) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text));
+          const text = textFromDelta(event.data?.choices?.[0]?.delta?.content);
+          if (text) {
+            controller.enqueue(encoder.encode(text));
           }
         }
         controller.close();
       } catch (err) {
         controller.error(err);
       }
-    },
-    cancel() {
-      stream.abort();
     },
   });
 
