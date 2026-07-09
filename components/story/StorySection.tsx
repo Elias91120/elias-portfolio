@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { chaptersById } from "@/lib/data";
 import {
   clearStoryPath,
@@ -81,6 +81,25 @@ export default function StorySection({
   });
 
   useStoryKeyboard(jumpTo, active, orderedChapters.length, choiceVisible);
+
+  useEffect(() => {
+    if (collapsed || !enabled) {
+      delete document.body.dataset.storyChapterId;
+      delete document.body.dataset.storyAccent;
+      return;
+    }
+
+    const chapter = orderedChapters[active];
+    if (chapter) {
+      document.body.dataset.storyChapterId = chapter.id;
+      document.body.dataset.storyAccent = chapter.accent;
+    }
+
+    return () => {
+      delete document.body.dataset.storyChapterId;
+      delete document.body.dataset.storyAccent;
+    };
+  }, [active, orderedChapters, collapsed, enabled]);
 
   const handleChoice = useCallback(
     (choiceId: string) => {

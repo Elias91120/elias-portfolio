@@ -2,31 +2,31 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const SESSION_KEY = "intro-seen";
-const AMBIENT_SRC = "/sounds/intro-ambient.mp3";
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const ease = [0.16, 1, 0.3, 1] as const;
+const spring = { type: "spring" as const, stiffness: 260, damping: 22 };
 
 const TIMING_DESKTOP = {
-  fadeIn: 2000,
-  avatar: 4000,
-  name: 4000,
-  tagline: 8000,
-  pause: 4000,
-  exitHold: 3500,
-  exitFade: 2500,
+  fadeIn: 280,
+  avatar: 520,
+  name: 480,
+  tagline: 620,
+  pause: 320,
+  exitHold: 180,
+  exitFade: 420,
 } as const;
 
 const TIMING_MOBILE = {
-  fadeIn: 1200,
-  avatar: 2400,
-  name: 2400,
-  tagline: 4800,
-  pause: 2400,
-  exitHold: 1000,
-  exitFade: 2600,
+  fadeIn: 220,
+  avatar: 420,
+  name: 400,
+  tagline: 520,
+  pause: 260,
+  exitHold: 140,
+  exitFade: 380,
 } as const;
 
 type Phase = "fade-in" | "avatar" | "name" | "tagline" | "pause" | "exit";
@@ -34,100 +34,6 @@ type Phase = "fade-in" | "avatar" | "name" | "tagline" | "pause" | "exit";
 type Props = {
   onComplete: () => void;
 };
-
-function useTypewriter(text: string, active: boolean, charDelay: number) {
-  const [visible, setVisible] = useState(0);
-
-  useEffect(() => {
-    if (!active) return;
-    setVisible(0);
-  }, [active, text]);
-
-  useEffect(() => {
-    if (!active || visible >= text.length) return;
-    const timer = window.setTimeout(() => setVisible((n) => n + 1), charDelay);
-    return () => window.clearTimeout(timer);
-  }, [active, visible, text.length, charDelay]);
-
-  return text.slice(0, visible);
-}
-
-function useIntroAmbient(enabled: boolean) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const ctxRef = useRef<AudioContext | null>(null);
-  const nodesRef = useRef<{
-    osc1: OscillatorNode;
-    osc2: OscillatorNode;
-    gain: GainNode;
-  } | null>(null);
-
-  const stop = useCallback(() => {
-    audioRef.current?.pause();
-    if (audioRef.current) audioRef.current.currentTime = 0;
-
-    const nodes = nodesRef.current;
-    if (nodes) {
-      try {
-        nodes.gain.gain.setValueAtTime(0, nodes.gain.context.currentTime);
-        nodes.osc1.stop();
-        nodes.osc2.stop();
-      } catch {
-        /* already stopped */
-      }
-      nodesRef.current = null;
-    }
-    if (ctxRef.current?.state !== "closed") {
-      void ctxRef.current?.close();
-      ctxRef.current = null;
-    }
-  }, []);
-
-  const start = useCallback(async () => {
-    stop();
-
-    try {
-      const audio = new Audio(AMBIENT_SRC);
-      audio.loop = true;
-      audio.volume = 0.18;
-      audioRef.current = audio;
-      await audio.play();
-      return;
-    } catch {
-      audioRef.current = null;
-    }
-
-    try {
-      const ctx = new AudioContext();
-      ctxRef.current = ctx;
-
-      const gain = ctx.createGain();
-      gain.gain.value = 0.04;
-      gain.connect(ctx.destination);
-
-      const osc1 = ctx.createOscillator();
-      osc1.type = "sine";
-      osc1.frequency.value = 110;
-      osc1.connect(gain);
-
-      const osc2 = ctx.createOscillator();
-      osc2.type = "sine";
-      osc2.frequency.value = 164.81;
-      osc2.connect(gain);
-
-      osc1.start();
-      osc2.start();
-      nodesRef.current = { osc1, osc2, gain };
-    } catch {
-      /* silent fallback */
-    }
-  }, [stop]);
-
-  useEffect(() => {
-    if (enabled) void start();
-    else stop();
-    return stop;
-  }, [enabled, start, stop]);
-}
 
 export function shouldPlayIntro(): boolean {
   if (typeof window === "undefined") return false;
@@ -139,32 +45,18 @@ export function markIntroSeen(): void {
   sessionStorage.setItem(SESSION_KEY, "1");
 }
 
+const BURST_RAYS = Array.from({ length: 12 }, (_, i) => ({
+  id: i,
+  rotation: i * 30,
+}));
+
 export default function CinematicIntro({ onComplete }: Props) {
   const [phase, setPhase] = useState<Phase>("fade-in");
   const [fadingOut, setFadingOut] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const timersRef = useRef<number[]>([]);
 
   const timing = isMobile ? TIMING_MOBILE : TIMING_DESKTOP;
-  const nameDelay = isMobile ? 70 : 100;
-  const taglineDelay = isMobile ? 40 : 55;
-
-  const nameText = useTypewriter("Elias Elloumi", phase === "name", nameDelay);
-  const taglineLead = "AI agents developer";
-  const taglineRest = " — I ship products, not slides";
-  const taglineLeadText = useTypewriter(
-    taglineLead,
-    phase === "tagline",
-    taglineDelay,
-  );
-  const taglineRestText = useTypewriter(
-    taglineRest,
-    phase === "tagline" && taglineLeadText.length >= taglineLead.length,
-    taglineDelay,
-  );
-
-  useIntroAmbient(soundEnabled && !fadingOut);
 
   const clearTimers = useCallback(() => {
     timersRef.current.forEach((id) => window.clearTimeout(id));
@@ -175,7 +67,7 @@ export default function CinematicIntro({ onComplete }: Props) {
     (fast = false) => {
       setPhase("exit");
       const hold = fast ? 0 : timing.exitHold;
-      const fade = fast ? 380 : timing.exitFade;
+      const fade = fast ? 280 : timing.exitFade;
 
       const fadeId = window.setTimeout(() => {
         setFadingOut(true);
@@ -216,7 +108,6 @@ export default function CinematicIntro({ onComplete }: Props) {
   useEffect(() => {
     setIsMobile(window.matchMedia("(max-width: 639px)").matches);
     schedulePhases();
-
     return clearTimers;
   }, [schedulePhases, clearTimers]);
 
@@ -228,70 +119,163 @@ export default function CinematicIntro({ onComplete }: Props) {
   const avatarVisible = phase !== "fade-in";
   const nameVisible = ["name", "tagline", "pause", "exit"].includes(phase);
   const taglineVisible = ["tagline", "pause", "exit"].includes(phase);
+  const burstActive = phase === "avatar" || phase === "pause";
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: fadingOut ? 0 : 1 }}
-      transition={{ duration: fadingOut ? (isMobile ? 0.45 : 0.65) : 1.6, ease }}
+      animate={{
+        opacity: fadingOut ? 0 : 1,
+        scale: fadingOut ? 1.08 : 1,
+        filter: fadingOut ? "blur(12px)" : "blur(0px)",
+      }}
+      transition={{
+        duration: fadingOut ? (isMobile ? 0.32 : 0.42) : 0.5,
+        ease,
+      }}
       className="intro-overlay fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#08060f] px-5"
       role="dialog"
       aria-label="Cinematic introduction"
       aria-modal="true"
       style={{ pointerEvents: fadingOut ? "none" : "auto" }}
     >
+      {/* Opening flash */}
+      <AnimatePresence>
+        {phase === "fade-in" && (
+          <motion.div
+            key="flash"
+            initial={{ opacity: 0.7 }}
+            animate={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.45, ease }}
+            className="pointer-events-none absolute inset-0 z-30 bg-violet-400/20"
+            aria-hidden
+          />
+        )}
+      </AnimatePresence>
+
       <div aria-hidden className="absolute inset-0 overflow-hidden">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: avatarVisible ? 0.3 : 0.12 }}
-          transition={{ duration: 2, ease }}
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{
+            opacity: avatarVisible ? 0.45 : 0.08,
+            scale: avatarVisible ? 1 : 0.6,
+          }}
+          transition={{ duration: 0.7, ease }}
           className="aurora absolute -top-48 left-1/2 h-[40rem] w-[64rem] -translate-x-1/2 rounded-full blur-3xl"
           style={{
             background:
-              "radial-gradient(ellipse at center, #6d28d9 0%, rgba(109,40,217,0.35) 40%, transparent 70%)",
+              "radial-gradient(ellipse at center, #8b5cf6 0%, rgba(139,92,246,0.4) 35%, transparent 70%)",
           }}
         />
-        <div
-          className="aurora-slow absolute bottom-[-8rem] right-[4%] h-96 w-96 rounded-full opacity-15 blur-3xl"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: avatarVisible ? 0.22 : 0.05 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="aurora-slow absolute bottom-[-8rem] right-[4%] h-96 w-96 rounded-full blur-3xl"
           style={{
             background: "radial-gradient(circle, #f59e0b 0%, transparent 65%)",
           }}
         />
-        <div
-          className="aurora-slow absolute bottom-[10%] left-[-6rem] h-80 w-80 rounded-full opacity-10 blur-3xl"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: avatarVisible ? 0.18 : 0.04 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="aurora-slow absolute bottom-[10%] left-[-6rem] h-80 w-80 rounded-full blur-3xl"
           style={{
             background: "radial-gradient(circle, #38bdf8 0%, transparent 65%)",
           }}
         />
+
+        {/* Radial burst on avatar reveal */}
+        <AnimatePresence>
+          {burstActive && (
+            <motion.div
+              key="burst"
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: [0, 0.6, 0], scale: [0.4, 1.6, 2.2] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: phase === "avatar" ? 0.9 : 0.7, ease }}
+              className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(167,139,250,0.5) 0%, transparent 65%)",
+              }}
+            />
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="relative z-10 flex max-w-3xl flex-col items-center text-center">
+        {/* Light rays */}
+        <AnimatePresence>
+          {phase === "avatar" && (
+            <motion.div
+              key="rays"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-[55%] sm:h-96 sm:w-96"
+              aria-hidden
+            >
+              {BURST_RAYS.map(({ id, rotation }) => (
+                <motion.div
+                  key={id}
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: [0, 0.35, 0] }}
+                  transition={{ duration: 0.7, delay: id * 0.02, ease }}
+                  className="absolute left-1/2 top-1/2 h-32 w-px origin-bottom -translate-x-1/2"
+                  style={{
+                    rotate: `${rotation}deg`,
+                    background:
+                      "linear-gradient(to top, rgba(167,139,250,0.6), transparent)",
+                  }}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
+          initial={{ opacity: 0, scale: 0.35, y: 30 }}
           animate={{
             opacity: avatarVisible ? 1 : 0,
-            scale: avatarVisible ? 1 : 0.7,
+            scale: avatarVisible ? 1 : 0.35,
+            y: avatarVisible ? 0 : 30,
           }}
-          transition={{ duration: 1.1, ease }}
+          transition={spring}
           className={avatarVisible && phase !== "avatar" ? "animate-float" : ""}
         >
+          {/* Rotating ring */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            className="absolute -inset-1 rounded-full opacity-60"
+            style={{
+              background:
+                "conic-gradient(from 0deg, transparent, #a78bfa, #38bdf8, #f59e0b, transparent)",
+            }}
+            aria-hidden
+          />
+
           <motion.div
             animate={{
               boxShadow:
                 phase === "pause"
                   ? [
-                      "0 0 80px rgba(167,139,250,0.3)",
-                      "0 0 110px rgba(167,139,250,0.55)",
-                      "0 0 80px rgba(167,139,250,0.3)",
+                      "0 0 60px rgba(167,139,250,0.5), 0 0 120px rgba(56,189,248,0.25)",
+                      "0 0 100px rgba(167,139,250,0.8), 0 0 180px rgba(56,189,248,0.4)",
+                      "0 0 60px rgba(167,139,250,0.5), 0 0 120px rgba(56,189,248,0.25)",
                     ]
-                  : "0 0 80px rgba(167,139,250,0.3)",
+                  : "0 0 70px rgba(167,139,250,0.45), 0 0 140px rgba(56,189,248,0.2)",
             }}
             transition={{
-              duration: phase === "pause" ? 2.2 : 0.6,
+              duration: phase === "pause" ? 0.9 : 0.4,
               repeat: phase === "pause" ? Infinity : 0,
               ease: "easeInOut",
             }}
-            className="relative h-32 w-32 overflow-hidden rounded-full ring-2 ring-accent/50 sm:h-44 sm:w-44"
+            className="relative h-32 w-32 overflow-hidden rounded-full ring-2 ring-accent/60 sm:h-44 sm:w-44"
           >
             <Image
               src="/story/avatar-hero.jpg"
@@ -305,103 +289,93 @@ export default function CinematicIntro({ onComplete }: Props) {
         </motion.div>
 
         <div className="mt-8 min-h-[2.5rem] sm:min-h-[3rem]">
-          {nameVisible && (
-            <p className="font-display text-lg font-semibold uppercase tracking-[0.45em] text-white/95 sm:text-xl">
-              {nameText}
-              <span className="inline-block w-[0.12em] animate-pulse text-accent">
-                {phase === "name" && nameText.length < "Elias Elloumi".length
-                  ? "|"
-                  : ""}
-              </span>
-            </p>
-          )}
+          <AnimatePresence>
+            {nameVisible && (
+              <motion.p
+                key="name"
+                initial={{ opacity: 0, y: 18, letterSpacing: "0.6em", filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, letterSpacing: "0.45em", filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.45, ease }}
+                className="font-display text-lg font-semibold uppercase text-white/95 sm:text-xl"
+              >
+                Elias Elloumi
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="mt-5 min-h-[4.5rem] max-w-2xl sm:min-h-[5rem]">
-          {taglineVisible && (
-            <p className="text-base leading-relaxed text-muted sm:text-lg md:text-xl">
-              <span className="font-serif italic font-semibold bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text text-transparent">
-                {taglineLeadText}
-              </span>
-              <span>{taglineRestText}</span>
-              <span className="inline-block w-[0.12em] animate-pulse text-accent">
-                {phase === "tagline" &&
-                taglineLeadText.length + taglineRestText.length <
-                  taglineLead.length + taglineRest.length
-                  ? "|"
-                  : ""}
-              </span>
-            </p>
-          )}
+          <AnimatePresence>
+            {taglineVisible && (
+              <motion.p
+                key="tagline"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease, delay: 0.05 }}
+                className="text-base leading-relaxed text-muted sm:text-lg md:text-xl"
+              >
+                <motion.span
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35, ease, delay: 0.1 }}
+                  className="intro-shimmer font-serif italic font-semibold bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text text-transparent"
+                >
+                  AI agents developer
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.28 }}
+                >
+                  {" "}
+                  — I ship products, not slides
+                </motion.span>
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
-        {phase === "pause" && (
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.8, ease }}
-            className="mt-8 flex items-center gap-4"
-            aria-hidden
-          >
-            <span className="h-px w-12 bg-accent/40" />
-            <span className="h-1.5 w-1.5 rounded-full bg-accent/70" />
-            <span className="h-px w-12 bg-accent/40" />
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {phase === "pause" && (
+            <motion.div
+              key="divider"
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              exit={{ opacity: 0, scaleX: 0 }}
+              transition={{ duration: 0.35, ease }}
+              className="mt-8 flex items-center gap-4"
+              aria-hidden
+            >
+              <span className="h-px w-12 bg-accent/50" />
+              <motion.span
+                animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 0.6, repeat: Infinity }}
+                className="h-1.5 w-1.5 rounded-full bg-accent"
+              />
+              <span className="h-px w-12 bg-accent/50" />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {phase === "exit" && !fadingOut && (
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-10 text-[0.65rem] uppercase tracking-[0.35em] text-muted/80"
-          >
-            Enter
-          </motion.p>
-        )}
+        <AnimatePresence>
+          {phase === "exit" && !fadingOut && (
+            <motion.p
+              key="enter"
+              initial={{ opacity: 0, y: 10, letterSpacing: "0.5em" }}
+              animate={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3, ease }}
+              className="mt-10 text-[0.65rem] uppercase text-muted/80"
+            >
+              Enter
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between px-5 pb-5 sm:px-8 sm:pb-8">
-        <button
-          type="button"
-          onClick={() => setSoundEnabled((on) => !on)}
-          className="flex items-center gap-2 rounded-full px-3 py-2 text-xs text-muted/80 ring-1 ring-white/8 transition-colors hover:text-foreground hover:ring-accent/30"
-          aria-label={soundEnabled ? "Disable ambient sound" : "Enable ambient sound"}
-          aria-pressed={soundEnabled}
-        >
-          {soundEnabled ? (
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              aria-hidden
-            >
-              <path d="M11 5L6 9H2v6h4l5 4V5z" />
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-            </svg>
-          ) : (
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              aria-hidden
-            >
-              <path d="M11 5L6 9H2v6h4l5 4V5z" />
-              <line x1="23" y1="9" x2="17" y2="15" />
-              <line x1="17" y1="9" x2="23" y2="15" />
-            </svg>
-          )}
-          <span className="hidden sm:inline">
-            {soundEnabled ? "Sound on" : "Enable sound"}
-          </span>
-        </button>
-
+      <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-end px-5 pb-5 sm:px-8 sm:pb-8">
         <button
           type="button"
           onClick={skip}

@@ -26,6 +26,15 @@ export default function AskWidget() {
     });
   }, [messages, busy]);
 
+  useEffect(() => {
+    if (open) {
+      document.body.setAttribute("data-ask-open", "");
+    } else {
+      document.body.removeAttribute("data-ask-open");
+    }
+    return () => document.body.removeAttribute("data-ask-open");
+  }, [open]);
+
   async function ask(question: string) {
     const text = question.trim();
     if (!text || busy) return;
