@@ -2,10 +2,24 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import PathSelector from "@/components/PathSelector";
+import { useVisitorMode } from "@/components/VisitorModeProvider";
+import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Hero({ ready = true }: { ready?: boolean }) {
+  const { mode, setMode, hydrated } = useVisitorMode();
+  const showScrollHint = hydrated && mode === "browsing";
+  const showHiringSummary = hydrated && mode === "hiring";
+
+  const switchToBrowsing = () => {
+    setMode("browsing");
+    requestAnimationFrame(() =>
+      scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
+    );
+  };
+
   return (
     <section
       id="top"
@@ -121,26 +135,49 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
           </span>
         </motion.div>
 
-        <motion.button
-          type="button"
-          initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: ready ? 0.95 : 0, duration: 0.9 }}
-          className="mt-14 flex flex-col items-center gap-3 text-muted cursor-pointer group"
-          onClick={() => {
-            document
-              .getElementById("story")
-              ?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-          aria-label="Scroll to open the story"
-        >
-          <span className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] group-hover:text-foreground transition-colors">
-            Scroll to open the story
-          </span>
-          <div className="h-9 w-6 rounded-full border-2 border-muted/40 group-hover:border-accent/50 flex justify-center pt-1.5 transition-colors">
-            <div className="h-2 w-1 rounded-full bg-accent animate-wheel" />
-          </div>
-        </motion.button>
+        <PathSelector ready={ready} />
+
+        {showHiringSummary && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            transition={{ delay: ready ? 0.72 : 0, duration: 0.6, ease }}
+            className="mt-8 flex flex-col items-center gap-2"
+          >
+            <p className="text-sm text-muted">
+              You&apos;re on the{" "}
+              <span className="text-foreground">hiring path</span>
+            </p>
+            <button
+              type="button"
+              onClick={switchToBrowsing}
+              className="text-sm font-medium text-accent underline-offset-4 hover:underline"
+            >
+              Switch to story mode
+            </button>
+          </motion.div>
+        )}
+
+        {showScrollHint && (
+          <motion.button
+            type="button"
+            initial={{ opacity: 0 }}
+            animate={ready ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: ready ? 0.95 : 0, duration: 0.9 }}
+            className="mt-14 flex flex-col items-center gap-3 text-muted cursor-pointer group"
+            onClick={() =>
+              scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
+            }
+            aria-label="Scroll to open the story"
+          >
+            <span className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] group-hover:text-foreground transition-colors">
+              Scroll to open the story
+            </span>
+            <div className="h-9 w-6 rounded-full border-2 border-muted/40 group-hover:border-accent/50 flex justify-center pt-1.5 transition-colors">
+              <div className="h-2 w-1 rounded-full bg-accent animate-wheel" />
+            </div>
+          </motion.button>
+        )}
       </div>
     </section>
   );

@@ -1,16 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useVisitorMode } from "@/components/VisitorModeProvider";
+import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
+import type { VisitorMode } from "@/lib/visitor-mode";
 
-const links = [
+const browsingLinks = [
   { href: "#story", label: "Story" },
   { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
   { href: "#contact", label: "Contact" },
 ];
 
+const hiringLinks = [
+  { href: "#proof", label: "Proof" },
+  { href: "#projects", label: "Projects" },
+  { href: "#contact", label: "Contact" },
+  { href: "#story", label: "Story" },
+];
+
+function getLinks(mode: VisitorMode | null) {
+  return mode === "hiring" ? hiringLinks : browsingLinks;
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { mode, setMode, hydrated } = useVisitorMode();
+  const links = getLinks(hydrated ? mode : null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -18,6 +34,18 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const behavior = prefersReducedMotion() ? "auto" : "smooth";
+
+  const toggleMode = () => {
+    if (mode === "hiring") {
+      setMode("browsing");
+      requestAnimationFrame(() => scrollToSection("#story", behavior));
+    } else {
+      setMode("hiring");
+      requestAnimationFrame(() => scrollToSection("#proof", behavior));
+    }
+  };
 
   return (
     <header
@@ -27,10 +55,10 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto max-w-6xl px-5 h-14 flex items-center justify-between">
+      <nav className="mx-auto max-w-6xl px-5 h-14 flex items-center justify-between gap-3">
         <a
           href="#top"
-          className="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight text-white"
+          className="group flex shrink-0 items-center gap-2.5 font-display text-lg font-semibold tracking-tight text-white"
         >
           <span className="relative h-7 w-7 overflow-hidden rounded-full ring-1 ring-accent/40 transition-transform duration-300 group-hover:scale-110">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -44,32 +72,36 @@ export default function Navbar() {
             elias<span className="text-accent">.</span>
           </span>
         </a>
-        <ul className="flex items-center gap-1 sm:gap-2">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                onClick={(e) => {
-                  const target = document.querySelector(l.href);
-                  if (target) {
-                    e.preventDefault();
-                    // When the section is pinned by GSAP, scroll to its
-                    // pin-spacer so we land at the start of the story.
-                    const spacer = target.closest(".pin-spacer") ?? target;
-                    window.scrollTo({
-                      top:
-                        spacer.getBoundingClientRect().top + window.scrollY,
-                      behavior: "smooth",
-                    });
-                  }
-                }}
-                className="px-2.5 sm:px-3.5 py-2 text-xs sm:text-sm text-muted hover:text-white transition-colors rounded-full hover:bg-white/5"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <ul className="flex items-center gap-0.5 sm:gap-1">
+            {links.map((l) => (
+              <li key={l.href}>
+                <a
+                  href={l.href}
+                  onClick={(e) => {
+                    const target = document.querySelector(l.href);
+                    if (target) {
+                      e.preventDefault();
+                      scrollToSection(l.href, behavior);
+                    }
+                  }}
+                  className="px-2 sm:px-2.5 py-2 text-xs sm:text-sm text-muted hover:text-white transition-colors rounded-full hover:bg-white/5"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          {hydrated && mode !== null && (
+            <button
+              type="button"
+              onClick={toggleMode}
+              className="ml-0.5 inline-flex shrink-0 rounded-full px-2 py-1.5 text-[0.6rem] font-medium uppercase tracking-wider text-muted ring-1 ring-white/10 transition-colors hover:bg-white/5 hover:text-white sm:px-2.5 sm:text-[0.65rem]"
+            >
+              {mode === "hiring" ? "Browsing?" : "Hiring?"}
+            </button>
+          )}
+        </div>
       </nav>
     </header>
   );

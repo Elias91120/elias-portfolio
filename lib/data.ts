@@ -403,4 +403,7 @@ export const contact = {
   fiverr: "https://www.fiverr.com/three_geeks",
   fiverrLabel: "@three_geeks",
   languages: "FR native · EN C1 · AR fluent",
+  calUrl: undefined as string | undefined,
+  cvPath: undefined as string | undefined,
+  cvDownloadLabel: undefined as string | undefined,
 };

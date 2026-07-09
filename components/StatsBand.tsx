@@ -66,7 +66,7 @@ export default function StatsBand() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section aria-label="Key numbers" className="relative px-5 py-20">
+    <section id="proof" aria-label="Key numbers" className="relative px-5 py-20">
       <div
         ref={ref}
         className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4"

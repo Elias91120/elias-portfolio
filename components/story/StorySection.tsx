@@ -6,7 +6,7 @@ import StoryPage from "./StoryPage";
 import StoryProgress from "./StoryProgress";
 import { useStoryKeyboard, useStoryScroll } from "./useStoryScroll";
 
-export default function StorySection() {
+export default function StorySection({ enabled = true }: { enabled?: boolean }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const pagesRef = useRef<HTMLDivElement | null>(null);
   const bgRef = useRef<HTMLDivElement | null>(null);
@@ -16,7 +16,11 @@ export default function StorySection() {
 
   const refs = { sectionRef, pagesRef, bgRef, videoRefs };
 
-  const { jumpTo } = useStoryScroll(refs, { setActive, setProgress });
+  const { jumpTo } = useStoryScroll(refs, {
+    setActive,
+    setProgress,
+    enabled,
+  });
   useStoryKeyboard(jumpTo, active);
 
   return (

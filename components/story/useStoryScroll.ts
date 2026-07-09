@@ -17,15 +17,18 @@ export type StoryScrollRefs = {
 type UseStoryScrollOptions = {
   setActive: (index: number) => void;
   setProgress: (progress: number) => void;
+  enabled?: boolean;
 };
 
 export function useStoryScroll(
   refs: StoryScrollRefs,
-  { setActive, setProgress }: UseStoryScrollOptions
+  { setActive, setProgress, enabled = true }: UseStoryScrollOptions
 ) {
   const stRef = useRef<ScrollTrigger | null>(null);
 
   useLayoutEffect(() => {
+    if (!enabled) return;
+
     const section = refs.sectionRef.current;
     const wrap = refs.pagesRef.current;
     const bg = refs.bgRef.current;
@@ -290,9 +293,9 @@ export function useStoryScroll(
       document.body.removeAttribute("data-story");
       stRef.current = null;
     };
-    // refs are stable — only mount once
+    // refs are stable — re-init when enabled toggles on
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [enabled]);
 
   const jumpTo = (i: number) => {
     const st = stRef.current;

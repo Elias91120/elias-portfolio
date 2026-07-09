@@ -3,8 +3,14 @@
 import { motion } from "framer-motion";
 import { contact } from "@/lib/data";
 import Magnetic from "@/components/Magnetic";
+import { useVisitorMode } from "@/components/VisitorModeProvider";
 
 export default function Contact() {
+  const { mode, hydrated } = useVisitorMode();
+  const isHiring = hydrated && mode === "hiring";
+  const showCv = isHiring && Boolean(contact.cvPath);
+  const showCal = isHiring && Boolean(contact.calUrl);
+
   return (
     <section id="contact" className="relative py-28 px-5 overflow-hidden">
       {/* Ambient glow */}
@@ -84,6 +90,61 @@ export default function Contact() {
           </a>
           </Magnetic>
         </div>
+
+        {(showCv || showCal) && (
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {showCv && (
+              <Magnetic>
+                <a
+                  href={contact.cvPath}
+                  download={contact.cvPath?.endsWith(".pdf") ? true : undefined}
+                  className="inline-flex min-h-11 items-center gap-2.5 rounded-full bg-white/5 px-7 py-3.5 font-medium text-white ring-1 ring-white/15 transition-all duration-300 hover:bg-white/10 hover:ring-white/30"
+                >
+                  <svg
+                    className="h-4.5 w-4.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  {contact.cvDownloadLabel ?? "Download CV"}
+                </a>
+              </Magnetic>
+            )}
+            {showCal && (
+              <Magnetic>
+                <a
+                  href={contact.calUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center gap-2.5 rounded-full bg-accent/15 px-7 py-3.5 font-medium text-accent ring-1 ring-accent/30 transition-all duration-300 hover:bg-accent/25 hover:ring-accent/50"
+                >
+                  <svg
+                    className="h-4.5 w-4.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  Book 15 min
+                </a>
+              </Magnetic>
+            )}
+          </div>
+        )}
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-x-8 gap-y-2 text-sm text-muted">
           <span className="inline-flex items-center gap-2">
