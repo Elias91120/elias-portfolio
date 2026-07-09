@@ -19,10 +19,10 @@ export default function StoryPage({
 }: StoryPageProps) {
   return (
     <article
-      className="story-page relative lg:absolute lg:inset-0"
+      className="story-page absolute inset-0"
       data-chapter={ch.id}
     >
-      <div className="relative h-[54svh] lg:h-full lg:absolute lg:inset-0 overflow-hidden">
+      <div className="page-img-wrap relative h-full absolute inset-0 overflow-hidden">
         <div className="page-img absolute inset-0">
           <Image
             src={ch.image}
@@ -63,7 +63,7 @@ export default function StoryPage({
         <div aria-hidden className="absolute inset-0 bg-black/10" />
       </div>
 
-      <div className="page-text relative z-10 -mt-16 lg:mt-0 px-6 pb-20 lg:absolute lg:inset-x-0 lg:bottom-0 lg:px-24 lg:pb-28 lg:max-w-4xl">
+      <div className="page-text absolute z-10 inset-x-0 bottom-0 px-6 pb-24 sm:px-10 lg:px-24 lg:pb-28 max-w-4xl">
         <div
           className="story-kicker font-display text-[0.7rem] lg:text-xs font-semibold uppercase tracking-[0.35em]"
           style={{ color: ch.accent, "--kicker-accent": ch.accent } as CSSProperties}

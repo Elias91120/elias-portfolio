@@ -31,10 +31,13 @@ export function useStoryScroll(
     const bg = refs.bgRef.current;
     if (!section || !wrap || !bg) return;
 
-    const mm = gsap.matchMedia();
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
+    const isTouch = ScrollTrigger.isTouch === 1;
+    const normalizeScroll = isTouch
+      ? ScrollTrigger.normalizeScroll({ allowNestedScroll: true })
+      : null;
 
     const armVideo = (v: HTMLVideoElement) => {
       if (v.dataset.armed) return;
@@ -117,18 +120,17 @@ export function useStoryScroll(
       );
     };
 
-    mm.add("(min-width: 1024px)", () => {
-      const pages = gsap.utils.toArray<HTMLElement>(".story-page", wrap);
-      const last = pages.length - 1;
-      gsap.set(pages.slice(1), { autoAlpha: 0 });
-      gsap.set(section, { transformOrigin: "center center" });
+    const pages = gsap.utils.toArray<HTMLElement>(".story-page", wrap);
+    const last = pages.length - 1;
+    gsap.set(pages.slice(1), { autoAlpha: 0 });
+    gsap.set(section, { transformOrigin: "center center" });
 
-      const targets = new Array(chapters.length).fill(0);
-      let activeScrub = 0;
-      let rafId = 0;
-      let scrubbing = false;
-      let lastProgress = 0;
-      let scrollVelocity = 0;
+    const targets = new Array(chapters.length).fill(0);
+    let activeScrub = 0;
+    let rafId = 0;
+    let scrubbing = false;
+    let lastProgress = 0;
+    let scrollVelocity = 0;
 
       const seekVideo = (v: HTMLVideoElement, target: number, lerp: number) => {
         const maxTime = Math.max(v.duration - 0.04, 0);
@@ -197,7 +199,7 @@ export function useStoryScroll(
           trigger: section,
           start: "top top",
           end: () => `+=${last * window.innerHeight}`,
-          scrub: reduceMotion ? false : 1,
+          scrub: reduceMotion ? false : isTouch ? 0.6 : 1,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -205,9 +207,9 @@ export function useStoryScroll(
             ? undefined
             : {
                 snapTo: 1 / last,
-                inertia: false,
-                duration: { min: 0.3, max: 0.8 },
-                delay: 0.06,
+                inertia: isTouch,
+                duration: { min: 0.25, max: isTouch ? 0.55 : 0.8 },
+                delay: isTouch ? 0 : 0.06,
                 ease: "power2.inOut",
               },
           onUpdate: (self) => {
@@ -278,97 +280,25 @@ export function useStoryScroll(
         );
       });
 
-      stRef.current = tl.scrollTrigger ?? null;
+    stRef.current = tl.scrollTrigger ?? null;
 
-      return () => {
-        stopScrub();
-        preloadST.kill();
-        document.body.removeAttribute("data-story");
-        stRef.current = null;
-      };
-    });
-
-    mm.add("(max-width: 1023px)", () => {
-      const pages = gsap.utils.toArray<HTMLElement>(".story-page", wrap);
-
-      pages.forEach((page, i) => {
-        const img = page.querySelector<HTMLElement>(".page-img");
-
-        ScrollTrigger.create({
-          trigger: page,
-          start: "top 75%",
-          end: "bottom 25%",
-          onToggle: (self) => {
-            const v = refs.videoRefs.current[i];
-            if (self.isActive) {
-              gsap.to(bg, {
-                "--bg-a": chapters[i].bgA,
-                "--bg-b": chapters[i].bgB,
-                "--bg-accent": chapters[i].accent,
-                duration: 0.6,
-                overwrite: "auto",
-              });
-              setActive(i);
-              preloadAround(i);
-
-              if (img && !reduceMotion && i === 0) {
-                gsap.fromTo(
-                  img,
-                  { scale: 1.06, autoAlpha: 0.85 },
-                  { scale: 1, autoAlpha: 1, duration: 0.8, ease: "power2.out" }
-                );
-              }
-
-              if (v && !reduceMotion) {
-                armVideo(v);
-                v.loop = true;
-                v.play().catch(() => {});
-              }
-            } else if (v) {
-              v.pause();
-            }
-          },
-        });
-
-        gsap.fromTo(
-          page.querySelectorAll<HTMLElement>(".page-text > *"),
-          { autoAlpha: 0, y: 30 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.85,
-            stagger: 0.08,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: page,
-              start: "top 70%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
-      });
-    });
-
-    return () => mm.revert();
+    return () => {
+      stopScrub();
+      preloadST.kill();
+      tl.kill();
+      normalizeScroll?.kill();
+      document.body.removeAttribute("data-story");
+      stRef.current = null;
+    };
     // refs are stable — only mount once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const jumpToDesktop = (i: number) => {
+  const jumpTo = (i: number) => {
     const st = stRef.current;
     if (!st) return;
     const y = st.start + (i / (chapters.length - 1)) * (st.end - st.start);
     window.scrollTo({ top: y, behavior: "smooth" });
-  };
-
-  const jumpToMobile = (i: number) => {
-    const page = refs.pagesRef.current?.querySelectorAll(".story-page")[i];
-    page?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const jumpTo = (i: number) => {
-    if (stRef.current) jumpToDesktop(i);
-    else jumpToMobile(i);
   };
 
   return { jumpTo, stRef };

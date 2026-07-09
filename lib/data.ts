@@ -189,28 +189,112 @@ export const certifications = [
   },
 ];
 
+export type ProjectCategory = "client-live" | "green-stack" | "professional";
+
 export type Project = {
   name: string;
   role: string;
   description: string;
   tags: string[];
+  highlights?: string[];
   link?: string;
   linkLabel?: string;
+  ctaLabel?: string;
   status: "Live" | "Beta" | "App Store" | "Award" | "Internal";
   accent: string;
+  category: ProjectCategory;
 };
 
 export const projects: Project[] = [
   {
     name: "Express Divorce USA",
-    role: "3geeks — design & front-end",
+    role: "Legal services platform",
     description:
-      "Production web platform that simplifies and accelerates the divorce process in the US. Built from the ground up with Noam and Charles, live and serving real users.",
+      "A reassuring platform that guides users through a sensitive legal journey with clarity.",
+    highlights: [
+      "Clearer client journey",
+      "Reassuring steps before contact",
+      "Public project live online",
+    ],
     tags: ["Next.js", "Production", "Legal tech"],
     link: "https://expressdivorceusa.co",
     linkLabel: "expressdivorceusa.co",
+    ctaLabel: "Open project",
     status: "Live",
     accent: "#38bdf8",
+    category: "client-live",
+  },
+  {
+    name: "CallKitchen",
+    role: "Restaurant phone automation",
+    description:
+      "A concrete landing page for an AI phone assistant that helps restaurants capture missed calls.",
+    highlights: [
+      "Product explained clearly",
+      "Direct call-to-action to the demo",
+      "Public landing page live online",
+    ],
+    tags: ["AI voice", "Landing", "Restaurants"],
+    link: "https://call-kitchen-landing.vercel.app/",
+    linkLabel: "call-kitchen-landing.vercel.app",
+    ctaLabel: "Open project",
+    status: "Live",
+    accent: "#f472b6",
+    category: "client-live",
+  },
+  {
+    name: "Two",
+    role: "Consumer mobile app",
+    description:
+      "A polished iOS experience, designed to be simple and useful from the very first interaction.",
+    highlights: [
+      "Public app on the App Store",
+      "Clear mobile interface",
+      "Built for recurring everyday use",
+    ],
+    tags: ["iOS", "Mobile", "Product design"],
+    link: "https://apps.apple.com/fr/app/two/id6758867716",
+    linkLabel: "App Store",
+    ctaLabel: "App Store",
+    status: "App Store",
+    accent: "#2dd4bf",
+    category: "client-live",
+  },
+  {
+    name: "Prompt Hub",
+    role: "AI project planning",
+    description:
+      "The natural follow-up to PromptOptim: a beta tool that turns a vague idea into a structured execution plan with contextualized prompts.",
+    highlights: [
+      "Phases and steps generated from an idea",
+      "Contextualized prompts for coding assistants",
+      "Specialized AI agents and graph in development",
+    ],
+    tags: ["AI planning", "Agents", "Beta"],
+    link: "https://prompt-hub-rose-xi.vercel.app/",
+    linkLabel: "prompt-hub-rose-xi.vercel.app",
+    ctaLabel: "Open the beta",
+    status: "Beta",
+    accent: "#c084fc",
+    category: "green-stack",
+  },
+  {
+    name: "PromptOptim",
+    role: "Green IT & digital sovereignty",
+    description:
+      "An AI prompt optimizer designed to reduce token consumption, estimate CO2 impact, and encourage more mindful AI usage.",
+    highlights: [
+      "More precise prompts with fewer tokens",
+      "CO2 estimation per request",
+      "European models and GDPR positioning",
+    ],
+    tags: ["Green IT", "AI", "Open tool"],
+    link: "https://frontend-prompt-optim.vercel.app/",
+    linkLabel: "frontend-prompt-optim.vercel.app",
+    ctaLabel: "Open PromptOptim",
+    status: "Live",
+    accent: "#4ade80",
+    category: "green-stack",
   },
   {
     name: "Feature Analyzer Dashboard 2.0",
@@ -220,28 +304,7 @@ export const projects: Project[] = [
     tags: ["FastAPI", "React", "Data pipeline"],
     status: "Internal",
     accent: "#818cf8",
-  },
-  {
-    name: "PromptOptim",
-    role: "3geeks — open tool",
-    description:
-      "AI prompt optimizer designed for digital sobriety: fewer tokens per request, CO2 estimation per query, and a push for more mindful AI usage.",
-    tags: ["Green IT", "AI", "Open tool"],
-    link: "https://promptoptim.app",
-    linkLabel: "promptoptim.app",
-    status: "Live",
-    accent: "#4ade80",
-  },
-  {
-    name: "Prompt Hub",
-    role: "3geeks — open tool",
-    description:
-      "Turns a vague idea into a structured execution plan: generated phases and steps with contextualized prompts for AI coding assistants, plus specialized agents in the works.",
-    tags: ["AI planning", "Agents", "Beta"],
-    link: "https://prompt-hub.app",
-    linkLabel: "prompt-hub.app",
-    status: "Beta",
-    accent: "#c084fc",
+    category: "professional",
   },
   {
     name: "AI Travel Planner",
@@ -251,24 +314,7 @@ export const projects: Project[] = [
     tags: ["Gemini", "APIs", "Web Summit 2025"],
     status: "Award",
     accent: "#fbbf24",
-  },
-  {
-    name: "CallKitchen",
-    role: "3geeks — product site",
-    description:
-      "Landing page for an AI phone assistant that helps restaurants capture missed calls — clear product story with a direct path to the demo.",
-    tags: ["AI voice", "Landing", "Restaurants"],
-    status: "Live",
-    accent: "#f472b6",
-  },
-  {
-    name: "Two",
-    role: "3geeks — mobile app",
-    description:
-      "A polished consumer iOS experience, designed to be simple and useful from the very first interaction. Published on the App Store.",
-    tags: ["iOS", "Mobile", "Product design"],
-    status: "App Store",
-    accent: "#2dd4bf",
+    category: "professional",
   },
   {
     name: "Cursor pour les nuls",
@@ -278,8 +324,19 @@ export const projects: Project[] = [
     tags: ["RAG", "DevEx", "AI adoption"],
     status: "Internal",
     accent: "#fb923c",
+    category: "professional",
   },
 ];
+
+export const clientLiveProjects = projects.filter(
+  (p) => p.category === "client-live",
+);
+export const greenStackProjects = projects.filter(
+  (p) => p.category === "green-stack",
+);
+export const professionalProjects = projects.filter(
+  (p) => p.category === "professional",
+);
 
 export const contact = {
   email: "e.elloumi15@gmail.com",

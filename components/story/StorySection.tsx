@@ -23,12 +23,12 @@ export default function StorySection() {
     <section
       id="story"
       ref={sectionRef}
-      className="story-section relative lg:h-screen lg:overflow-hidden"
+      className="story-section relative h-[100svh] overflow-hidden"
     >
       <div ref={bgRef} aria-hidden className="story-bg absolute inset-0" />
       <div aria-hidden className="story-grain absolute inset-0 z-[1]" />
 
-      <div ref={pagesRef} className="relative lg:h-full">
+      <div ref={pagesRef} className="relative h-full">
         {chapters.map((ch, i) => (
           <StoryPage
             key={ch.id}

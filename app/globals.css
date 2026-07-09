@@ -78,6 +78,7 @@ body {
 
 .story-section {
   transform-origin: center center;
+  touch-action: pan-y;
 }
 
 .story-grain {
@@ -120,13 +121,11 @@ body {
   will-change: opacity;
 }
 
-/* Before GSAP takes over on desktop, only the first page shows
+/* Before GSAP takes over, only the first page shows
    (prevents a flash of all stacked pages pre-hydration) */
-@media (min-width: 1024px) {
-  .story-page:not(:first-child) {
-    opacity: 0;
-    visibility: hidden;
-  }
+.story-page:not(:first-child) {
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* The site chrome steps aside while the book is open */
