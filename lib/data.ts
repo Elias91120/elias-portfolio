@@ -79,7 +79,7 @@ export const chapters: Chapter[] = [
     id: "ece",
     years: "2023 — 2026",
     title: "Data & AI at ECE Paris",
-    text: "At ECE Paris I dove into data and artificial intelligence. With my team, I built an intent-based travel planner powered by Gemini — it was elected best Bachelor project of the school and took us to Web Summit Lisbon. Somewhere between the pipelines and the demos, 'coding' quietly became 'shipping'.",
+    text: "At ECE Paris I dove into data and artificial intelligence. With my team, I built an intent-based travel planner powered by Gemini — it was elected best Bachelor project of the school. Somewhere between the pipelines and the demos, 'coding' quietly became 'shipping'.",
     image: "/story/chapter-4.jpg",
     video: "/story/chapter-4.mp4",
     imageAlt: "Elias presenting his AI travel planner on stage",
@@ -225,6 +225,10 @@ export type Project = {
   linkLabel?: string;
   ctaLabel?: string;
   logo?: string;
+  /** Screenshot of the live product, shown in the card preview */
+  image?: string;
+  /** Internal case-study route — when set, the card navigates here instead of the live link */
+  caseStudy?: string;
   status: "Live" | "Beta" | "App Store" | "Award" | "Internal";
   accent: string;
   category: ProjectCategory;
@@ -245,6 +249,7 @@ export const projects: Project[] = [
     link: "https://expressdivorceusa.co",
     linkLabel: "expressdivorceusa.co",
     ctaLabel: "Open project",
+    image: "/projects/express-divorce.webp",
     status: "Live",
     accent: "#38bdf8",
     category: "client-live",
@@ -263,6 +268,7 @@ export const projects: Project[] = [
     link: "https://call-kitchen-landing.vercel.app/",
     linkLabel: "call-kitchen-landing.vercel.app",
     ctaLabel: "Open project",
+    image: "/projects/callkitchen.webp",
     status: "Live",
     accent: "#f472b6",
     category: "client-live",
@@ -281,6 +287,7 @@ export const projects: Project[] = [
     link: "https://apps.apple.com/fr/app/two/id6758867716",
     linkLabel: "App Store",
     ctaLabel: "App Store",
+    image: "/projects/two.webp",
     status: "App Store",
     accent: "#2dd4bf",
     category: "client-live",
@@ -298,8 +305,10 @@ export const projects: Project[] = [
     tags: ["LLM", "GenUI", "Next.js", "webgen"],
     link: "https://web-gen-lyart.vercel.app",
     linkLabel: "web-gen-lyart.vercel.app",
-    ctaLabel: "Open Web-Gen",
+    ctaLabel: "Read the case study",
     logo: "/3geeks-logo.png",
+    image: "/projects/web-gen.webp",
+    caseStudy: "/projects/web-gen",
     status: "Live",
     accent: "#4ade80",
     category: "green-stack",
@@ -318,6 +327,7 @@ export const projects: Project[] = [
     link: "https://prompt-hub-rose-xi.vercel.app/",
     linkLabel: "prompt-hub-rose-xi.vercel.app",
     ctaLabel: "Open the beta",
+    image: "/projects/prompt-hub.webp",
     status: "Beta",
     accent: "#c084fc",
     category: "green-stack",
@@ -336,6 +346,7 @@ export const projects: Project[] = [
     link: "https://frontend-prompt-optim.vercel.app/",
     linkLabel: "frontend-prompt-optim.vercel.app",
     ctaLabel: "Open PromptOptim",
+    image: "/projects/promptoptim.webp",
     status: "Live",
     accent: "#4ade80",
     category: "green-stack",
@@ -354,8 +365,8 @@ export const projects: Project[] = [
     name: "AI Travel Planner",
     role: "ECE — best Bachelor project",
     description:
-      "Intent-based travel planning app powered by Gemini and SaaS APIs: day-by-day tailor-made trips generated from what travelers actually want. Presented at Web Summit Lisbon 2025.",
-    tags: ["Gemini", "APIs", "Web Summit 2025"],
+      "Intent-based travel planning app powered by Gemini and SaaS APIs: day-by-day tailor-made trips generated from what travelers actually want. Elected best Bachelor project at ECE Paris.",
+    tags: ["Gemini", "APIs", "Best Bachelor project"],
     status: "Award",
     accent: "#fbbf24",
     category: "professional",

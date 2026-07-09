@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { contact } from "@/lib/data";
+import Magnetic from "@/components/Magnetic";
 
 export default function Contact() {
   return (
@@ -49,6 +50,7 @@ export default function Contact() {
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Magnetic>
           <a
             href={`mailto:${contact.email}`}
             className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 font-medium text-[#0c0a16] transition-transform duration-300 hover:scale-[1.03]"
@@ -67,6 +69,8 @@ export default function Contact() {
             </svg>
             {contact.email}
           </a>
+          </Magnetic>
+          <Magnetic>
           <a
             href={contact.linkedin}
             target="_blank"
@@ -78,6 +82,7 @@ export default function Contact() {
             </svg>
             LinkedIn
           </a>
+          </Magnetic>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-x-8 gap-y-2 text-sm text-muted">

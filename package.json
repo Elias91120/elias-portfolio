@@ -10,6 +10,7 @@
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
     "framer-motion": "^12.42.2",
     "gsap": "^3.15.0",
     "next": "16.2.10",
