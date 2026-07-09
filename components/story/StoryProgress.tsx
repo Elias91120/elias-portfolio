@@ -1,22 +1,45 @@
 "use client";
 
-import { chapters } from "@/lib/data";
+import { useCallback, useRef } from "react";
+import type { Chapter } from "@/lib/data";
 import { CHAPTER_ROMANS } from "./constants";
 
 type StoryProgressProps = {
   active: number;
   progress: number;
+  orderedChapters: Chapter[];
   onJump: (index: number) => void;
+  onRestart: () => void;
   variant?: "desktop" | "mobile";
 };
 
 export default function StoryProgress({
   active,
   progress,
+  orderedChapters,
   onJump,
+  onRestart,
   variant = "desktop",
 }: StoryProgressProps) {
   const isDesktop = variant === "desktop";
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearLongPress = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
+
+  const startLongPress = useCallback(() => {
+    clearLongPress();
+    longPressTimer.current = setTimeout(() => {
+      onRestart();
+      longPressTimer.current = null;
+    }, 600);
+  }, [clearLongPress, onRestart]);
+
+  const activeAccent = orderedChapters[active]?.accent ?? "#a78bfa";
 
   return (
     <>
@@ -28,29 +51,41 @@ export default function StoryProgress({
         }
         role="tablist"
         aria-label="Story chapters"
+        onPointerDown={!isDesktop ? startLongPress : undefined}
+        onPointerUp={!isDesktop ? clearLongPress : undefined}
+        onPointerLeave={!isDesktop ? clearLongPress : undefined}
+        onPointerCancel={!isDesktop ? clearLongPress : undefined}
       >
-        {chapters.map((ch, i) => (
+        {orderedChapters.map((ch, i) => (
           <button
             key={ch.id}
             type="button"
             role="tab"
             aria-selected={i === active}
             onClick={() => onJump(i)}
-            aria-label={`Go to chapter ${CHAPTER_ROMANS[i]}: ${ch.title}`}
-            className="group flex h-6 items-center px-0.5 cursor-pointer"
+            aria-label={`Go to chapter ${CHAPTER_ROMANS[i] ?? i + 1}: ${ch.title}`}
+            className="group flex h-6 min-h-11 min-w-6 items-center justify-center px-0.5 cursor-pointer lg:min-h-6"
           >
             <span
               className="block h-1.5 rounded-full transition-all duration-500"
               style={{
                 width: i === active ? "1.75rem" : "0.375rem",
                 backgroundColor:
-                  i === active
-                    ? chapters[active].accent
-                    : "rgba(255,255,255,0.28)",
+                  i === active ? activeAccent : "rgba(255,255,255,0.28)",
               }}
             />
           </button>
         ))}
+        {!isDesktop && (
+          <button
+            type="button"
+            onClick={onRestart}
+            className="ml-1 min-h-11 cursor-pointer px-2 font-display text-[0.65rem] font-medium uppercase tracking-wider text-white/45 hover:text-white/70"
+            aria-label="Restart story from chapter I"
+          >
+            Restart
+          </button>
+        )}
       </div>
 
       {isDesktop && (
@@ -64,8 +99,18 @@ export default function StoryProgress({
               style={{ transform: `scaleX(${progress})` }}
             />
           </div>
-          <div className="hidden lg:block absolute bottom-8 right-10 z-20 font-serif italic text-sm text-white/45 select-none">
-            {active + 1} — {chapters.length}
+          <div className="hidden lg:flex absolute bottom-8 right-10 z-20 items-center gap-4">
+            <button
+              type="button"
+              onClick={onRestart}
+              className="min-h-11 cursor-pointer font-display text-xs font-medium uppercase tracking-wider text-white/40 transition-colors hover:text-white/65"
+              aria-label="Restart story from chapter I"
+            >
+              Restart story
+            </button>
+            <span className="font-serif italic text-sm text-white/45 select-none">
+              {active + 1} — {orderedChapters.length}
+            </span>
           </div>
         </>
       )}

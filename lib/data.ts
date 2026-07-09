@@ -125,6 +125,10 @@ export const chapters: Chapter[] = [
   },
 ];
 
+export const chaptersById = Object.fromEntries(
+  chapters.map((ch) => [ch.id, ch])
+) as Record<string, Chapter>;
+
 export type SkillGroup = {
   title: string;
   accent: string;

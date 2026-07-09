@@ -35,6 +35,13 @@ export function syncUrlWithMode(mode: VisitorMode): void {
   window.history.replaceState(null, "", url.toString());
 }
 
+export function parseVisitorMode(
+  param: string | undefined | null
+): VisitorMode | null {
+  if (param === "hiring" || param === "browsing") return param;
+  return null;
+}
+
 export function resolveInitialVisitorMode(): VisitorMode | null {
   return readVisitorModeFromUrl() ?? getStoredVisitorMode();
 }

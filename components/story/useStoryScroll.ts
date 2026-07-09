@@ -3,7 +3,9 @@
 import { useLayoutEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { chapters, getChapterAnimation } from "@/lib/data";
+import type { Chapter } from "@/lib/data";
+import { getChapterAnimation } from "@/lib/data";
+import { getBranchPointForChapter } from "@/lib/story-branches";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,20 +13,49 @@ export type StoryScrollRefs = {
   sectionRef: RefObject<HTMLElement | null>;
   pagesRef: RefObject<HTMLDivElement | null>;
   bgRef: RefObject<HTMLDivElement | null>;
-  videoRefs: RefObject<(HTMLVideoElement | null)[]>;
+  videoRefs: RefObject<Record<string, HTMLVideoElement | null>>;
 };
 
 type UseStoryScrollOptions = {
+  orderedChapters: Chapter[];
+  orderedChapterIds: string[];
+  pathChoices: Record<string, string>;
   setActive: (index: number) => void;
   setProgress: (progress: number) => void;
+  onBranchReveal?: (chapterId: string, localProgress: number) => void;
   enabled?: boolean;
 };
 
 export function useStoryScroll(
   refs: StoryScrollRefs,
-  { setActive, setProgress, enabled = true }: UseStoryScrollOptions
+  {
+    orderedChapters,
+    orderedChapterIds,
+    pathChoices,
+    setActive,
+    setProgress,
+    onBranchReveal,
+    enabled = true,
+  }: UseStoryScrollOptions
 ) {
   const stRef = useRef<ScrollTrigger | null>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const pausedRef = useRef(false);
+  const branchTriggeredRef = useRef<string | null>(null);
+  const pathChoicesRef = useRef(pathChoices);
+  const onBranchRevealRef = useRef(onBranchReveal);
+  const pendingJumpRef = useRef<number | null>(null);
+
+  pathChoicesRef.current = pathChoices;
+  onBranchRevealRef.current = onBranchReveal;
+
+  const jumpToInternal = (i: number, chaptersCount: number) => {
+    const st = stRef.current;
+    if (!st || chaptersCount <= 1) return;
+    const progress = i / (chaptersCount - 1);
+    const y = st.start + progress * (st.end - st.start);
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
 
   useLayoutEffect(() => {
     if (!enabled) return;
@@ -75,7 +106,9 @@ export function useStoryScroll(
     const preloadAround = (center: number) => {
       if (reduceMotion) return;
       for (let i = center - 2; i <= center + 2; i++) {
-        const v = refs.videoRefs.current[i];
+        const ch = orderedChapters[i];
+        if (!ch) continue;
+        const v = refs.videoRefs.current[ch.id];
         if (v) armVideo(v);
       }
     };
@@ -97,12 +130,7 @@ export function useStoryScroll(
         return;
       }
 
-      // Same quiet dissolve as the original book — no blur/wipe/push on ch.2+
-      tl.to(
-        prev,
-        { autoAlpha: 0, duration: 0.3, ease: "power1.in" },
-        at
-      );
+      tl.to(prev, { autoAlpha: 0, duration: 0.3, ease: "power1.in" }, at);
       tl.fromTo(
         page,
         { autoAlpha: 0 },
@@ -124,166 +152,199 @@ export function useStoryScroll(
     };
 
     const pages = gsap.utils.toArray<HTMLElement>(".story-page", wrap);
-    const last = pages.length - 1;
+    const last = Math.max(pages.length - 1, 0);
     gsap.set(pages.slice(1), { autoAlpha: 0 });
     gsap.set(section, { transformOrigin: "center center" });
 
-    const targets = new Array(chapters.length).fill(0);
+    const targets: Record<string, number> = {};
     let activeScrub = 0;
     let rafId = 0;
     let scrubbing = false;
     let lastProgress = 0;
     let scrollVelocity = 0;
 
-      const seekVideo = (v: HTMLVideoElement, target: number, lerp: number) => {
-        const maxTime = Math.max(v.duration - 0.04, 0);
-        const goal = target * maxTime;
-        const delta = goal - v.currentTime;
+    const seekVideo = (v: HTMLVideoElement, target: number, lerp: number) => {
+      const maxTime = Math.max(v.duration - 0.04, 0);
+      const goal = target * maxTime;
+      const delta = goal - v.currentTime;
 
-        if (Math.abs(delta) <= 0.004) return;
+      if (Math.abs(delta) <= 0.004) return;
+      v.currentTime = v.currentTime + delta * lerp;
+    };
 
-        // Smooth lerp only — fastSeek caused visible jumps on Ken Burns clips
-        v.currentTime = v.currentTime + delta * lerp;
-      };
-
-      const tick = () => {
-        const lerp = gsap.utils.clamp(
-          0.28,
-          0.5,
-          0.5 - scrollVelocity * 0.25
-        );
-
-        refs.videoRefs.current.forEach((v, i) => {
-          if (!v || !v.duration || !v.dataset.armed) return;
-          if (i !== activeScrub) return;
-
-          seekVideo(v, targets[i], lerp);
-        });
-        rafId = requestAnimationFrame(tick);
-      };
-
-      const startScrub = () => {
-        if (!scrubbing && !reduceMotion) {
-          scrubbing = true;
-          rafId = requestAnimationFrame(tick);
+    const tick = () => {
+      const lerp = gsap.utils.clamp(0.28, 0.5, 0.5 - scrollVelocity * 0.25);
+      const activeChapter = orderedChapters[activeScrub];
+      if (activeChapter) {
+        const v = refs.videoRefs.current[activeChapter.id];
+        const target = targets[activeChapter.id] ?? 0;
+        if (v?.duration && v.dataset.armed) {
+          seekVideo(v, target, lerp);
         }
-      };
+      }
+      rafId = requestAnimationFrame(tick);
+    };
 
-      const stopScrub = () => {
-        scrubbing = false;
-        cancelAnimationFrame(rafId);
-      };
+    const startScrub = () => {
+      if (!scrubbing && !reduceMotion) {
+        scrubbing = true;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
 
-      let opened = false;
-      const openBook = () => {
-        if (opened || reduceMotion) return;
-        opened = true;
-        gsap.fromTo(
-          section,
-          { scale: 0.98, filter: "brightness(0.92)" },
-          {
-            scale: 1,
-            filter: "brightness(1)",
-            duration: 0.6,
-            ease: "power2.out",
-          }
-        );
-      };
+    const stopScrub = () => {
+      scrubbing = false;
+      cancelAnimationFrame(rafId);
+    };
 
-      const preloadST = ScrollTrigger.create({
+    let opened = false;
+    const openBook = () => {
+      if (opened || reduceMotion) return;
+      opened = true;
+      gsap.fromTo(
+        section,
+        { scale: 0.98, filter: "brightness(0.92)" },
+        {
+          scale: 1,
+          filter: "brightness(1)",
+          duration: 0.6,
+          ease: "power2.out",
+        }
+      );
+    };
+
+    const preloadST = ScrollTrigger.create({
+      trigger: section,
+      start: "top 130%",
+      once: true,
+      onEnter: () => preloadAround(0),
+    });
+
+    const checkBranchReveal = (idx: number, t: number) => {
+      const chapter = orderedChapters[idx];
+      if (!chapter) return;
+
+      const bp = getBranchPointForChapter(chapter.id);
+      if (!bp || pathChoicesRef.current[chapter.id]) return;
+
+      const threshold = reduceMotion ? 0 : (bp.revealAtProgress ?? 0.8);
+      const localProgress = gsap.utils.clamp(0, 1, t - idx);
+
+      if (localProgress >= threshold) {
+        if (branchTriggeredRef.current !== chapter.id) {
+          branchTriggeredRef.current = chapter.id;
+          onBranchRevealRef.current?.(chapter.id, localProgress);
+        }
+      } else if (branchTriggeredRef.current === chapter.id) {
+        branchTriggeredRef.current = null;
+      }
+    };
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
         trigger: section,
-        start: "top 130%",
-        once: true,
-        onEnter: () => preloadAround(0),
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${last * window.innerHeight}`,
-          scrub: reduceMotion ? false : isTouch ? 0.6 : 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          snap: reduceMotion
-            ? undefined
-            : {
+        start: "top top",
+        end: () => `+=${last * window.innerHeight}`,
+        scrub: reduceMotion ? false : isTouch ? 0.6 : 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        snap: reduceMotion
+          ? undefined
+          : last > 0
+            ? {
                 snapTo: 1 / last,
                 inertia: isTouch,
                 duration: { min: 0.25, max: isTouch ? 0.55 : 0.8 },
                 delay: isTouch ? 0 : 0.06,
                 ease: "power2.inOut",
-              },
-          onUpdate: (self) => {
-            scrollVelocity = Math.abs(self.progress - lastProgress);
-            lastProgress = self.progress;
+              }
+            : undefined,
+        onUpdate: (self) => {
+          if (pausedRef.current) return;
 
-            const idx = Math.round(self.progress * last);
-            activeScrub = idx;
-            setActive(idx);
-            setProgress(self.progress);
-            preloadAround(idx);
+          scrollVelocity = Math.abs(self.progress - lastProgress);
+          lastProgress = self.progress;
 
-            const t = self.progress * last;
-            for (let i = 0; i < chapters.length; i++) {
-              const { scrubIn, scrubSpan } = getChapterAnimation(
-                chapters[i],
-                i
-              );
-              targets[i] = gsap.utils.clamp(0, 1, (t - scrubIn) / scrubSpan);
-            }
-          },
-          onToggle: (self) => {
-            document.body.toggleAttribute("data-story", self.isActive);
-            if (self.isActive) {
-              openBook();
-              startScrub();
-              preloadAround(Math.round(self.progress * last));
-              chapters.forEach((_, i) => {
-                const v = refs.videoRefs.current[i];
-                if (v) armVideo(v);
-              });
-            } else {
-              stopScrub();
-            }
-          },
+          const idx = last > 0 ? Math.round(self.progress * last) : 0;
+          activeScrub = idx;
+          setActive(idx);
+          setProgress(self.progress);
+          preloadAround(idx);
+
+          const t = self.progress * last;
+          orderedChapters.forEach((ch, i) => {
+            const { scrubIn, scrubSpan } = getChapterAnimation(ch, i);
+            targets[ch.id] = gsap.utils.clamp(0, 1, (t - scrubIn) / scrubSpan);
+          });
+
+          checkBranchReveal(idx, t);
         },
-      });
+        onToggle: (self) => {
+          document.body.toggleAttribute("data-story", self.isActive);
+          if (self.isActive) {
+            openBook();
+            startScrub();
+            preloadAround(Math.round(self.progress * last));
+            orderedChapters.forEach((ch) => {
+              const v = refs.videoRefs.current[ch.id];
+              if (v) armVideo(v);
+            });
+          } else {
+            stopScrub();
+            document.body.removeAttribute("data-story-choice");
+          }
+        },
+      },
+    });
 
-      pages.forEach((page, i) => {
-        const img = page.querySelector<HTMLElement>(".page-img");
-        const anim = getChapterAnimation(chapters[i], i);
-        const from = i === 0 ? 0 : i - 0.45;
-        const to = i === last ? last : i + 0.55;
+    pages.forEach((page, i) => {
+      const ch = orderedChapters[i];
+      if (!ch) return;
 
-        if (img && anim.driftFrom !== anim.driftTo) {
-          tl.fromTo(
-            img,
-            { scale: anim.driftFrom },
-            { scale: anim.driftTo, duration: to - from, ease: "none" },
-            from
-          );
-        }
+      const img = page.querySelector<HTMLElement>(".page-img");
+      const anim = getChapterAnimation(ch, i);
+      const from = i === 0 ? 0 : i - 0.45;
+      const to = i === last ? last : i + 0.55;
 
-        if (i === 0) return;
-
-        addPageTransition(tl, pages, page, i);
-
-        tl.to(
-          bg,
-          {
-            "--bg-a": chapters[i].bgA,
-            "--bg-b": chapters[i].bgB,
-            "--bg-accent": chapters[i].accent,
-            duration: 0.4,
-            ease: "none",
-          },
-          i - 0.5
+      if (img && anim.driftFrom !== anim.driftTo) {
+        tl.fromTo(
+          img,
+          { scale: anim.driftFrom },
+          { scale: anim.driftTo, duration: to - from, ease: "none" },
+          from
         );
-      });
+      }
+
+      if (i === 0) return;
+
+      addPageTransition(tl, pages, page, i);
+
+      tl.to(
+        bg,
+        {
+          "--bg-a": ch.bgA,
+          "--bg-b": ch.bgB,
+          "--bg-accent": ch.accent,
+          duration: 0.4,
+          ease: "none",
+        },
+        i - 0.5
+      );
+    });
 
     stRef.current = tl.scrollTrigger ?? null;
+    tlRef.current = tl;
+
+    ScrollTrigger.refresh();
+
+    if (pendingJumpRef.current !== null) {
+      const jumpIdx = pendingJumpRef.current;
+      pendingJumpRef.current = null;
+      requestAnimationFrame(() =>
+        jumpToInternal(jumpIdx, orderedChapters.length)
+      );
+    }
 
     return () => {
       stopScrub();
@@ -291,33 +352,75 @@ export function useStoryScroll(
       tl.kill();
       normalizeScroll?.kill();
       document.body.removeAttribute("data-story");
+      document.body.removeAttribute("data-story-choice");
       stRef.current = null;
+      tlRef.current = null;
+      branchTriggeredRef.current = null;
+      ScrollTrigger.refresh();
     };
-    // refs are stable — re-init when enabled toggles on
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled]);
+  }, [enabled, orderedChapterIds.join(",")]);
 
-  const jumpTo = (i: number) => {
+  const pauseForChoice = () => {
     const st = stRef.current;
     if (!st) return;
-    const y = st.start + (i / (chapters.length - 1)) * (st.end - st.start);
-    window.scrollTo({ top: y, behavior: "smooth" });
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduceMotion) return;
+
+    pausedRef.current = true;
+    st.disable();
+    document.body.setAttribute("data-story-choice", "");
+    refs.sectionRef.current?.classList.add("story-paused");
   };
 
-  return { jumpTo, stRef };
+  const resumeAfterChoice = () => {
+    const st = stRef.current;
+    pausedRef.current = false;
+    document.body.removeAttribute("data-story-choice");
+    refs.sectionRef.current?.classList.remove("story-paused");
+    branchTriggeredRef.current = null;
+    if (st) {
+      st.enable();
+      ScrollTrigger.refresh();
+    }
+  };
+
+  const jumpTo = (i: number) => {
+    jumpToInternal(i, orderedChapters.length);
+  };
+
+  const scheduleJumpAfterRebuild = (i: number) => {
+    pendingJumpRef.current = i;
+  };
+
+  return {
+    jumpTo,
+    stRef,
+    pauseForChoice,
+    resumeAfterChoice,
+    scheduleJumpAfterRebuild,
+  };
 }
 
 export function useStoryKeyboard(
   jumpTo: (index: number) => void,
-  active: number
+  active: number,
+  chapterCount: number,
+  disabled = false
 ) {
   useLayoutEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (disabled) return;
       if (!document.body.hasAttribute("data-story")) return;
+      if (document.body.hasAttribute("data-story-choice")) return;
+
+      const last = Math.max(chapterCount - 1, 0);
 
       if (e.key === "ArrowDown" || e.key === "PageDown") {
         e.preventDefault();
-        jumpTo(Math.min(active + 1, chapters.length - 1));
+        jumpTo(Math.min(active + 1, last));
       } else if (e.key === "ArrowUp" || e.key === "PageUp") {
         e.preventDefault();
         jumpTo(Math.max(active - 1, 0));
@@ -326,11 +429,11 @@ export function useStoryKeyboard(
         jumpTo(0);
       } else if (e.key === "End") {
         e.preventDefault();
-        jumpTo(chapters.length - 1);
+        jumpTo(last);
       }
     };
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [jumpTo, active]);
+  }, [jumpTo, active, chapterCount, disabled]);
 }

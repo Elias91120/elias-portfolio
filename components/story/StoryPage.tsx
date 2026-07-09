@@ -10,12 +10,14 @@ type StoryPageProps = {
   chapter: Chapter;
   index: number;
   setVideoRef: (el: HTMLVideoElement | null) => void;
+  choicePadding?: boolean;
 };
 
 export default function StoryPage({
   chapter: ch,
   index,
   setVideoRef,
+  choicePadding = false,
 }: StoryPageProps) {
   return (
     <article
@@ -63,7 +65,11 @@ export default function StoryPage({
         <div aria-hidden className="absolute inset-0 bg-black/10" />
       </div>
 
-      <div className="page-text absolute z-10 inset-x-0 bottom-0 px-6 pb-24 sm:px-10 lg:px-24 lg:pb-28 max-w-4xl">
+      <div
+        className={`page-text absolute z-10 inset-x-0 bottom-0 px-6 sm:px-10 lg:px-24 max-w-4xl ${
+          choicePadding ? "pb-32 lg:pb-40" : "pb-24 lg:pb-28"
+        }`}
+      >
         <div
           className="story-kicker font-display text-[0.7rem] lg:text-xs font-semibold uppercase tracking-[0.35em]"
           style={{ color: ch.accent, "--kicker-accent": ch.accent } as CSSProperties}

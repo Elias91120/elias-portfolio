@@ -4,7 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -24,11 +24,17 @@ type VisitorModeContextValue = {
 
 const VisitorModeContext = createContext<VisitorModeContextValue | null>(null);
 
-export function VisitorModeProvider({ children }: { children: ReactNode }) {
-  const [mode, setModeState] = useState<VisitorMode | null>(null);
+export function VisitorModeProvider({
+  children,
+  initialMode = null,
+}: {
+  children: ReactNode;
+  initialMode?: VisitorMode | null;
+}) {
+  const [mode, setModeState] = useState<VisitorMode | null>(initialMode);
   const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setModeState(resolveInitialVisitorMode());
     setHydrated(true);
   }, []);

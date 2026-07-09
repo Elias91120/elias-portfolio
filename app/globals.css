@@ -140,6 +140,20 @@ body[data-story] .site-nav {
   pointer-events: none;
 }
 
+/* Story choice overlay — scroll paused while open (desktop) */
+body[data-story-choice] .story-section {
+  touch-action: none;
+}
+
+.story-section.story-paused {
+  overflow: hidden;
+}
+
+.story-choice-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--choice-accent, #a78bfa);
+}
+
 /* Site chrome stays hidden during the cinematic intro */
 body[data-intro] .site-nav,
 body[data-intro] .ask-widget {
