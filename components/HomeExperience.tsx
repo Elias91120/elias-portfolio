@@ -17,6 +17,10 @@ import {
   useVisitorMode,
 } from "@/components/VisitorModeProvider";
 import HiringStrip from "@/components/HiringStrip";
+import DevTerminal from "@/components/DevTerminal";
+import {
+  DeveloperModeProvider,
+} from "@/components/DeveloperModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
 import type { VisitorMode } from "@/lib/visitor-mode";
 
@@ -50,13 +54,18 @@ export default function HomeExperience({
     };
   }, [showIntro]);
 
+  const introComplete = showIntro === false;
+
   return (
-    <VisitorModeProvider initialMode={initialMode}>
-      {showIntro === true && (
-        <CinematicIntro onComplete={() => setShowIntro(false)} />
-      )}
-      <HomeSections showIntro={showIntro} initialMode={initialMode} />
-    </VisitorModeProvider>
+    <DeveloperModeProvider introComplete={introComplete}>
+      <VisitorModeProvider initialMode={initialMode}>
+        {showIntro === true && (
+          <CinematicIntro onComplete={() => setShowIntro(false)} />
+        )}
+        <HomeSections showIntro={showIntro} initialMode={initialMode} />
+        <DevTerminal />
+      </VisitorModeProvider>
+    </DeveloperModeProvider>
   );
 }
 

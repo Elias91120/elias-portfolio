@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useDeveloperMode } from "@/components/DeveloperModeProvider";
 import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
 import type { VisitorMode } from "@/lib/visitor-mode";
@@ -25,6 +26,7 @@ function getLinks(mode: VisitorMode | null) {
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { openTerminal } = useDeveloperMode();
   const { mode, setMode, hydrated } = useVisitorMode();
   const links = getLinks(hydrated ? mode : null);
 
@@ -92,6 +94,17 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+          <button
+            type="button"
+            onClick={() => openTerminal("nav")}
+            className="ml-0.5 inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[0.65rem] font-medium text-muted ring-1 ring-accent/30 transition-colors hover:bg-accent/10 hover:text-accent sm:px-3 sm:text-xs"
+            aria-label="Open developer terminal"
+          >
+            <span aria-hidden className="font-mono text-accent/90">
+              &gt;_
+            </span>
+            <span className="hidden sm:inline">Dev</span>
+          </button>
           {hydrated && mode !== null && (
             <button
               type="button"

@@ -1,17 +1,63 @@
 "use client";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import PathSelector from "@/components/PathSelector";
+import { useDeveloperMode } from "@/components/DeveloperModeProvider";
 import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const AVATAR_CLICKS_REQUIRED = 5;
+const AVATAR_CLICK_WINDOW_MS = 2000;
 
 export default function Hero({ ready = true }: { ready?: boolean }) {
   const { mode, setMode, hydrated } = useVisitorMode();
+  const { openTerminal } = useDeveloperMode();
   const showScrollHint = hydrated && mode === "browsing";
   const showHiringSummary = hydrated && mode === "hiring";
+  const reducedMotion = prefersReducedMotion();
+
+  const [avatarClicks, setAvatarClicks] = useState(0);
+  const [showAvatarTooltip, setShowAvatarTooltip] = useState(false);
+  const clickCountRef = useRef(0);
+  const lastAvatarClickRef = useRef(0);
+  const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleAvatarClick = useCallback(() => {
+    const now = Date.now();
+    const elapsed = now - lastAvatarClickRef.current;
+    const nextCount =
+      elapsed > AVATAR_CLICK_WINDOW_MS || lastAvatarClickRef.current === 0
+        ? 1
+        : clickCountRef.current + 1;
+
+    lastAvatarClickRef.current = now;
+    clickCountRef.current = nextCount;
+    setAvatarClicks(nextCount);
+
+    if (nextCount >= AVATAR_CLICKS_REQUIRED) {
+      clickCountRef.current = 0;
+      lastAvatarClickRef.current = 0;
+      setAvatarClicks(0);
+      setShowAvatarTooltip(false);
+      openTerminal("avatar");
+      return;
+    }
+
+    if (nextCount >= 3) {
+      setShowAvatarTooltip(true);
+      if (tooltipTimerRef.current) clearTimeout(tooltipTimerRef.current);
+      tooltipTimerRef.current = setTimeout(() => setShowAvatarTooltip(false), 1000);
+    }
+  }, [openTerminal]);
+
+  useEffect(() => {
+    return () => {
+      if (tooltipTimerRef.current) clearTimeout(tooltipTimerRef.current);
+    };
+  }, []);
 
   const switchToBrowsing = () => {
     setMode("browsing");
@@ -59,7 +105,16 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
           transition={{ duration: 0.8, ease }}
           className="animate-float"
         >
-          <div className="relative h-36 w-36 sm:h-48 sm:w-48 rounded-full overflow-hidden ring-2 ring-accent/40 shadow-[0_0_80px_rgba(167,139,250,0.3)]">
+          <button
+            type="button"
+            onClick={handleAvatarClick}
+            aria-label="Elias avatar — 5 quick taps open dev terminal"
+            className={`relative h-36 w-36 sm:h-48 sm:w-48 rounded-full overflow-hidden ring-2 shadow-[0_0_80px_rgba(167,139,250,0.3)] cursor-pointer transition-shadow ${
+              avatarClicks >= 3 && !reducedMotion
+                ? "ring-accent animate-pulse"
+                : "ring-accent/40"
+            }`}
+          >
             <Image
               src="/story/avatar-hero.jpg"
               alt="Cartoon portrait of Elias Elloumi waving"
@@ -68,7 +123,20 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
               className="object-cover"
               priority
             />
-          </div>
+            <AnimatePresence>
+              {showAvatarTooltip && (
+                <motion.span
+                  initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.15 }}
+                  className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-card px-3 py-1 text-xs font-medium text-accent ring-1 ring-accent/40"
+                >
+                  {avatarClicks}/5 — keep going
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
         </motion.div>
 
         <motion.div
@@ -136,6 +204,25 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
         </motion.div>
 
         <PathSelector ready={ready} />
+
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+          transition={{ delay: ready ? 0.68 : 0, duration: 0.5, ease }}
+          className="mt-6 text-xs sm:text-sm text-muted"
+        >
+          <span className="hidden sm:inline">
+            Prefer the terminal? Press{" "}
+            <kbd className="rounded bg-white/8 px-1.5 py-0.5 font-mono text-[0.7rem] text-accent ring-1 ring-white/10">
+              `
+            </kbd>{" "}
+            or click{" "}
+            <span className="text-accent">Dev mode</span> above.
+          </span>
+          <span className="sm:hidden">
+            Tap <span className="text-accent">Dev mode</span> in the nav.
+          </span>
+        </motion.p>
 
         {showHiringSummary && (
           <motion.div

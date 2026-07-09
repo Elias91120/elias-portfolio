@@ -6,6 +6,7 @@ import { ViewTransition } from "react";
 import { motion } from "framer-motion";
 import type { Project } from "@/lib/data";
 import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
+import { getProjectSlug } from "@/lib/dev-terminal-commands";
 import { getCaseStudySlug } from "@/lib/view-transitions";
 
 const statusStyles: Record<string, string> = {
@@ -73,11 +74,13 @@ export default function ProjectCard({
   const isFeatured = variant === "featured";
   const clickable = Boolean(project.link || project.caseStudy);
   const caseStudySlug = getCaseStudySlug(project);
+  const projectSlug = getProjectSlug(project);
   const useMorphPreview =
     isFeatured && project.image && project.caseStudy && caseStudySlug;
 
   return (
     <motion.div
+      data-project-slug={projectSlug}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}

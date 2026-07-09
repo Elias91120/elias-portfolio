@@ -221,6 +221,21 @@ body[data-intro] .ask-widget {
   pointer-events: none;
 }
 
+/* Developer terminal — hide ask widget to avoid z-index overlap */
+body[data-dev-terminal] .ask-widget {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Project card highlight from `open <slug>` */
+[data-project-slug].dev-terminal-highlight [class*="rounded-3xl"] {
+  --tw-ring-color: rgba(167, 139, 250, 0.8);
+  box-shadow:
+    0 0 0 2px rgba(167, 139, 250, 0.65),
+    0 20px 60px -32px rgba(167, 139, 250, 0.35) !important;
+  transition: box-shadow 0.2s ease;
+}
+
 /* Soft floating animation for the hero avatar */
 @keyframes float {
   0%,
