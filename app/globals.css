@@ -221,6 +221,13 @@ body[data-intro] .ask-widget {
   pointer-events: none;
 }
 
+/* Hide ask widget during fullscreen story mode */
+body[data-story] .ask-widget {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 /* Developer terminal — hide ask widget to avoid z-index overlap */
 body[data-dev-terminal] .ask-widget {
   opacity: 0;

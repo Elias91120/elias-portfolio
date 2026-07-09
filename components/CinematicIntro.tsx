@@ -7,26 +7,26 @@ import { motion, AnimatePresence } from "framer-motion";
 const SESSION_KEY = "intro-seen";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-const spring = { type: "spring" as const, stiffness: 260, damping: 22 };
+const spring = { type: "spring" as const, stiffness: 190, damping: 24 };
 
 const TIMING_DESKTOP = {
-  fadeIn: 280,
-  avatar: 520,
-  name: 480,
-  tagline: 620,
-  pause: 320,
-  exitHold: 180,
-  exitFade: 420,
+  fadeIn: 380,
+  avatar: 700,
+  name: 650,
+  tagline: 840,
+  pause: 440,
+  exitHold: 250,
+  exitFade: 560,
 } as const;
 
 const TIMING_MOBILE = {
-  fadeIn: 220,
-  avatar: 420,
-  name: 400,
-  tagline: 520,
-  pause: 260,
-  exitHold: 140,
-  exitFade: 380,
+  fadeIn: 300,
+  avatar: 570,
+  name: 540,
+  tagline: 700,
+  pause: 350,
+  exitHold: 190,
+  exitFade: 510,
 } as const;
 
 type Phase = "fade-in" | "avatar" | "name" | "tagline" | "pause" | "exit";
@@ -130,7 +130,7 @@ export default function CinematicIntro({ onComplete }: Props) {
         filter: fadingOut ? "blur(12px)" : "blur(0px)",
       }}
       transition={{
-        duration: fadingOut ? (isMobile ? 0.32 : 0.42) : 0.5,
+        duration: fadingOut ? (isMobile ? 0.45 : 0.55) : 0.7,
         ease,
       }}
       className="intro-overlay fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#08060f] px-5"
@@ -147,7 +147,7 @@ export default function CinematicIntro({ onComplete }: Props) {
             initial={{ opacity: 0.7 }}
             animate={{ opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.45, ease }}
+            transition={{ duration: 0.65, ease }}
             className="pointer-events-none absolute inset-0 z-30 bg-violet-400/20"
             aria-hidden
           />
@@ -161,7 +161,7 @@ export default function CinematicIntro({ onComplete }: Props) {
             opacity: avatarVisible ? 0.45 : 0.08,
             scale: avatarVisible ? 1 : 0.6,
           }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 1, ease }}
           className="aurora absolute -top-48 left-1/2 h-[40rem] w-[64rem] -translate-x-1/2 rounded-full blur-3xl"
           style={{
             background:
@@ -195,7 +195,7 @@ export default function CinematicIntro({ onComplete }: Props) {
               initial={{ opacity: 0, scale: 0.4 }}
               animate={{ opacity: [0, 0.6, 0], scale: [0.4, 1.6, 2.2] }}
               exit={{ opacity: 0 }}
-              transition={{ duration: phase === "avatar" ? 0.9 : 0.7, ease }}
+              transition={{ duration: phase === "avatar" ? 1.2 : 0.95, ease }}
               className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full"
               style={{
                 background:
@@ -224,7 +224,7 @@ export default function CinematicIntro({ onComplete }: Props) {
                   key={id}
                   initial={{ scaleY: 0, opacity: 0 }}
                   animate={{ scaleY: 1, opacity: [0, 0.35, 0] }}
-                  transition={{ duration: 0.7, delay: id * 0.02, ease }}
+                  transition={{ duration: 1, delay: id * 0.04, ease }}
                   className="absolute left-1/2 top-1/2 h-32 w-px origin-bottom -translate-x-1/2"
                   style={{
                     rotate: `${rotation}deg`,
@@ -296,7 +296,7 @@ export default function CinematicIntro({ onComplete }: Props) {
                 initial={{ opacity: 0, y: 18, letterSpacing: "0.6em", filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, letterSpacing: "0.45em", filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.45, ease }}
+                transition={{ duration: 0.65, ease }}
                 className="font-display text-lg font-semibold uppercase text-white/95 sm:text-xl"
               >
                 Elias Elloumi
@@ -313,13 +313,13 @@ export default function CinematicIntro({ onComplete }: Props) {
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease, delay: 0.05 }}
+                transition={{ duration: 0.55, ease, delay: 0.1 }}
                 className="text-base leading-relaxed text-muted sm:text-lg md:text-xl"
               >
                 <motion.span
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.35, ease, delay: 0.1 }}
+                  transition={{ duration: 0.5, ease, delay: 0.2 }}
                   className="intro-shimmer font-serif italic font-semibold bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text text-transparent"
                 >
                   AI agents developer
@@ -327,7 +327,7 @@ export default function CinematicIntro({ onComplete }: Props) {
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.28 }}
+                  transition={{ duration: 0.45, delay: 0.45 }}
                 >
                   {" "}
                   — I ship products, not slides
@@ -344,7 +344,7 @@ export default function CinematicIntro({ onComplete }: Props) {
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               exit={{ opacity: 0, scaleX: 0 }}
-              transition={{ duration: 0.35, ease }}
+              transition={{ duration: 0.5, ease }}
               className="mt-8 flex items-center gap-4"
               aria-hidden
             >
@@ -366,7 +366,7 @@ export default function CinematicIntro({ onComplete }: Props) {
               initial={{ opacity: 0, y: 10, letterSpacing: "0.5em" }}
               animate={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
               exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.3, ease }}
+              transition={{ duration: 0.45, ease }}
               className="mt-10 text-[0.65rem] uppercase text-muted/80"
             >
               Enter
