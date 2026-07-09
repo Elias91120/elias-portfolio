@@ -77,7 +77,9 @@ function ProjectSection({
             key={project.name}
             project={project}
             index={i}
-            variant={variant}
+            variant={
+              project.caseStudy && project.image ? "featured" : variant
+            }
             mobile={compact}
           />
         ))}
