@@ -13,8 +13,9 @@
 # testing
 /coverage
 
-# local documents
+# local documents (CV public is versioned for download)
 *.pdf
+!public/CV_Elias_Elloumi_FR.pdf
 
 # next.js
 /.next/
