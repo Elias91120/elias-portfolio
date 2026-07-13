@@ -217,7 +217,7 @@ export default function AskWidget() {
                       </span>
                     )}
                     <div
-                      className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm ${
+                      className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                         isUser
                           ? "agent-bubble-user rounded-br-md text-white ring-1 ring-accent/30"
                           : "agent-bubble-assistant rounded-bl-md text-[#d4d0e8] ring-1 ring-white/10"

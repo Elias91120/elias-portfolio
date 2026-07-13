@@ -3,6 +3,7 @@
 import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { prepareAssistantDisplay } from "@/lib/agent-actions";
 
 const markdownComponents: Components = {
   p: ({ children }) => (
@@ -71,13 +72,16 @@ export default function AgentMessageContent({
   variant = "assistant",
 }: AgentMessageContentProps) {
   if (variant === "user") {
-    return <span className="whitespace-pre-wrap">{content}</span>;
+    return <span className="whitespace-pre-wrap leading-relaxed">{content}</span>;
   }
+
+  const display = prepareAssistantDisplay(content);
+  if (!display) return null;
 
   return (
     <div className="agent-message">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-        {content}
+        {display}
       </ReactMarkdown>
     </div>
   );

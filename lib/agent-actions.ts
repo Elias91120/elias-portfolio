@@ -13,7 +13,13 @@ export type AgentAction =
       section: "story" | "projects" | "skills" | "contact" | "proof";
     };
 
-const AGENT_ACTIONS_PATTERN = /<!--AGENT_ACTIONS:(\[[\s\S]*?\])-->/;
+/** Strict match — well-formed block from the prompt template. */
+const AGENT_ACTIONS_PATTERN = /<!--\s*AGENT_ACTIONS\s*:\s*(\[[\s\S]*?\])\s*-->/i;
+
+/** Lenient tail — models often omit `-->` or add stray `)`. */
+const AGENT_ACTIONS_TAIL = /(?:<!--\s*)?AGENT_ACTIONS[\s\S]*$/i;
+
+const AGENT_ACTIONS_JSON = /AGENT_ACTIONS\s*:\s*(\[[\s\S]*?\])/i;
 
 const SCROLL_INTENT_PATTERN =
   /\b(show me|take me to|scroll to|where is|montre(?:-moi)?|va voir)\b/i;
@@ -75,7 +81,8 @@ export function resolveProjectSlug(query: string): string | null {
 }
 
 function parseEmbeddedActions(text: string): AgentAction[] | null {
-  const match = text.match(AGENT_ACTIONS_PATTERN);
+  const match =
+    text.match(AGENT_ACTIONS_PATTERN) ?? text.match(AGENT_ACTIONS_JSON);
   if (!match) return null;
   try {
     const parsed = JSON.parse(match[1]) as AgentAction[];
@@ -86,8 +93,19 @@ function parseEmbeddedActions(text: string): AgentAction[] | null {
   }
 }
 
+/** Remove invisible navigation metadata — tolerant of malformed model output. */
 export function stripAgentActionsComment(text: string): string {
-  return text.replace(AGENT_ACTIONS_PATTERN, "").trimEnd();
+  return text
+    .replace(AGENT_ACTIONS_TAIL, "")
+    .replace(AGENT_ACTIONS_PATTERN, "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trimEnd();
+}
+
+/** Text safe to render or read aloud in the UI. */
+export function prepareAssistantDisplay(text: string): string {
+  return stripAgentActionsComment(text);
 }
 
 export function parseAgentActions(

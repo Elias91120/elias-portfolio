@@ -13,7 +13,7 @@ import {
 import {
   applyAgentActions,
   parseAgentActions,
-  stripAgentActionsComment,
+  prepareAssistantDisplay,
   type AgentAction,
 } from "@/lib/agent-actions";
 
@@ -122,7 +122,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
           const { done, value } = await reader.read();
           if (done) break;
           answer += decoder.decode(value, { stream: true });
-          const display = stripAgentActionsComment(answer);
+          const display = prepareAssistantDisplay(answer);
           setMessages([...history, { role: "assistant", content: display }]);
         }
 
@@ -141,7 +141,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
           }
         }
 
-        const finalDisplay = stripAgentActionsComment(answer);
+        const finalDisplay = prepareAssistantDisplay(answer);
         setMessages([
           ...history,
           { role: "assistant", content: finalDisplay },

@@ -8,6 +8,7 @@ import AgentMessageContent, {
 } from "@/components/AgentMessageContent";
 import { useAgentChat } from "@/components/AgentChatProvider";
 import { findProjectBySlug } from "@/lib/dev-terminal-commands";
+import { prepareAssistantDisplay } from "@/lib/agent-actions";
 import { prefersReducedMotion } from "@/lib/scroll-to-section";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -94,7 +95,9 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
     if (!consumeVoiceFlag()) return;
 
     const lang = detectSpeechLang();
-    const utterance = new SpeechSynthesisUtterance(lastAssistant.content);
+    const utterance = new SpeechSynthesisUtterance(
+      prepareAssistantDisplay(lastAssistant.content),
+    );
     utterance.lang = lang;
     const voice = pickVoice(lang);
     if (voice) utterance.voice = voice;
