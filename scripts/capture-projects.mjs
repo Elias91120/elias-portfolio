@@ -12,6 +12,7 @@ const targets = [
   { slug: "prompt-hub", url: "https://prompt-hub.3geeks.fr" },
   { slug: "promptoptim", url: "https://frontend-prompt-optim.vercel.app/" },
   { slug: "two", url: "https://apps.apple.com/fr/app/two/id6758867716" },
+  { slug: "green-jardin", url: "https://green-jardin.fr", ageGate: true },
 ];
 
 async function main() {
@@ -27,6 +28,13 @@ async function main() {
       await page.goto(t.url, { waitUntil: "networkidle", timeout: 45000 });
     } catch {
       console.warn(`${t.slug}: networkidle timeout, capturing anyway`);
+    }
+    if (t.ageGate) {
+      const btn = page.getByRole("button", { name: /18 ans/i });
+      if (await btn.isVisible({ timeout: 3000 }).catch(() => false)) {
+        await btn.click();
+        await page.waitForTimeout(1500);
+      }
     }
     // Let hero animations settle
     await page.waitForTimeout(4000);

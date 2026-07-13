@@ -370,7 +370,11 @@ body[data-dev-terminal] .ask-widget {
 }
 .intro-shimmer {
   background-size: 200% auto;
-  animation: introShimmer 2.4s ease-in-out 0.2s 1;
+  animation: introShimmer 2.8s ease-in-out 0.35s 1;
+}
+
+.intro-particle {
+  box-shadow: 0 0 6px rgba(167, 139, 250, 0.65);
 }
 
 /* Slow-drifting ambient glows */

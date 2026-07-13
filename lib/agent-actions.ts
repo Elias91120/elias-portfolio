@@ -39,6 +39,8 @@ const PROJECT_ALIASES: Record<string, string> = {
   "prompt optim": "promptoptim",
   "express divorce": "express-divorce-usa",
   "travel planner": "ai-travel-planner",
+  "green jardin": "green-jardin",
+  "green-jardin": "green-jardin",
 };
 
 const SECTION_HASH: Record<

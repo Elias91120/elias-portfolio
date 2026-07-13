@@ -39,6 +39,11 @@ const shipped = [
     href: "https://apps.apple.com/fr/app/two/id6758867716",
   },
   {
+    name: "Green Jardin",
+    detail: "Omnichannel CBD retail — Shopify storefront + custom staff platform",
+    href: "https://green-jardin.fr",
+  },
+  {
     name: "PromptOptim",
     detail: "Green-IT prompt optimizer, released in the open",
     href: "https://frontend-prompt-optim.vercel.app/",

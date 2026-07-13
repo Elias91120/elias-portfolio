@@ -13,6 +13,11 @@ const liveTargets = [
     url: "https://expressdivorceusa.co",
     // Scroll or navigate to a visible section if /get-started 404s
   },
+  {
+    slug: "green-jardin-shop",
+    url: "https://green-jardin.fr/collections/fleurs-cbd",
+    ageGate: true,
+  },
 ];
 
 /** Composite hero images from story chapters when no public URL exists */
@@ -30,6 +35,13 @@ async function captureLive(browser, target) {
     await page.goto(target.url, { waitUntil: "networkidle", timeout: 45000 });
   } catch {
     console.warn(`${target.slug}: networkidle timeout, capturing anyway`);
+  }
+  if (target.ageGate) {
+    const btn = page.getByRole("button", { name: /18 ans/i });
+    if (await btn.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await btn.click();
+      await page.waitForTimeout(1500);
+    }
   }
   await page.waitForTimeout(4000);
 

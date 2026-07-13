@@ -1,14 +1,23 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import PathSelector from "@/components/PathSelector";
 import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
+import { consumeIntroHandoff } from "@/lib/intro-handoff";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const easeOut = [0.16, 1, 0.3, 1] as const;
 
 export default function MobileHero({ ready = true }: { ready?: boolean }) {
+  const introHandoffRef = useRef<boolean | null>(null);
+
+  if (ready && introHandoffRef.current === null) {
+    introHandoffRef.current = consumeIntroHandoff();
+  }
+  const fromIntro = introHandoffRef.current === true;
   const { mode, setMode, hydrated } = useVisitorMode();
   const showHiringSummary = hydrated && mode === "hiring";
 
@@ -40,9 +49,22 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
 
       <div className="relative z-10 flex w-full max-w-md flex-col items-center text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.7, ease }}
+          initial={
+            fromIntro
+              ? { opacity: 0.92, scale: 1 }
+              : { opacity: 0, scale: 0.9 }
+          }
+          animate={
+            ready
+              ? { opacity: 1, scale: 1 }
+              : fromIntro
+                ? { opacity: 0.92, scale: 1 }
+                : { opacity: 0, scale: 0.9 }
+          }
+          transition={{
+            duration: fromIntro ? 0.5 : 0.7,
+            ease: fromIntro ? easeOut : ease,
+          }}
         >
           <div className="relative h-24 w-24 overflow-hidden rounded-full ring-2 ring-accent/40 shadow-[0_0_50px_rgba(167,139,250,0.25)]">
             <Image

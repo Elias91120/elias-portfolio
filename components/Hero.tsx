@@ -8,8 +8,10 @@ import HeroAgentBlock from "@/components/HeroAgentBlock";
 import { useDeveloperMode } from "@/components/DeveloperModeProvider";
 import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
+import { consumeIntroHandoff } from "@/lib/intro-handoff";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const easeOut = [0.16, 1, 0.3, 1] as const;
 const AVATAR_CLICKS_REQUIRED = 5;
 const AVATAR_CLICK_WINDOW_MS = 2000;
 
@@ -25,6 +27,12 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
   const clickCountRef = useRef(0);
   const lastAvatarClickRef = useRef(0);
   const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const introHandoffRef = useRef<boolean | null>(null);
+
+  if (ready && introHandoffRef.current === null) {
+    introHandoffRef.current = consumeIntroHandoff();
+  }
+  const fromIntro = introHandoffRef.current === true;
 
   const handleAvatarClick = useCallback(() => {
     const now = Date.now();
@@ -97,13 +105,22 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
 
       <div className="relative z-10 flex flex-col items-center text-center max-w-4xl">
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={
-            ready
-              ? { opacity: 1, scale: 1 }
+          initial={
+            fromIntro
+              ? { opacity: 0.92, scale: 1, y: 0 }
               : { opacity: 0, scale: 0.85 }
           }
-          transition={{ duration: 0.8, ease }}
+          animate={
+            ready
+              ? { opacity: 1, scale: 1, y: 0 }
+              : fromIntro
+                ? { opacity: 0.92, scale: 1, y: 0 }
+                : { opacity: 0, scale: 0.85 }
+          }
+          transition={{
+            duration: fromIntro ? 0.55 : 0.8,
+            ease: fromIntro ? easeOut : ease,
+          }}
           className="animate-float mt-2 sm:mt-4"
         >
           <button
@@ -141,9 +158,13 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ delay: ready ? 0.2 : 0, duration: 0.7, ease }}
+          initial={{ opacity: 0, y: fromIntro ? 10 : 16 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: fromIntro ? 10 : 16 }}
+          transition={{
+            delay: ready ? (fromIntro ? 0.35 : 0.2) : 0,
+            duration: fromIntro ? 0.85 : 0.7,
+            ease: fromIntro ? easeOut : ease,
+          }}
           className="mt-8 flex items-center gap-3 text-accent"
         >
           <span className="h-px w-8 bg-accent/40" />
@@ -154,9 +175,13 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ delay: ready ? 0.35 : 0, duration: 0.7, ease }}
+          initial={{ opacity: 0, y: fromIntro ? 14 : 20 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: fromIntro ? 14 : 20 }}
+          transition={{
+            delay: ready ? (fromIntro ? 0.48 : 0.35) : 0,
+            duration: fromIntro ? 0.9 : 0.7,
+            ease: fromIntro ? easeOut : ease,
+          }}
           className="font-display mt-5 text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.05]"
         >
           From a Minecraft kid

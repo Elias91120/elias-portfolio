@@ -13,7 +13,7 @@ type Stat = {
 
 const stats: Stat[] = [
   {
-    value: 6,
+    value: 7,
     label: "products shipped & live",
     accent: "#4ade80",
   },
