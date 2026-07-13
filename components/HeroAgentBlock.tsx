@@ -15,7 +15,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 const suggestions = [
   "Show me the Nokia dashboard project",
-  "What is webgen and Web-Gen?",
+  "What is 3geeks?",
   "Is Elias available for an apprenticeship?",
 ];
 

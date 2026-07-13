@@ -79,8 +79,8 @@ export function buildSafeFallback(userMessage: string): string {
     )
   ) {
     return lang === "fr"
-      ? `Oui — Elias recherche activement une alternance de deux ans (2026–2028) en data engineering / IA, en parallèle de son M.Sc. Data Engineering & AI à EFREI Paris (RNCP niveau 7). Il reste aussi ouvert au freelance via webgen. Contact : ${contact.email}`
-      : `Yes — Elias is actively looking for a two-year apprenticeship (2026–2028) in data engineering / AI, alongside his M.Sc. at EFREI Paris (RNCP level 7). Freelance via webgen is also open. Contact: ${contact.email}`;
+      ? `Oui — Elias recherche activement une alternance de deux ans (2026–2028) en data engineering / IA, en parallèle de son M.Sc. Data Engineering & AI à EFREI Paris (RNCP niveau 7). Il reste aussi ouvert au freelance via 3geeks. Contact : ${contact.email}`
+      : `Yes — Elias is actively looking for a two-year apprenticeship (2026–2028) in data engineering / AI, alongside his M.Sc. at EFREI Paris (RNCP level 7). Freelance via 3geeks is also open. Contact: ${contact.email}`;
   }
 
   if (/nokia|feature analyzer|feature-analyzer|dashboard/.test(msg)) {

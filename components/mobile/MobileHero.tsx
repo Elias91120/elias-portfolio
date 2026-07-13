@@ -97,7 +97,7 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
         >
           Building data pipelines, AI agents, and production products at{" "}
           <span className="text-foreground">Nokia</span> and{" "}
-          <span className="text-foreground">webgen</span>.
+          <span className="text-foreground">3geeks</span>.
         </motion.p>
 
         <motion.div

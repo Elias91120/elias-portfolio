@@ -6,6 +6,7 @@ import { ViewTransition } from "react";
 import { motion } from "framer-motion";
 import type { Project } from "@/lib/data";
 import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
+import ProjectCardMetrics from "@/components/ProjectCardMetrics";
 import { getProjectSlug } from "@/lib/dev-terminal-commands";
 import { getCaseStudySlug } from "@/lib/view-transitions";
 
@@ -80,6 +81,8 @@ export default function ProjectCard({
   const projectSlug = getProjectSlug(project);
   const useMorphPreview =
     isFeatured && project.image && project.caseStudy && caseStudySlug;
+  const isCaseStudy = Boolean(project.caseStudy);
+  const isCompactCaseStudy = isCaseStudy && !isFeatured && !isMobileFeatured;
 
   return (
     <motion.div
@@ -95,12 +98,17 @@ export default function ProjectCard({
         className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 transition-all duration-300 touch-press ${
           isFeatured || isMobileFeatured ? "ring-white/12" : "p-6 ring-white/8"
         } ${
+          isCaseStudy ? "ring-[color-mix(in_srgb,var(--cs-accent,_#a78bfa)_18%,transparent)]" : ""
+        } ${
           clickable
             ? "hover:-translate-y-1.5 hover:ring-white/25 cursor-pointer"
             : "hover:ring-white/15"
-        }`}
+        } ${isCaseStudy && clickable ? "hover:ring-[color-mix(in_srgb,currentColor_35%,transparent)]" : ""}`}
         style={{
           boxShadow: `0 20px 60px -32px ${project.accent}${isFeatured || isMobileFeatured ? "55" : "40"}`,
+          ...(isCaseStudy
+            ? ({ "--cs-accent": project.accent } as React.CSSProperties)
+            : {}),
         }}
       >
         {isMobileFeatured && project.image && (
@@ -214,6 +222,19 @@ export default function ProjectCard({
             }}
           />
 
+          {isCaseStudy && (isFeatured || isMobileFeatured) && project.image && (
+            <span
+              className="mb-3 inline-flex w-fit rounded-full px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] ring-1"
+              style={{
+                color: project.accent,
+                backgroundColor: `${project.accent}14`,
+                borderColor: `${project.accent}35`,
+              }}
+            >
+              Case study
+            </span>
+          )}
+
           {(!isFeatured || !project.image) && !isMobileFeatured && (
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 flex-col gap-3">
@@ -231,24 +252,46 @@ export default function ProjectCard({
                   style={{ backgroundColor: project.accent }}
                 />
               </div>
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ${
-                  statusStyles[project.status]
-                }`}
-              >
-                {project.status}
-              </span>
+              <div className="flex shrink-0 flex-col items-end gap-2">
+                {isCaseStudy && (
+                  <span
+                    className="rounded-full px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] ring-1"
+                    style={{
+                      color: project.accent,
+                      backgroundColor: `${project.accent}14`,
+                      borderColor: `${project.accent}35`,
+                    }}
+                  >
+                    Case study
+                  </span>
+                )}
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ${
+                    statusStyles[project.status]
+                  }`}
+                >
+                  {project.status}
+                </span>
+              </div>
             </div>
           )}
 
           <h3
             className={`font-display font-semibold text-white ${
               isFeatured ? "text-2xl" : isMobileFeatured ? "text-xl" : "text-xl"
-            } ${(isFeatured || isMobileFeatured) && project.image ? "" : "mt-4"}`}
+            } ${(isFeatured || isMobileFeatured) && project.image ? "" : "mt-4"} ${
+              isCaseStudy ? "transition-colors group-hover:text-[color-mix(in_srgb,white_92%,var(--cs-accent))]" : ""
+            }`}
           >
             {project.name}
             {clickable && (
-              <span className="ml-2 inline-block text-muted transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5 group-hover:text-white">
+              <span
+                className={`ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5 ${
+                  isCaseStudy
+                    ? "text-[var(--cs-accent)] group-hover:text-white"
+                    : "text-muted group-hover:text-white"
+                }`}
+              >
                 {project.caseStudy ? "→" : "↗"}
               </span>
             )}
@@ -258,14 +301,33 @@ export default function ProjectCard({
           </div>
 
           <p
-            className={`mt-4 flex-1 leading-relaxed text-[#c5c0da] ${
+            className={`mt-4 leading-relaxed text-[#c5c0da] ${
               isFeatured ? "text-base" : "text-sm"
-            } ${isMobileFeatured ? "line-clamp-3" : ""}`}
+            } ${
+              isMobileFeatured
+                ? "line-clamp-3"
+                : isCompactCaseStudy
+                  ? "line-clamp-3 flex-none"
+                  : isCaseStudy && project.metrics
+                    ? "line-clamp-2 flex-none"
+                    : "flex-1"
+            }`}
           >
             {project.description}
           </p>
 
-          {isFeatured && project.highlights && project.highlights.length > 0 && (
+          {isCaseStudy && project.metrics && project.metrics.length > 0 && (
+            <ProjectCardMetrics
+              metrics={project.metrics}
+              accent={project.accent}
+              compact={!isFeatured && !isMobileFeatured}
+              className={`${isCompactCaseStudy ? "mt-5 flex-1" : "mt-5"} ${
+                isFeatured ? "sm:mt-6" : ""
+              }`}
+            />
+          )}
+
+          {isFeatured && !isCaseStudy && project.highlights && project.highlights.length > 0 && (
             <ul className="mt-5 space-y-2">
               {(mobile ? project.highlights.slice(0, 2) : project.highlights).map(
                 (highlight) => (
@@ -295,14 +357,31 @@ export default function ProjectCard({
           </div>
 
           {isMobileFeatured && clickable && (project.ctaLabel || project.caseStudy) && (
-            <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+            <div
+              className={`mt-4 inline-flex items-center gap-1.5 text-sm font-medium ${
+                isCaseStudy ? "" : "text-accent"
+              }`}
+              style={isCaseStudy ? { color: project.accent } : undefined}
+            >
               {project.ctaLabel ?? "Voir le case study"}
               <span aria-hidden>{project.caseStudy ? "→" : "↗"}</span>
             </div>
           )}
 
-          {isFeatured && clickable && project.ctaLabel && (
-            <div className="mt-6 inline-flex items-center gap-2 self-start rounded-full bg-white/8 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition-all duration-300 group-hover:bg-white/12 group-hover:ring-white/30">
+          {clickable && project.ctaLabel && (isFeatured || isCompactCaseStudy) && (
+            <div
+              className={`inline-flex items-center gap-2 self-start rounded-full px-4 py-2 text-sm font-medium text-white ring-1 transition-all duration-300 group-hover:ring-white/30 ${
+                isFeatured ? "mt-6" : "mt-5"
+              } ${isCaseStudy ? "" : "bg-white/8 ring-white/15 group-hover:bg-white/12"}`}
+              style={
+                isCaseStudy
+                  ? {
+                      backgroundColor: `${project.accent}22`,
+                      boxShadow: `0 0 0 1px ${project.accent}30`,
+                    }
+                  : undefined
+              }
+            >
               {project.ctaLabel}
               <span className="transition-transform duration-300 group-hover:translate-x-0.5">
                 {project.caseStudy ? "→" : "↗"}

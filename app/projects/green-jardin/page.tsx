@@ -288,7 +288,7 @@ export default function GreenJardinCaseStudy() {
             </p>
           </CaseStudySection>
 
-          <CaseStudyCta description="Green Jardin is one of webgen's production ships — from a Minecraft kid to omnichannel retail systems and production AI at Nokia." />
+          <CaseStudyCta description="Green Jardin is one of 3geeks's production ships — from a Minecraft kid to omnichannel retail systems and production AI at Nokia." />
         </div>
       </ViewTransition>
     </CaseStudyShell>

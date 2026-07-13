@@ -14,7 +14,7 @@ const theme = getCaseStudyTheme("express-divorce");
 export const metadata: Metadata = {
   title: "Express Divorce USA — Case Study",
   description:
-    "Live legal-tech SaaS simplifying US divorce journeys across multiple states — built for regulated-sector constraints at webgen.",
+    "Live legal-tech SaaS simplifying US divorce journeys across multiple states — built for regulated-sector constraints at 3geeks.",
   alternates: { canonical: "/projects/express-divorce" },
   openGraph: {
     title: "Express Divorce USA — Case Study · Elias Elloumi",
@@ -48,7 +48,7 @@ export default function ExpressDivorceCaseStudy() {
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--cs-muted)]">
             A live SaaS that guides people through US divorce journeys — state by
             state, with the compliance mindset that regulated sectors demand.
-            Shipped by webgen for real users.
+            Shipped by 3geeks for real users.
           </p>
           <ComplianceBadges />
         </div>
@@ -82,7 +82,7 @@ export default function ExpressDivorceCaseStudy() {
           <CaseStudySection title="What we shipped">
             <p>
               Express Divorce USA is a live legal-tech SaaS with real users —
-              built at webgen as a production Next.js application. It guides
+              built at 3geeks as a production Next.js application. It guides
               people through multi-state divorce journeys with state-aware
               workflows, not generic templates.
             </p>
@@ -108,7 +108,7 @@ export default function ExpressDivorceCaseStudy() {
 
           <CaseStudySection title="My role">
             <p>
-              Full-stack developer at webgen (3geeks studio). I worked across the
+              Full-stack developer at 3geeks. I worked across the
               Next.js production app — from user-facing flows to the engineering
               decisions that keep a regulated-sector product maintainable in
               production.
@@ -142,7 +142,7 @@ export default function ExpressDivorceCaseStudy() {
           </CaseStudySection>
 
           <CaseStudyCta
-            description="Express Divorce is one of webgen's production ships — the portfolio reads like a book, from a Minecraft kid to production AI systems at Nokia."
+            description="Express Divorce is one of 3geeks's production ships — the portfolio reads like a book, from a Minecraft kid to production AI systems at Nokia."
           />
         </div>
       </ViewTransition>

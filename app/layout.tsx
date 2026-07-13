@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s · Elias Elloumi",
   },
   description:
-    "Professional vibe coder building data pipelines, AI agents & production products at Nokia and webgen. A portfolio that reads like an illustrated book — one scroll at a time.",
+    "Professional vibe coder building data pipelines, AI agents & production products at Nokia and 3geeks. A portfolio that reads like an illustrated book — one scroll at a time.",
   keywords: [
     "Elias Elloumi",
     "Full-Stack Developer",
@@ -37,8 +37,7 @@ export const metadata: Metadata = {
     "Vibe coding",
     "Portfolio",
     "Nokia",
-    "webgen",
-    "Web-Gen",
+    "3geeks",
     "EFREI Paris",
     "ECE Paris",
     "Data & AI",
@@ -53,13 +52,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
     description:
-      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and webgen. A story that reads like an illustrated book.",
+      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and 3geeks. A story that reads like an illustrated book.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
     description:
-      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and webgen. A story that reads like an illustrated book.",
+      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and 3geeks. A story that reads like an illustrated book.",
   },
   robots: {
     index: true,

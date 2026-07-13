@@ -22,6 +22,7 @@ const SLUG_OVERRIDES: Record<string, string> = {
   "Feature Analyzer Dashboard 2.0": "feature-analyzer",
   "Cursor pour les nuls": "cursor-portal",
   "3geeks Infra": "3geeks-infra",
+  "3geeks": "web-gen",
   PromptOptim: "promptoptim",
   CallKitchen: "callkitchen",
 };
@@ -102,7 +103,7 @@ Shortcuts: press \` (backtick) or Dev mode in the nav.`;
 
 const WHOAMI_TEXT = `elias-elloumi
 role:    full-stack · data engineering · AI agents
-org:     Nokia (apprenticeship) + webgen (co-founder)
+org:     Nokia (apprenticeship) + 3geeks (co-founder)
 stack:   Next.js · FastAPI · Python · 3Geeks API · GSAP
 status:  open to apprenticeship 2026–2028 (FR)
 site:    https://elias-elloumi.com`;

@@ -72,7 +72,7 @@ export default function Contact({ compact = false }: { compact?: boolean }) {
                 Apprenticeship is my priority
               </span>{" "}
               for 2026–2028. I&apos;m also open to freelance missions through
-              webgen or on Fiverr.
+              3geeks or on Fiverr.
             </>
           )}
         </p>

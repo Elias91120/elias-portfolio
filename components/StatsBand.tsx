@@ -30,7 +30,7 @@ const stats: Stat[] = [
   },
   {
     value: 3,
-    label: "friends behind webgen",
+    label: "friends behind 3geeks",
     accent: "#c084fc",
   },
   {

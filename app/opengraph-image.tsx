@@ -83,7 +83,7 @@ export default async function OpenGraphImage() {
               lineHeight: 1.5,
             }}
           >
-            Nokia · webgen · EFREI Paris — a story that reads like an illustrated
+            Nokia · 3geeks · EFREI Paris — a story that reads like an illustrated
             book, one scroll at a time.
           </div>
 

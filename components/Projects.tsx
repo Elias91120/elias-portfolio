@@ -122,10 +122,10 @@ export default function Projects({ compact = false }: { compact?: boolean }) {
         />
 
         <ProjectSection
-          kicker="WEBGEN LAB"
+          kicker="3GEEKS LAB"
           title="Studio lab by"
-          titleAccent="webgen"
-          description="Web-Gen is the flagship — an intent-to-website generator. Alongside it, we build open AI tools around digital sobriety, project planning, and developer workflows."
+          titleAccent="3geeks"
+          description="3geeks is the studio — intent-to-website generation on www.3geeks.fr, plus open AI tools around digital sobriety, project planning, and developer workflows."
           projects={greenStackProjects}
           variant={cardVariant}
           gridClassName="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"

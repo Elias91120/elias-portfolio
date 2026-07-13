@@ -198,7 +198,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
           Professional vibe coder from the fresh new wave — building data
           pipelines, AI agents, and production products at{" "}
           <span className="text-foreground">Nokia</span> and{" "}
-          <span className="text-foreground">webgen</span>. This is the story of
+          <span className="text-foreground">3geeks</span>. This is the story of
           how I got here — one scroll at a time.
         </motion.p>
 

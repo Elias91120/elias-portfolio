@@ -14,7 +14,7 @@ const theme = getCaseStudyTheme("3geeks-infra");
 
 const impactMetrics = [
   { value: "8+", label: "apps on self-hosted Coolify" },
-  { value: "7", label: "public *.3geeks.fr domains" },
+  { value: "5", label: "public *.3geeks.fr domains" },
   { value: "3", label: "Vercel → self-host migrations" },
   { value: "1", label: "Mac Mini prod cluster" },
 ];
@@ -23,16 +23,14 @@ const infraTags = ["Coolify", "Traefik", "Cloudflare Tunnel", "Docker"];
 
 const hostedServices = [
   "3geeks.fr — studio landing",
-  "api.3geeks.fr — API hub (FastAPI + Ollama)",
-  "workspace.3geeks.fr — team workspace (Next.js)",
-  "prompt-hub.3geeks.fr — Prompt Hub (web + API)",
-  "prompt-optim.3geeks.fr — PromptOptim (web + API)",
+  "prompt-hub.3geeks.fr — Prompt Hub",
+  "prompt-optim.3geeks.fr — PromptOptim",
 ];
 
 export const metadata: Metadata = {
   title: "3geeks Infra — Case Study",
   description:
-    "Self-hosted production stack for webgen — Mac Mini, Coolify, Traefik, and Cloudflare Tunnel powering 8+ live apps on *.3geeks.fr.",
+    "Self-hosted production stack for 3geeks — Mac Mini, Coolify, Traefik, and Cloudflare Tunnel powering 8+ live apps on *.3geeks.fr.",
   alternates: { canonical: "/projects/3geeks-infra" },
   openGraph: {
     title: "3geeks Infra — Case Study · Elias Elloumi",
@@ -73,7 +71,7 @@ export default function ThreeGeeksInfraCaseStudy() {
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--cs-muted)]">
-            The production backbone behind webgen — a Mac Mini cluster running
+            The production backbone behind 3geeks — a Mac Mini cluster running
             Coolify, Traefik, and Cloudflare Tunnel so studio apps ship to{" "}
             <em className="font-serif text-[var(--cs-fg)]">*.3geeks.fr</em>{" "}
             without depending on a single PaaS.
@@ -114,10 +112,9 @@ export default function ThreeGeeksInfraCaseStudy() {
 
           <CaseStudySection title="The problem">
             <p>
-              webgen ships fast — Prompt Hub, PromptOptim, the API hub, the
-              workspace — but Vercel bills add up, env vars scatter across
-              dashboards, and there is no single place to see what is actually
-              running in production.
+              3geeks ships fast — Prompt Hub, PromptOptim, and more — but
+              Vercel bills add up, env vars scatter across dashboards, and there
+              is no single place to see what is actually running in production.
             </p>
             <p>
               The studio needed sovereign hosting: one deploy pipeline, one
@@ -171,15 +168,15 @@ export default function ThreeGeeksInfraCaseStudy() {
               ))}
             </ul>
             <p className="mt-4">
-              Internal APIs (Prompt Hub API, PromptOptim API) stay off the public
-              ingress — only the web frontends and documented public endpoints are
-              exposed through the tunnel.
+              Private studio services (internal APIs, team tools) stay off the
+              public ingress — only documented public products are exposed
+              through the tunnel.
             </p>
           </CaseStudySection>
 
           <CaseStudySection title="What I operate">
             <p>
-              I designed and run this stack for webgen — Coolify app provisioning,
+              I designed and run this stack for 3geeks — Coolify app provisioning,
               Traefik routing rules, Cloudflare DNS and tunnel ingress, PostgreSQL
               on Coolify, env-var management, health monitoring, and Vercel
               migrations with zero-downtime redirects.
@@ -194,7 +191,7 @@ export default function ThreeGeeksInfraCaseStudy() {
             </p>
           </CaseStudySection>
 
-          <CaseStudyCta description="3geeks Infra is the platform layer under every webgen green-stack product — from intent-to-website generation to mindful AI tools." />
+          <CaseStudyCta description="3geeks Infra is the platform layer under every green-stack product at 3geeks — from intent-to-website generation to mindful AI tools." />
         </div>
       </ViewTransition>
     </CaseStudyShell>

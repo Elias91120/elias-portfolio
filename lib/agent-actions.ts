@@ -36,6 +36,7 @@ const PROJECT_ALIASES: Record<string, string> = {
   "feature-analyzer": "feature-analyzer",
   dashboard: "feature-analyzer",
   webgen: "web-gen",
+  "3geeks": "web-gen",
   "web-gen": "web-gen",
   "web gen": "web-gen",
   "cursor portal": "cursor-portal",

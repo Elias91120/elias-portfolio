@@ -52,8 +52,8 @@ export const STORY_BRANCH_POINTS: StoryBranchPoint[] = [
         nextChapterIds: ["nokia", "3geeks", "future"],
       },
       {
-        id: "webgen-first",
-        label: "Tell me about webgen first",
+        id: "3geeks-first",
+        label: "Tell me about 3geeks first",
         nextChapterIds: ["3geeks", "nokia", "future"],
       },
     ],

@@ -103,7 +103,7 @@ export const chapters: Chapter[] = [
     id: "3geeks",
     years: "2025 — now",
     title: "Three Friends, One Studio",
-    text: "Meanwhile, with Noam and Charles, webgen became our studio — made in France, built around Web-Gen, our intent-to-website generator. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, launched Green Jardin — a live CBD shop online and in-store — and released tools like PromptOptim in the open. Behind the products, we run our own prod stack on a Mac Mini: Coolify, Traefik, Cloudflare Tunnel — push to GitHub, live on *.3geeks.fr. Three friends, real clients, real code.",
+    text: "Meanwhile, with Noam and Charles, 3geeks became our studio — made in France, built around an intent-to-website generator that grew into our landing and product lab. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, launched Green Jardin — a live CBD shop online and in-store — and released tools like PromptOptim in the open. Behind the products, we run our own prod stack on a Mac Mini: Coolify, Traefik, Cloudflare Tunnel — push to GitHub, live on *.3geeks.fr. Three friends, real clients, real code.",
     image: "/story/chapter-6.jpg",
     video: "/story/chapter-6.mp4",
     imageAlt: "Elias, Noam and Charles celebrating a launch at 3geeks",
@@ -115,7 +115,7 @@ export const chapters: Chapter[] = [
     id: "future",
     years: "2026 — 2028",
     title: "Now & Next",
-    text: "Next comes the M.Sc. Data Engineering & AI at EFREI Paris — RNCP level 7, built around data architecture, structural AI, and cloud governance. I'm actively looking for a two-year work-study company (2026–2028) where pipelines, agents, and production craft meet. Meanwhile, webgen keeps shipping real products with Noam and Charles. The eight-year-old in front of the Minecraft screen is still here. He just ships to production now.",
+    text: "Next comes the M.Sc. Data Engineering & AI at EFREI Paris — RNCP level 7, built around data architecture, structural AI, and cloud governance. I'm actively looking for a two-year work-study company (2026–2028) where pipelines, agents, and production craft meet. Meanwhile, 3geeks keeps shipping real products with Noam and Charles. The eight-year-old in front of the Minecraft screen is still here. He just ships to production now.",
     image: "/story/chapter-7.jpg",
     video: "/story/chapter-7.mp4",
     imageAlt: "Elias looking at a futuristic city skyline at dawn",
@@ -316,12 +316,19 @@ export const testimonials: Testimonial[] = [
 
 export type ProjectCategory = "client-live" | "green-stack" | "professional";
 
+export type ProjectMetric = {
+  value: string;
+  label: string;
+};
+
 export type Project = {
   name: string;
   role: string;
   description: string;
   tags: string[];
   highlights?: string[];
+  /** Impact numbers shown on case-study cards (homepage) */
+  metrics?: ProjectMetric[];
   link?: string;
   linkLabel?: string;
   ctaLabel?: string;
@@ -348,6 +355,10 @@ export const projects: Project[] = [
       "Multi-state US compliance",
       "Data sovereignty & personal-data security",
     ],
+    metrics: [
+      { value: "Live", label: "in production" },
+      { value: "Multi-state", label: "US compliance" },
+    ],
     tags: ["Next.js", "Production", "Legal tech"],
     link: "https://expressdivorceusa.co",
     linkLabel: "expressdivorceusa.co",
@@ -361,7 +372,7 @@ export const projects: Project[] = [
   },
   {
     name: "CallKitchen",
-    role: "Restaurant phone automation · webgen",
+    role: "Restaurant phone automation · 3geeks",
     description:
       "Restaurants lose orders, reservations, and customer questions when the phone rings during rush hour and staff can't pick up. CallKitchen is the live landing for an AI voice agent that answers 24/7 — takeout, bookings, FAQs from approved menus, SMS confirmations, and kitchen dashboard — with a demo line, pricing tiers, and a full how-it-works narrative. A shipped GTM page recruiters can click through, not a mockup.",
     highlights: [
@@ -380,7 +391,7 @@ export const projects: Project[] = [
   },
   {
     name: "Two",
-    role: "Consumer iOS app · webgen",
+    role: "Consumer iOS app · 3geeks",
     description:
       "Couples scatter their shared life across chat, calendar, expenses, and memories — nothing feels private or unified. Two is an all-in-one iOS cocoon: distance tracking, mood sharing, a sweet-notes wall, geolocated photo map, shared home vault, synced calendar, expense split, and a playroom — data stays between the two partners only, never sold for ads. Live on the App Store, built for daily recurring use.",
     highlights: [
@@ -407,6 +418,10 @@ export const projects: Project[] = [
       "Private ops platform — POS, loyalty, Shopify bridge (no public URL)",
       "Firebase RTDB real-time sync between counter and customer TV",
     ],
+    metrics: [
+      { value: "14%", label: "loyalty cashback" },
+      { value: "3", label: "channels synced live" },
+    ],
     tags: ["Shopify", "Firebase", "POS", "Omnichannel"],
     link: "https://green-jardin.fr",
     linkLabel: "green-jardin.fr",
@@ -419,16 +434,20 @@ export const projects: Project[] = [
     category: "client-live",
   },
   {
-    name: "Web-Gen",
-    role: "webgen · AI web generation",
+    name: "3geeks",
+    role: "3geeks studio · AI web generation",
     description:
-      "Intent-to-website generator: a text brief becomes a fully laid-out site. Flagship product of the studio — LLM orchestration meets UI generation.",
+      "Intent-to-website generator and studio landing: a text brief becomes a fully laid-out site. Flagship of 3geeks — LLM orchestration meets UI generation on www.3geeks.fr.",
     highlights: [
       "Brief → structured layout in one flow",
       "LLM + GenUI orchestration with Next.js",
-      "Studio flagship — the product webgen was built around",
+      "Studio flagship — the product 3geeks was built around",
     ],
-    tags: ["LLM", "GenUI", "Next.js", "webgen"],
+    metrics: [
+      { value: "1", label: "brief → full site" },
+      { value: "LLM", label: "+ GenUI engine" },
+    ],
+    tags: ["LLM", "GenUI", "Next.js", "3geeks"],
     link: "https://www.3geeks.fr",
     linkLabel: "www.3geeks.fr",
     ctaLabel: "Read the case study",
@@ -442,13 +461,19 @@ export const projects: Project[] = [
   },
   {
     name: "3geeks Infra",
-    role: "Self-hosted prod · webgen",
+    role: "Self-hosted prod · 3geeks",
     description:
-      "webgen's apps lived on Vercel with scattered env vars and rising bills — no single view of what ran in prod. I built a Mac Mini cluster (Coolify + Traefik + Cloudflare Tunnel) so every *.3geeks.fr service deploys from GitHub in one golden path, with Vercel migrations and PostgreSQL on Coolify. 8+ live apps, 7 public domains, infrastructure we operate.",
+      "3geeks apps lived on Vercel with scattered env vars and rising bills — no single view of what ran in prod. I built a Mac Mini cluster (Coolify + Traefik + Cloudflare Tunnel) so every *.3geeks.fr service deploys from GitHub in one golden path, with Vercel migrations and PostgreSQL on Coolify. 8+ live apps, 5 public domains, infrastructure we operate.",
     highlights: [
-      "8+ apps on Coolify — landing, API hub, workspace, Prompt Hub, PromptOptim",
+      "8+ apps on Coolify — landing, Prompt Hub, PromptOptim (+ private studio services)",
       "Golden path: git push → Coolify → Traefik :443 → CF Tunnel",
       "3 Vercel → self-host migrations with permanent redirects",
+    ],
+    metrics: [
+      { value: "8+", label: "apps on Coolify" },
+      { value: "5", label: "public domains" },
+      { value: "3", label: "Vercel migrations" },
+      { value: "1", label: "Mac Mini cluster" },
     ],
     tags: ["Coolify", "Traefik", "Cloudflare", "Docker"],
     link: "https://www.3geeks.fr",
@@ -463,7 +488,7 @@ export const projects: Project[] = [
   },
   {
     name: "Prompt Hub",
-    role: "AI project planning · webgen beta",
+    role: "AI project planning · 3geeks beta",
     description:
       "A vague idea in chat doesn't become a build plan — developers lose hours re-explaining stack and context. Prompt Hub turns a short brief into phased steps and copy-paste prompts (objectives, constraints, decisions, skills included), orchestrated by 7+ specialized agents with a dependency graph and versioned history. Beta live and free — idea to executable plan in under a minute.",
     highlights: [
@@ -482,9 +507,9 @@ export const projects: Project[] = [
   },
   {
     name: "PromptOptim",
-    role: "Green IT & digital sovereignty · webgen",
+    role: "Green IT & digital sovereignty · 3geeks",
     description:
-      "Verbose prompts burn tokens and CO₂ with zero visibility into the environmental cost. PromptOptim sharpens prompts for the same intent with fewer tokens, estimates carbon impact per request, and champions European models with a GDPR-conscious stance. Open tool in production — webgen's answer to mindful, sovereign AI usage.",
+      "Verbose prompts burn tokens and CO₂ with zero visibility into the environmental cost. PromptOptim sharpens prompts for the same intent with fewer tokens, estimates carbon impact per request, and champions European models with a GDPR-conscious stance. Open tool in production — 3geeks' answer to mindful, sovereign AI usage.",
     highlights: [
       "Same intent, fewer tokens — precision over padding",
       "CO₂ estimation surfaced on every optimization",
@@ -509,6 +534,10 @@ export const projects: Project[] = [
       "Collect → analyze → correlate → report pipeline",
       "FastAPI + React — workflows teams rely on daily",
     ],
+    metrics: [
+      { value: "7+", label: "data sources unified" },
+      { value: "4", label: "pipeline stages" },
+    ],
     tags: ["FastAPI", "React", "Data pipeline"],
     ctaLabel: "Read the case study",
     image: "/projects/nokia-dashboard.webp",
@@ -528,6 +557,10 @@ export const projects: Project[] = [
       "Gemini + SaaS APIs for day-by-day itineraries",
       "Best Bachelor project at ECE Paris",
     ],
+    metrics: [
+      { value: "#1", label: "Bachelor project ECE" },
+      { value: "Gemini", label: "intent → itinerary" },
+    ],
     tags: ["Gemini", "APIs", "Best Bachelor project"],
     ctaLabel: "Read the case study",
     image: "/projects/ai-travel-planner.webp",
@@ -546,6 +579,12 @@ export const projects: Project[] = [
       "1,019 portal views · 75 unique visitors",
       "100+ questions answered by the embedded RAG assistant",
       "Demos & onboarding across 4 teams in the sector",
+    ],
+    metrics: [
+      { value: "1,019", label: "total portal views" },
+      { value: "75", label: "unique visitors" },
+      { value: "100+", label: "RAG questions answered" },
+      { value: "4", label: "teams onboarded" },
     ],
     tags: ["RAG", "DevEx", "AI adoption", "MCP"],
     ctaLabel: "Read the case study",
@@ -573,7 +612,7 @@ export const contact = {
   linkedinLabel: "linkedin.com/in/elias-elloumi",
   location: "Palaiseau (91), France",
   studio: "https://www.3geeks.fr",
-  studioLabel: "webgen studio",
+  studioLabel: "3geeks studio",
   fiverr: "https://www.fiverr.com/three_geeks",
   fiverrLabel: "@three_geeks",
   languages: "FR native · EN C1 · AR fluent",

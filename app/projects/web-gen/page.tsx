@@ -4,22 +4,22 @@ import { ViewTransition } from "react";
 import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
 
 export const metadata: Metadata = {
-  title: "Web-Gen — Case Study",
+  title: "3geeks — Case Study",
   description:
-    "How three friends built Web-Gen, an intent-to-website generator: LLM orchestration, GenUI and Next.js turning a text brief into a fully laid-out site.",
+    "How three friends built 3geeks, an intent-to-website generator: LLM orchestration, GenUI and Next.js turning a text brief into a fully laid-out site.",
   alternates: { canonical: "/projects/web-gen" },
   openGraph: {
-    title: "Web-Gen — Case Study · Elias Elloumi",
+    title: "3geeks — Case Study · Elias Elloumi",
     description:
-      "Intent-to-website generator: a text brief becomes a fully laid-out site. The flagship product of the webgen studio.",
+      "Intent-to-website generator and studio landing on www.3geeks.fr — the flagship product of the 3geeks studio.",
   },
 };
 
 const stack = [
   { label: "LLM orchestration", detail: "Multi-step prompting turns a brief into structure" },
   { label: "GenUI", detail: "Generated layouts rendered as real components" },
-  { label: "Next.js", detail: "App Router, streaming, deployed on Vercel" },
-  { label: "Made in France", detail: "Built by the webgen studio — Elias, Noam & Charles" },
+  { label: "Next.js", detail: "App Router, streaming, deployed on Coolify" },
+  { label: "Made in France", detail: "Built by the 3geeks studio — Elias, Noam & Charles" },
 ];
 
 const shipped = [
@@ -88,15 +88,15 @@ export default function WebGenCaseStudy() {
               CASE STUDY
             </span>
             <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Web-Gen —{" "}
+              3geeks —{" "}
               <span className="font-serif italic font-semibold text-[#f5f0e4]">
                 intent to website
               </span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-              The flagship of webgen, our three-person studio: describe the site
-              you want in plain words, and Web-Gen turns that brief into a fully
-              laid-out, ready-to-ship website.
+              The flagship of our three-person studio: describe the site you
+              want in plain words, and 3geeks turns that brief into a fully
+              laid-out, ready-to-ship website — live at www.3geeks.fr.
             </p>
           </div>
         </ViewTransition>
@@ -104,7 +104,7 @@ export default function WebGenCaseStudy() {
         <ProjectBrowserPreview
           slug="web-gen"
           imageSrc="/projects/web-gen.webp"
-          imageAlt="Screenshot of the Web-Gen studio site"
+          imageAlt="Screenshot of the 3geeks studio site"
           linkLabel="www.3geeks.fr"
           priority
           className="mt-10"
@@ -142,7 +142,7 @@ export default function WebGenCaseStudy() {
             What we built
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
-            Web-Gen is an intent-to-website generator: one flow takes a text
+            3geeks is an intent-to-website generator: one flow takes a text
             brief, extracts the intent, plans the site structure, and renders
             a fully laid-out website. No canvas, no drag-and-drop — the brief
             is the interface.
@@ -170,7 +170,7 @@ export default function WebGenCaseStudy() {
             My role
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
-            webgen is three friends — Noam, Charles and me — and no one gets to
+            3geeks is three friends — Noam, Charles and me — and no one gets to
             do just one job. I work across the product: LLM orchestration and
             prompt design, the Next.js front end, and the pipeline that turns
             generated structure into rendered UI. The same AI-native workflow I
@@ -185,7 +185,7 @@ export default function WebGenCaseStudy() {
             What it unlocked
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
-            Web-Gen became the engine of the studio. Around it, we shipped real
+            3geeks became the engine of the studio. Around it, we shipped real
             products for real clients — each one proof that a three-person team
             with an AI-native workflow can deliver production software:
           </p>
@@ -219,7 +219,7 @@ export default function WebGenCaseStudy() {
             Want the full story?
           </h2>
           <p className="mt-4 max-w-xl leading-relaxed text-muted">
-            Web-Gen is one chapter — the portfolio reads like a book, from a
+            3geeks is one chapter — the portfolio reads like a book, from a
             Minecraft kid to production AI systems at Nokia.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
