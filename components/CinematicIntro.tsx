@@ -374,13 +374,13 @@ export default function CinematicIntro({ onComplete }: Props) {
               repeat: particlesActive || phase === "pause" ? Infinity : 0,
               ease: "easeInOut",
             }}
-            className="relative h-32 w-32 overflow-hidden rounded-full ring-2 ring-accent/55 sm:h-44 sm:w-44"
+            className="relative h-40 w-40 overflow-hidden rounded-full ring-2 ring-accent/55 sm:h-52 sm:w-52 md:h-60 md:w-60"
           >
             <Image
               src="/story/avatar-hero.jpg"
               alt=""
               fill
-              sizes="(min-width: 640px) 11rem, 8rem"
+              sizes="(min-width: 768px) 15rem, (min-width: 640px) 13rem, 10rem"
               className="object-cover"
               priority
             />

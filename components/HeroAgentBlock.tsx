@@ -67,8 +67,11 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const voiceSubmitRef = useRef(false);
   const reducedMotion = prefersReducedMotion();
-  const speechSupported = typeof window !== "undefined" && !!getSpeechRecognition();
-  const showMic = speechSupported && !isIOSSafari();
+  const [showMic, setShowMic] = useState(false);
+
+  useEffect(() => {
+    setShowMic(!!getSpeechRecognition() && !isIOSSafari());
+  }, []);
 
   const lastAssistant = [...messages]
     .reverse()

@@ -20,7 +20,7 @@ const statusStyles: Record<string, string> = {
 type ProjectCardProps = {
   project: Project;
   index: number;
-  variant?: "featured" | "compact";
+  variant?: "featured" | "compact" | "mobileFeatured";
   mobile?: boolean;
 };
 
@@ -73,7 +73,8 @@ export default function ProjectCard({
   variant = "featured",
   mobile = false,
 }: ProjectCardProps) {
-  const isFeatured = variant === "featured" && !mobile;
+  const isMobileFeatured = variant === "mobileFeatured";
+  const isFeatured = variant === "featured" && !mobile && !isMobileFeatured;
   const clickable = Boolean(project.link || project.caseStudy);
   const caseStudySlug = getCaseStudySlug(project);
   const projectSlug = getProjectSlug(project);
@@ -91,17 +92,49 @@ export default function ProjectCard({
     >
       <CardWrapper
         project={project}
-        className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 transition-all duration-300 ${
-          isFeatured ? "ring-white/12" : "p-6 ring-white/8"
+        className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 transition-all duration-300 touch-press ${
+          isFeatured || isMobileFeatured ? "ring-white/12" : "p-6 ring-white/8"
         } ${
           clickable
             ? "hover:-translate-y-1.5 hover:ring-white/25 cursor-pointer"
             : "hover:ring-white/15"
         }`}
         style={{
-          boxShadow: `0 20px 60px -32px ${project.accent}${isFeatured ? "55" : "40"}`,
+          boxShadow: `0 20px 60px -32px ${project.accent}${isFeatured || isMobileFeatured ? "55" : "40"}`,
         }}
       >
+        {isMobileFeatured && project.image && (
+          <div className="relative">
+            <div className="flex items-center gap-2 border-b border-white/5 bg-white/[0.04] px-3 py-2">
+              <span className="flex gap-1">
+                <span className="h-2 w-2 rounded-full bg-white/15" />
+                <span className="h-2 w-2 rounded-full bg-white/15" />
+                <span className="h-2 w-2 rounded-full bg-white/15" />
+              </span>
+              {project.linkLabel && (
+                <span className="mx-auto min-w-0 truncate font-mono text-[0.6rem] text-muted">
+                  {project.linkLabel}
+                </span>
+              )}
+            </div>
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <Image
+                src={project.image}
+                alt={`Screenshot of ${project.name}`}
+                fill
+                sizes="88vw"
+                className="object-cover object-top"
+              />
+              <span
+                className={`absolute right-2 top-2 rounded-full px-2 py-0.5 text-[0.65rem] font-medium ring-1 backdrop-blur-md ${
+                  statusStyles[project.status]
+                }`}
+              >
+                {project.status}
+              </span>
+            </div>
+          </div>
+        )}
         {/* Live product preview, framed like a browser window */}
         {isFeatured && project.image && useMorphPreview && (
           <ProjectBrowserPreview
@@ -168,7 +201,9 @@ export default function ProjectCard({
 
         <ViewTransition exit="card-content-exit" default="none">
           <div
-            className={`flex flex-1 flex-col ${isFeatured ? "p-7 pt-5" : ""}`}
+            className={`flex flex-1 flex-col ${
+              isFeatured ? "p-7 pt-5" : isMobileFeatured ? "p-5 pt-4" : ""
+            }`}
           >
           <div
             aria-hidden
@@ -179,7 +214,7 @@ export default function ProjectCard({
             }}
           />
 
-          {(!isFeatured || !project.image) && (
+          {(!isFeatured || !project.image) && !isMobileFeatured && (
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 flex-col gap-3">
                 {project.logo && (
@@ -208,8 +243,8 @@ export default function ProjectCard({
 
           <h3
             className={`font-display font-semibold text-white ${
-              isFeatured ? "text-2xl" : "text-xl"
-            } ${isFeatured && project.image ? "" : "mt-4"}`}
+              isFeatured ? "text-2xl" : isMobileFeatured ? "text-xl" : "text-xl"
+            } ${(isFeatured || isMobileFeatured) && project.image ? "" : "mt-4"}`}
           >
             {project.name}
             {clickable && (
@@ -225,7 +260,7 @@ export default function ProjectCard({
           <p
             className={`mt-4 flex-1 leading-relaxed text-[#c5c0da] ${
               isFeatured ? "text-base" : "text-sm"
-            }`}
+            } ${isMobileFeatured ? "line-clamp-3" : ""}`}
           >
             {project.description}
           </p>
@@ -258,6 +293,13 @@ export default function ProjectCard({
               </span>
             ))}
           </div>
+
+          {isMobileFeatured && project.caseStudy && (
+            <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+              Voir le case study
+              <span aria-hidden>→</span>
+            </div>
+          )}
 
           {isFeatured && clickable && project.ctaLabel && (
             <div className="mt-6 inline-flex items-center gap-2 self-start rounded-full bg-white/8 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/15 transition-all duration-300 group-hover:bg-white/12 group-hover:ring-white/30">

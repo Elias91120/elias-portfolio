@@ -51,7 +51,7 @@ function CountUp({ stat, start }: { stat: Stat; start: boolean }) {
 
   return (
     <span
-      className="font-display text-5xl font-bold tracking-tight sm:text-6xl"
+      className="stats-band-value font-display text-5xl font-bold tracking-tight sm:text-6xl"
       style={{ color: stat.accent }}
     >
       {stat.prefix}
@@ -69,7 +69,7 @@ export default function StatsBand() {
     <section id="proof" aria-label="Key numbers" className="relative px-5 py-20">
       <div
         ref={ref}
-        className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4"
+        className="stats-band-grid mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4"
       >
         {stats.map((stat, i) => (
           <motion.div

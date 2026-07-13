@@ -3,8 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import PathSelector from "@/components/PathSelector";
-import { useVisitorMode } from "@/components/VisitorModeProvider";
+import HeroAgentBlock from "@/components/HeroAgentBlock";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
 import { consumeIntroHandoff } from "@/lib/intro-handoff";
 
@@ -18,15 +17,6 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
     introHandoffRef.current = consumeIntroHandoff();
   }
   const fromIntro = introHandoffRef.current === true;
-  const { mode, setMode, hydrated } = useVisitorMode();
-  const showHiringSummary = hydrated && mode === "hiring";
-
-  const switchToBrowsing = () => {
-    setMode("browsing");
-    requestAnimationFrame(() =>
-      scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
-    );
-  };
 
   const scrollTo = (href: string) => {
     scrollToSection(href, prefersReducedMotion() ? "auto" : "smooth");
@@ -99,6 +89,17 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
           Data Engineering &amp; AI Agents
         </motion.p>
 
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={{ delay: ready ? 0.3 : 0, duration: 0.6, ease }}
+          className="mt-4 max-w-sm text-sm leading-relaxed text-muted"
+        >
+          Building data pipelines, AI agents, and production products at{" "}
+          <span className="text-foreground">Nokia</span> and{" "}
+          <span className="text-foreground">webgen</span>.
+        </motion.p>
+
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -114,48 +115,48 @@ export default function MobileHero({ ready = true }: { ready?: boolean }) {
           </span>
         </motion.div>
 
-        <PathSelector ready={ready} compact />
+        <HeroAgentBlock ready={ready} />
 
-        {hydrated && mode !== null && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ delay: ready ? 0.4 : 0, duration: 0.5, ease }}
-            className="mt-5 flex w-full flex-col gap-2.5"
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ delay: ready ? 0.48 : 0, duration: 0.5, ease }}
+          className="mt-5 flex w-full flex-col gap-2.5"
+        >
+          <button
+            type="button"
+            onClick={() => scrollTo("#projects")}
+            className="touch-press min-h-11 w-full rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[#0c0a16] transition-transform"
           >
-            <button
-              type="button"
-              onClick={() => scrollTo("#projects")}
-              className="min-h-11 w-full rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[#0c0a16] transition-transform active:scale-[0.98]"
-            >
-              Voir les projets
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollTo("#contact")}
-              className="min-h-11 w-full rounded-full bg-white/5 px-5 py-2.5 text-sm font-medium text-white ring-1 ring-white/15 transition-colors hover:bg-white/10"
-            >
-              Me contacter
-            </button>
-          </motion.div>
-        )}
+            Voir les projets
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollTo("#contact")}
+            className="touch-press min-h-11 w-full rounded-full bg-white/5 px-5 py-2.5 text-sm font-medium text-white ring-1 ring-white/15 transition-colors hover:bg-white/10"
+          >
+            Me contacter
+          </button>
+        </motion.div>
 
-        {showHiringSummary && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ delay: ready ? 0.45 : 0, duration: 0.5, ease }}
-            className="mt-4"
-          >
-            <button
-              type="button"
-              onClick={switchToBrowsing}
-              className="text-sm font-medium text-accent underline-offset-4 hover:underline"
-            >
-              Switch to story mode
-            </button>
-          </motion.div>
-        )}
+        <motion.button
+          type="button"
+          initial={{ opacity: 0 }}
+          animate={ready ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: ready ? 0.58 : 0, duration: 0.9 }}
+          className="mt-6 flex flex-col items-center gap-2 text-muted"
+          onClick={() =>
+            scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
+          }
+          aria-label="Scroll to open the story"
+        >
+          <span className="text-[0.65rem] uppercase tracking-[0.3em]">
+            Scroll to open the story
+          </span>
+          <div className="flex h-9 w-6 justify-center rounded-full border-2 border-muted/40 pt-1.5">
+            <div className="h-2 w-1 animate-wheel rounded-full bg-accent" />
+          </div>
+        </motion.button>
       </div>
     </section>
   );

@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDeveloperMode } from "@/components/DeveloperModeProvider";
-import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
-import type { VisitorMode } from "@/lib/visitor-mode";
 
 const browsingLinks = [
   { href: "#story", label: "Story" },
@@ -13,22 +11,9 @@ const browsingLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
-const hiringLinks = [
-  { href: "#proof", label: "Proof" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
-  { href: "#story", label: "Story" },
-];
-
-function getLinks(mode: VisitorMode | null) {
-  return mode === "hiring" ? hiringLinks : browsingLinks;
-}
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { openTerminal } = useDeveloperMode();
-  const { mode, setMode, hydrated } = useVisitorMode();
-  const links = getLinks(hydrated ? mode : null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -38,16 +23,6 @@ export default function Navbar() {
   }, []);
 
   const behavior = prefersReducedMotion() ? "auto" : "smooth";
-
-  const toggleMode = () => {
-    if (mode === "hiring") {
-      setMode("browsing");
-      requestAnimationFrame(() => scrollToSection("#story", behavior));
-    } else {
-      setMode("hiring");
-      requestAnimationFrame(() => scrollToSection("#proof", behavior));
-    }
-  };
 
   return (
     <header
@@ -76,7 +51,7 @@ export default function Navbar() {
         </a>
         <div className="flex items-center gap-1 sm:gap-2">
           <ul className="flex items-center gap-0.5 sm:gap-1">
-            {links.map((l) => (
+            {browsingLinks.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
@@ -105,15 +80,6 @@ export default function Navbar() {
             </span>
             <span className="hidden sm:inline">Dev</span>
           </button>
-          {hydrated && mode !== null && (
-            <button
-              type="button"
-              onClick={toggleMode}
-              className="ml-0.5 inline-flex shrink-0 rounded-full px-2 py-1.5 text-[0.6rem] font-medium uppercase tracking-wider text-muted ring-1 ring-white/10 transition-colors hover:bg-white/5 hover:text-white sm:px-2.5 sm:text-[0.65rem]"
-            >
-              {mode === "hiring" ? "Browsing?" : "Hiring?"}
-            </button>
-          )}
         </div>
       </nav>
     </header>

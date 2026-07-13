@@ -13,27 +13,13 @@ import { AgentChatProvider } from "@/components/AgentChatProvider";
 import StatsBand from "@/components/StatsBand";
 import ScrollProgress from "@/components/ScrollProgress";
 import CinematicIntro, { shouldPlayIntro } from "@/components/CinematicIntro";
-import {
-  VisitorModeProvider,
-  useVisitorMode,
-} from "@/components/VisitorModeProvider";
-import HiringStrip from "@/components/HiringStrip";
+import { VisitorModeProvider } from "@/components/VisitorModeProvider";
 import DevTerminal from "@/components/DevTerminal";
-import {
-  DeveloperModeProvider,
-} from "@/components/DeveloperModeProvider";
-import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
+import { DeveloperModeProvider } from "@/components/DeveloperModeProvider";
 import { useIsMobile } from "@/lib/use-is-mobile";
 import MobileHomeSections from "@/components/mobile/MobileHomeSections";
-import type { VisitorMode } from "@/lib/visitor-mode";
 
-type HomeExperienceProps = {
-  initialMode?: VisitorMode | null;
-};
-
-export default function HomeExperience({
-  initialMode = null,
-}: HomeExperienceProps) {
+export default function HomeExperience() {
   const [showIntro, setShowIntro] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -71,17 +57,14 @@ export default function HomeExperience({
 
   return (
     <DeveloperModeProvider introComplete={introComplete}>
-      <VisitorModeProvider initialMode={initialMode}>
+      <VisitorModeProvider>
         {showIntro === true && (
           <CinematicIntro onComplete={() => setShowIntro(false)} />
         )}
         {isMobile ? (
-          <MobileHomeSections
-            showIntro={showIntro}
-            initialMode={initialMode}
-          />
+          <MobileHomeSections showIntro={showIntro} />
         ) : (
-          <HomeSections showIntro={showIntro} initialMode={initialMode} />
+          <HomeSections showIntro={showIntro} />
         )}
         {isMobile === false && <DevTerminal />}
       </VisitorModeProvider>
@@ -89,59 +72,30 @@ export default function HomeExperience({
   );
 }
 
-function HomeSections({
-  showIntro,
-  initialMode,
-}: {
-  showIntro: boolean | null;
-  initialMode: VisitorMode | null;
-}) {
-  const { mode, hydrated } = useVisitorMode();
-  const [storyExpanded, setStoryExpanded] = useState(false);
+function HomeSections({ showIntro }: { showIntro: boolean | null }) {
   const heroReady = showIntro === false;
-
-  const effectiveMode = hydrated ? mode : initialMode;
-  const isHiring = effectiveMode === "hiring";
-  const storyCollapsed = isHiring && !storyExpanded;
-  const storyEnabled = !storyCollapsed;
-
-  useEffect(() => {
-    if (mode !== "hiring") setStoryExpanded(false);
-  }, [mode]);
-
-  const handleStoryExpand = () => {
-    setStoryExpanded(true);
-    requestAnimationFrame(() =>
-      scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
-    );
-  };
 
   return (
     <>
       <ScrollProgress />
       <Navbar />
-      {isHiring && <HiringStrip />}
       <AgentChatProvider>
         <Hero ready={heroReady} />
         <div className="flex flex-col">
-          <div style={{ order: isHiring ? 1 : 2 }}>
-            <StatsBand />
+          <div style={{ order: 1 }}>
+            <Story />
           </div>
-          <div style={{ order: isHiring ? 2 : 4 }}>
-            <Projects />
+          <div style={{ order: 2 }}>
+            <StatsBand />
           </div>
           <div style={{ order: 3 }}>
             <Skills />
           </div>
-          <div style={{ order: isHiring ? 4 : 5 }}>
-            <Contact />
+          <div style={{ order: 4 }}>
+            <Projects />
           </div>
-          <div style={{ order: isHiring ? 5 : 1 }}>
-            <Story
-              collapsed={storyCollapsed}
-              enabled={storyEnabled}
-              onExpand={handleStoryExpand}
-            />
+          <div style={{ order: 5 }}>
+            <Contact />
           </div>
         </div>
         <Footer />

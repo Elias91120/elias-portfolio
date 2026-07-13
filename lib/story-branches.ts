@@ -115,6 +115,10 @@ export function resolveStoryPath(
   return path;
 }
 
+export function loadStoryPathWithDefaults(): Record<string, string> {
+  return { ...DEFAULT_CHOICE_BY_BRANCH, ...loadStoryPath() };
+}
+
 export function loadStoryPath(): Record<string, string> {
   if (typeof window === "undefined") return {};
   try {

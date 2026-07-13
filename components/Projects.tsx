@@ -7,17 +7,20 @@ import {
   professionalProjects,
 } from "@/lib/data";
 import ProjectCard from "@/components/ProjectCard";
+import MobileProjectCarousel from "@/components/mobile/MobileProjectCarousel";
+import type { Project } from "@/lib/data";
 
 type ProjectSectionProps = {
   kicker: string;
   title: string;
   titleAccent?: string;
   description: string;
-  projects: typeof clientLiveProjects;
+  projects: Project[];
   variant: "featured" | "compact";
   gridClassName: string;
   subdued?: boolean;
   compact?: boolean;
+  useCarousel?: boolean;
 };
 
 function ProjectSection({
@@ -30,7 +33,12 @@ function ProjectSection({
   gridClassName,
   subdued = false,
   compact = false,
+  useCarousel = false,
 }: ProjectSectionProps) {
+  const carouselProjects = useCarousel
+    ? projects.filter((p) => p.caseStudy && p.image)
+    : [];
+
   return (
     <div className={subdued ? "mt-24" : "mt-0"}>
       <motion.div
@@ -71,19 +79,25 @@ function ProjectSection({
         </p>
       </motion.div>
 
-      <div className={`mt-10 grid gap-6 ${gridClassName}`}>
-        {projects.map((project, i) => (
-          <ProjectCard
-            key={project.name}
-            project={project}
-            index={i}
-            variant={
-              project.caseStudy && project.image ? "featured" : variant
-            }
-            mobile={compact}
-          />
-        ))}
-      </div>
+      {useCarousel && carouselProjects.length > 0 ? (
+        <div className="mt-10">
+          <MobileProjectCarousel projects={carouselProjects} />
+        </div>
+      ) : (
+        <div className={`mt-10 grid gap-6 ${gridClassName}`}>
+          {projects.map((project, i) => (
+            <ProjectCard
+              key={project.name}
+              project={project}
+              index={i}
+              variant={
+                project.caseStudy && project.image ? "featured" : variant
+              }
+              mobile={compact}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -106,6 +120,7 @@ export default function Projects({ compact = false }: { compact?: boolean }) {
           variant={cardVariant}
           gridClassName="grid-cols-1 lg:grid-cols-3"
           compact={compact}
+          useCarousel={compact}
         />
 
         <ProjectSection

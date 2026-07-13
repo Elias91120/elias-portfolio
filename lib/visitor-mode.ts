@@ -42,6 +42,6 @@ export function parseVisitorMode(
   return null;
 }
 
-export function resolveInitialVisitorMode(): VisitorMode | null {
-  return readVisitorModeFromUrl() ?? getStoredVisitorMode();
+export function resolveInitialVisitorMode(): VisitorMode {
+  return "browsing";
 }

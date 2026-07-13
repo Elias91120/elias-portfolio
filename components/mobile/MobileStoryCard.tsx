@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import type { CSSProperties } from "react";
 import type { Chapter } from "@/lib/data";
 import { CHAPTER_ROMANS } from "@/components/story/constants";
@@ -19,6 +20,7 @@ export default function MobileStoryCard({
 }: MobileStoryCardProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const cardRef = useRef<HTMLElement | null>(null);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -28,9 +30,10 @@ export default function MobileStoryCard({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.play().catch(() => {});
+          video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
         } else {
           video.pause();
+          setPlaying(false);
         }
       },
       { threshold: 0.4 }
@@ -40,20 +43,42 @@ export default function MobileStoryCard({
     return () => observer.disconnect();
   }, [ch.video]);
 
+  const toggleVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !ch.video) return;
+    if (video.paused) {
+      video.play().then(() => setPlaying(true)).catch(() => {});
+    } else {
+      video.pause();
+      setPlaying(false);
+    }
+  }, [ch.video]);
+
+  const mediaAspect = ch.video ? "aspect-[9/16] max-h-[22rem]" : "aspect-[16/9]";
+
   return (
-    <article
+    <motion.article
       ref={cardRef}
+      initial={{ opacity: 0, scale: 0.98 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.45 }}
       className="overflow-hidden rounded-2xl bg-card ring-1 ring-white/10"
       data-chapter={ch.id}
       style={{ boxShadow: `0 16px 48px -24px ${ch.accent}44` }}
     >
-      <div className="relative aspect-[16/9] overflow-hidden">
+      <button
+        type="button"
+        onClick={ch.video ? toggleVideo : undefined}
+        className={`relative w-full overflow-hidden ${mediaAspect} ${ch.video ? "cursor-pointer" : "cursor-default"}`}
+        aria-label={ch.video ? (playing ? "Pause video" : "Play video") : undefined}
+      >
         <Image
           src={ch.image}
           alt={ch.imageAlt}
           fill
-          sizes="100vw"
-          className="object-cover"
+          sizes="88vw"
+          className={`object-cover ${playing && ch.video ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
           loading={index === 0 ? "eager" : "lazy"}
           priority={index === 0}
           quality={85}
@@ -72,16 +97,28 @@ export default function MobileStoryCard({
             tabIndex={-1}
           />
         )}
+        {ch.video && (
+          <span className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm">
+            {playing ? (
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <rect x="6" y="5" width="4" height="14" rx="1" />
+                <rect x="14" y="5" width="4" height="14" rx="1" />
+              </svg>
+            ) : (
+              <svg className="h-3.5 w-3.5 ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </span>
+        )}
         <div
           aria-hidden
           className="absolute inset-0 bg-gradient-to-t from-[#120e20] via-transparent to-transparent"
         />
-        <span
-          className="absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-[0.65rem] font-medium text-white/90 backdrop-blur-sm"
-        >
+        <span className="absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-[0.65rem] font-medium text-white/90 backdrop-blur-sm">
           {index + 1}/{total}
         </span>
-      </div>
+      </button>
 
       <div className="px-5 py-5">
         <div
@@ -97,6 +134,6 @@ export default function MobileStoryCard({
           {ch.text}
         </p>
       </div>
-    </article>
+    </motion.article>
   );
 }

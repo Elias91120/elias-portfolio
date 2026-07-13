@@ -1,16 +1,9 @@
 import HomeExperience from "@/components/HomeExperience";
-import { parseVisitorMode } from "@/lib/visitor-mode";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ mode?: string }>;
-}) {
-  const { mode } = await searchParams;
-
+export default function Home() {
   return (
     <main>
-      <HomeExperience initialMode={parseVisitorMode(mode ?? null)} />
+      <HomeExperience />
     </main>
   );
 }

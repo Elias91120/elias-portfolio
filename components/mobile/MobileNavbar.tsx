@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useVisitorMode } from "@/components/VisitorModeProvider";
 import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
-import type { VisitorMode } from "@/lib/visitor-mode";
 
 const browsingLinks = [
   { href: "#story", label: "Story" },
@@ -13,22 +11,9 @@ const browsingLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
-const hiringLinks = [
-  { href: "#proof", label: "Proof" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
-  { href: "#story", label: "Story" },
-];
-
-function getLinks(mode: VisitorMode | null) {
-  return mode === "hiring" ? hiringLinks : browsingLinks;
-}
-
 export default function MobileNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { mode, setMode, hydrated } = useVisitorMode();
-  const links = getLinks(hydrated ? mode : null);
   const behavior = prefersReducedMotion() ? "auto" : "smooth";
 
   useEffect(() => {
@@ -57,17 +42,6 @@ export default function MobileNavbar() {
   const navigate = (href: string) => {
     setOpen(false);
     scrollToSection(href, behavior);
-  };
-
-  const toggleMode = () => {
-    setOpen(false);
-    if (mode === "hiring") {
-      setMode("browsing");
-      requestAnimationFrame(() => scrollToSection("#story", behavior));
-    } else {
-      setMode("hiring");
-      requestAnimationFrame(() => scrollToSection("#proof", behavior));
-    }
   };
 
   return (
@@ -155,7 +129,7 @@ export default function MobileNavbar() {
               transition={{ duration: 0.2 }}
             >
               <ul className="flex flex-col gap-1">
-                {links.map((l) => (
+                {browsingLinks.map((l) => (
                   <li key={l.href}>
                     <a
                       href={l.href}
@@ -170,16 +144,6 @@ export default function MobileNavbar() {
                   </li>
                 ))}
               </ul>
-
-              {hydrated && mode !== null && (
-                <button
-                  type="button"
-                  onClick={toggleMode}
-                  className="mt-4 flex min-h-11 w-full items-center justify-center rounded-full bg-white/5 px-4 text-sm font-medium uppercase tracking-wider text-muted ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  {mode === "hiring" ? "Switch to browsing" : "Switch to hiring"}
-                </button>
-              )}
             </motion.div>
           </>
         )}

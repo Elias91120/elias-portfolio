@@ -377,6 +377,81 @@ body[data-dev-terminal] .ask-widget {
   box-shadow: 0 0 6px rgba(167, 139, 250, 0.65);
 }
 
+/* Path selector — premium glass cards */
+.path-card-hiring {
+  background: linear-gradient(
+    135deg,
+    rgba(167, 139, 250, 0.45) 0%,
+    rgba(56, 189, 248, 0.15) 45%,
+    rgba(167, 139, 250, 0.08) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(167, 139, 250, 0.08),
+    0 12px 40px -24px rgba(167, 139, 250, 0.35);
+  transition:
+    box-shadow 0.45s ease,
+    transform 0.35s ease;
+}
+
+.path-card-browsing {
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.28) 0%,
+    rgba(167, 139, 250, 0.12) 50%,
+    rgba(251, 191, 36, 0.12) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 12px 40px -24px rgba(56, 189, 248, 0.12);
+  transition:
+    box-shadow 0.45s ease,
+    transform 0.35s ease;
+}
+
+.path-card-hiring:hover,
+.path-card-browsing:hover {
+  box-shadow:
+    0 0 0 1px rgba(167, 139, 250, 0.22),
+    0 20px 56px -20px rgba(167, 139, 250, 0.42);
+}
+
+.path-card-browsing:hover {
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.2),
+    0 20px 56px -20px rgba(56, 189, 248, 0.28);
+}
+
+.path-card-shine {
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.07) 48%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  animation: path-card-shine 0.85s ease forwards;
+}
+
+.path-card:hover .path-card-shine {
+  animation: path-card-shine 0.85s ease forwards;
+}
+
+@keyframes path-card-shine {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .path-card-shine {
+    animation: none;
+    opacity: 0 !important;
+  }
+}
+
 /* Slow-drifting ambient glows */
 @keyframes aurora {
   0%,
@@ -553,10 +628,64 @@ body[data-dev-terminal] .ask-widget {
   .spotlight-layer {
     display: none !important;
   }
+
+  [data-mobile-layout] .touch-press:active {
+    transform: none;
+  }
 }
 
 @media (hover: none), (pointer: coarse) {
   .spotlight-layer {
     display: none !important;
   }
+}
+
+/* ── Mobile layout (data-mobile-layout set by HomeExperience) ── */
+[data-mobile-layout] {
+  scroll-behavior: smooth;
+}
+
+[data-mobile-layout] section[id] {
+  scroll-margin-top: 3.5rem;
+}
+
+[data-mobile-layout] .mobile-story-carousel,
+[data-mobile-layout] .mobile-project-carousel {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+[data-mobile-layout] .mobile-story-carousel::-webkit-scrollbar,
+[data-mobile-layout] .mobile-project-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+[data-mobile-layout] .touch-press:active {
+  transform: scale(0.97);
+  transition: transform 0.15s ease;
+}
+
+[data-mobile-layout] .pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+[data-mobile-layout] .mobile-bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+[data-mobile-layout] .ask-widget-sheet-form {
+  padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
+}
+
+[data-mobile-layout] .stats-band-value {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
+[data-mobile-layout] .stats-band-grid {
+  gap: 2rem 1.5rem;
+}
+
+[data-mobile-layout] .ask-widget-fab {
+  display: none;
 }
