@@ -81,6 +81,12 @@ export function buildSafeFallback(userMessage: string): string {
       : `Yes — Elias is actively looking for a two-year apprenticeship (2026–2028) in data engineering / AI, alongside his M.Sc. at EFREI Paris (RNCP level 7). Freelance via webgen is also open. Contact: ${contact.email}`;
   }
 
+  if (/nokia|feature analyzer|feature-analyzer|dashboard/.test(msg)) {
+    return lang === "fr"
+      ? `Elias a conçu et développé le Feature Analyzer Dashboard 2.0 — plateforme FastAPI + React unifiant 7+ sources de données en pipelines d'analyse temps réel. Il a aussi piloté l'adoption de Cursor (portail RAG, démos équipes). Case study : ${PORTFOLIO_URL}/projects/nokia-dashboard`
+      : `Elias built the Feature Analyzer Dashboard 2.0 — a FastAPI + React platform unifying 7+ data sources into real-time feature analysis pipelines. He also led Cursor adoption with a RAG knowledge portal and team demos. Case study: ${PORTFOLIO_URL}/projects/nokia-dashboard`;
+  }
+
   if (/contact|email|reach|joindre|linkedin|fiverr/.test(msg)) {
     return lang === "fr"
       ? `Contact Elias : ${contact.email} · LinkedIn ${contact.linkedinLabel} · Portfolio ${PORTFOLIO_URL}`

@@ -13,15 +13,18 @@ import {
 import {
   applyAgentActions,
   parseAgentActions,
-  prepareAssistantDisplay,
+  prepareStreamingDisplay,
+  stripAgentActionsComment,
   type AgentAction,
 } from "@/lib/agent-actions";
+import { finalizeAssistantResponse } from "@/lib/agent-guardrails";
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 
 type AgentChatContextValue = {
   messages: ChatMessage[];
   busy: boolean;
+  streaming: boolean;
   panelOpen: boolean;
   hasUnread: boolean;
   lastActions: AgentAction[];
@@ -35,13 +38,23 @@ const AgentChatContext = createContext<AgentChatContextValue | null>(null);
 
 const SESSION_PANEL_KEY = "ask-panel-open";
 
+function attachAgentActions(finalText: string, rawAnswer: string): string {
+  const actionsMatch = rawAnswer.match(
+    /<!--\s*AGENT_ACTIONS\s*:\s*(\[[\s\S]*?\])\s*-->/i,
+  );
+  if (!actionsMatch) return finalText;
+  return `${finalText}\n<!--AGENT_ACTIONS:${actionsMatch[1]}-->`;
+}
+
 export function AgentChatProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [busy, setBusy] = useState(false);
+  const [streaming, setStreaming] = useState(false);
   const [panelOpen, setPanelOpenState] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const [lastActions, setLastActions] = useState<AgentAction[]>([]);
   const lastVoiceRef = useRef(false);
+  const rafRef = useRef(0);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -67,7 +80,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
         /* ignore */
       }
     },
-    []
+    [],
   );
 
   const openPanel = useCallback(() => setPanelOpen(true), [setPanelOpen]);
@@ -91,6 +104,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
       }
 
       setBusy(true);
+      setStreaming(true);
 
       const history: ChatMessage[] = [
         ...messages,
@@ -103,6 +117,14 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
         setLastActions(userActions);
         applyAgentActions(userActions);
       }
+
+      const scheduleStreamUpdate = (display: string) => {
+        if (rafRef.current) return;
+        rafRef.current = requestAnimationFrame(() => {
+          rafRef.current = 0;
+          setMessages([...history, { role: "assistant", content: display }]);
+        });
+      };
 
       try {
         const res = await fetch("/api/ask", {
@@ -118,15 +140,30 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         let answer = "";
+
         for (;;) {
           const { done, value } = await reader.read();
           if (done) break;
           answer += decoder.decode(value, { stream: true });
-          const display = prepareAssistantDisplay(answer);
-          setMessages([...history, { role: "assistant", content: display }]);
+          scheduleStreamUpdate(prepareStreamingDisplay(answer));
         }
 
-        const assistantActions = parseAgentActions(text, answer);
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = 0;
+        }
+
+        const visible = stripAgentActionsComment(answer);
+        const finalized = finalizeAssistantResponse(visible, text);
+        const withActions = attachAgentActions(finalized, answer);
+        const finalDisplay = prepareStreamingDisplay(withActions);
+
+        setMessages([
+          ...history,
+          { role: "assistant", content: finalDisplay },
+        ]);
+
+        const assistantActions = parseAgentActions(text, withActions);
         const actionsToApply =
           assistantActions.length > 0 && userActions.length === 0
             ? assistantActions
@@ -140,12 +177,6 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
             applyAgentActions(actionsToApply);
           }
         }
-
-        const finalDisplay = prepareAssistantDisplay(answer);
-        setMessages([
-          ...history,
-          { role: "assistant", content: finalDisplay },
-        ]);
 
         if (!panelOpen) {
           setHasUnread(true);
@@ -163,10 +194,11 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
         ]);
         if (!panelOpen) setHasUnread(true);
       } finally {
+        setStreaming(false);
         setBusy(false);
       }
     },
-    [busy, messages, panelOpen]
+    [busy, messages, panelOpen],
   );
 
   const consumeVoiceFlag = useCallback(() => {
@@ -179,6 +211,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
     () => ({
       messages,
       busy,
+      streaming,
       panelOpen,
       hasUnread,
       lastActions,
@@ -190,6 +223,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
     [
       messages,
       busy,
+      streaming,
       panelOpen,
       hasUnread,
       lastActions,
@@ -197,7 +231,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
       setPanelOpen,
       openPanel,
       consumeVoiceFlag,
-    ]
+    ],
   );
 
   return (

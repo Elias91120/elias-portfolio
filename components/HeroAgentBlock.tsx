@@ -56,7 +56,7 @@ function pickVoice(lang: string): SpeechSynthesisVoice | null {
 }
 
 export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
-  const { ask, busy, messages, openPanel, lastActions, consumeVoiceFlag } =
+  const { ask, busy, streaming, messages, openPanel, lastActions, consumeVoiceFlag } =
     useAgentChat();
   const [input, setInput] = useState("");
   const [recording, setRecording] = useState(false);
@@ -299,7 +299,10 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
               <AgentTypingIndicator />
             ) : (
               <div className="line-clamp-3 text-left text-xs leading-relaxed text-white/85 [&_.agent-message-p]:text-xs [&_.agent-message-p]:leading-relaxed">
-                <AgentMessageContent content={lastAssistant?.content ?? ""} />
+                <AgentMessageContent
+                  content={lastAssistant?.content ?? ""}
+                  isStreaming={streaming && !!lastAssistant?.content}
+                />
               </div>
             )}
           </div>

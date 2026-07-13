@@ -277,6 +277,21 @@ body[data-dev-terminal] .ask-widget {
   margin-top: 0;
 }
 
+@keyframes agent-cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.15;
+  }
+}
+
+.agent-stream-cursor {
+  animation: agent-cursor-blink 0.85s step-end infinite;
+}
+
 .agent-bubble-assistant {
   background:
     linear-gradient(

@@ -1,14 +1,12 @@
 import { buildSystemPrompt } from "@/lib/agent-context";
-import { finalizeAssistantResponse } from "@/lib/agent-guardrails";
-import { stripAgentActionsComment } from "@/lib/agent-actions";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 const API_URL = "https://api.3geeks.fr/v1/chat/completions";
-const MAX_MESSAGES = 12;
-const MAX_MESSAGE_LENGTH = 1200;
-const MAX_TOKENS = 450;
+const MAX_MESSAGES = 6;
+const MAX_MESSAGE_LENGTH = 800;
+const MAX_TOKENS = 280;
 
 type IncomingMessage = { role: "user" | "assistant"; content: string };
 
@@ -51,57 +49,10 @@ function textFromSseChunk(payload: string): string {
   }
 }
 
-async function readUpstreamStream(body: ReadableStream<Uint8Array>): Promise<string> {
-  const reader = body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-  let full = "";
-
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-
-    for (const line of lines) {
-      full += textFromSseChunk(line);
-    }
-  }
-
-  full += textFromSseChunk(buffer);
-  return full;
-}
-
-/** Pseudo-stream sanitized text for responsive UI without exposing hallucinations. */
-function streamText(text: string): Response {
-  const encoder = new TextEncoder();
-  const readable = new ReadableStream({
-    start(controller) {
-      const chunkSize = 24;
-      for (let i = 0; i < text.length; i += chunkSize) {
-        controller.enqueue(encoder.encode(text.slice(i, i + chunkSize)));
-      }
-      controller.close();
-    },
-  });
-
-  return new Response(readable, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
-  });
-}
-
 async function streamFromThreeGeeks(
   messages: IncomingMessage[],
   apiKey: string,
 ): Promise<Response> {
-  const lastUser = [...messages].reverse().find((m) => m.role === "user");
-  const userQuestion = lastUser?.content ?? "";
-
   const upstream = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -138,19 +89,44 @@ async function streamFromThreeGeeks(
     );
   }
 
-  const raw = await readUpstreamStream(upstream.body);
-  const visible = stripAgentActionsComment(raw);
-  const finalized = finalizeAssistantResponse(visible, userQuestion);
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  const reader = upstream.body.getReader();
+  let buffer = "";
 
-  // Re-attach navigation metadata from the raw model output if still valid.
-  const actionsMatch = raw.match(
-    /<!--\s*AGENT_ACTIONS\s*:\s*(\[[\s\S]*?\])\s*-->/i,
-  );
-  const withActions = actionsMatch
-    ? `${finalized}\n<!--AGENT_ACTIONS:${actionsMatch[1]}-->`
-    : finalized;
+  const readable = new ReadableStream({
+    async start(controller) {
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-  return streamText(withActions);
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+
+          for (const line of lines) {
+            const text = textFromSseChunk(line);
+            if (text) controller.enqueue(encoder.encode(text));
+          }
+        }
+
+        const trailing = textFromSseChunk(buffer);
+        if (trailing) controller.enqueue(encoder.encode(trailing));
+        controller.close();
+      } catch (err) {
+        controller.error(err);
+      }
+    },
+  });
+
+  return new Response(readable, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Accel-Buffering": "no",
+    },
+  });
 }
 
 export async function POST(req: Request) {

@@ -55,6 +55,8 @@ const markdownComponents: Components = {
 type AgentMessageContentProps = {
   content: string;
   variant?: "user" | "assistant";
+  /** Show a blinking cursor while tokens are still arriving. */
+  isStreaming?: boolean;
 };
 
 export function AgentTypingIndicator() {
@@ -70,19 +72,28 @@ export function AgentTypingIndicator() {
 export default function AgentMessageContent({
   content,
   variant = "assistant",
+  isStreaming = false,
 }: AgentMessageContentProps) {
   if (variant === "user") {
     return <span className="whitespace-pre-wrap leading-relaxed">{content}</span>;
   }
 
-  const display = prepareAssistantDisplay(content);
-  if (!display) return null;
+  const display = isStreaming ? content : prepareAssistantDisplay(content);
+  if (!display && !isStreaming) return null;
 
   return (
     <div className="agent-message">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-        {display}
-      </ReactMarkdown>
+      {display ? (
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+          {display}
+        </ReactMarkdown>
+      ) : null}
+      {isStreaming && (
+        <span
+          className="agent-stream-cursor ml-0.5 inline-block h-[0.9em] w-[2px] translate-y-[1px] rounded-sm bg-accent align-middle"
+          aria-hidden
+        />
+      )}
     </div>
   );
 }

@@ -41,6 +41,7 @@ export default function AskWidget() {
   const {
     messages,
     busy,
+    streaming,
     ask,
     panelOpen,
     setPanelOpen,
@@ -200,6 +201,9 @@ export default function AskWidget() {
                 const isTyping =
                   busy && i === messages.length - 1 && !m.content;
 
+                const isStreamingBubble =
+                  streaming && i === messages.length - 1 && m.role === "assistant";
+
                 return (
                   <div
                     key={i}
@@ -229,6 +233,7 @@ export default function AskWidget() {
                         <AgentMessageContent
                           content={m.content}
                           variant={isUser ? "user" : "assistant"}
+                          isStreaming={isStreamingBubble && !isTyping}
                         />
                       )}
                     </div>

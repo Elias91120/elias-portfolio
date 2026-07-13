@@ -104,7 +104,12 @@ export function stripAgentActionsComment(text: string): string {
     .trimEnd();
 }
 
-/** Text safe to render or read aloud in the UI. */
+/** Live stream — strip hidden metadata only (no heavy sanitization mid-flight). */
+export function prepareStreamingDisplay(text: string): string {
+  return stripAgentActionsComment(text);
+}
+
+/** Text safe to render or read aloud in the UI (final pass). */
 export function prepareAssistantDisplay(text: string): string {
   return sanitizeAssistantResponse(stripAgentActionsComment(text));
 }
