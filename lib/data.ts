@@ -321,7 +321,7 @@ export const projects: Project[] = [
     link: "https://green-jardin.fr",
     linkLabel: "green-jardin.fr",
     ctaLabel: "Read the case study",
-    image: "/projects/green-jardin.webp",
+    image: "/projects/image.png",
     caseStudy: "/projects/green-jardin",
     caseStudySlug: "green-jardin",
     status: "Live",

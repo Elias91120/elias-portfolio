@@ -93,13 +93,6 @@ async function captureOps(browser) {
   await page.waitForTimeout(1000);
   await savePng(await page.screenshot({ type: "png" }), "green-jardin-shopify-sync");
 
-  await page.goto(`${OPS_BASE}/loyalty`, {
-    waitUntil: "domcontentloaded",
-    timeout: 60000,
-  });
-  await page.waitForTimeout(4000);
-  await savePng(await page.screenshot({ type: "png" }), "green-jardin-loyalty");
-
   await page.close();
 }
 

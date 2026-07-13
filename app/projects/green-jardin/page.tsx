@@ -66,7 +66,7 @@ export default function GreenJardinCaseStudy() {
 
       <ProjectBrowserPreview
         slug="green-jardin"
-        imageSrc="/projects/green-jardin.webp"
+        imageSrc="/projects/image.png"
         imageAlt="Screenshot of Green Jardin Shopify storefront"
         linkLabel="green-jardin.fr"
         priority
@@ -164,8 +164,7 @@ export default function GreenJardinCaseStudy() {
               <li>
                 <strong className="text-[var(--cs-fg)]">Loyalty engine</strong> —
                 14% cashback on net spend, wallet balance usable as discount,
-                Firestore transactions for atomic updates, analytics dashboard
-                with revenue charts and top customers.
+                and Firestore transactions for atomic updates at checkout.
               </li>
               <li>
                 <strong className="text-[var(--cs-fg)]">Menu admin + Shopify bridge</strong> —
@@ -209,14 +208,14 @@ export default function GreenJardinCaseStudy() {
             <UseCaseScreenGrid
               screens={[
                 {
-                  imageSrc: "/projects/green-jardin.webp",
+                  imageSrc: "/projects/image.png",
                   imageAlt: "Green Jardin Shopify homepage",
                   linkLabel: "green-jardin.fr",
                   caption:
                     "Shopify storefront — premium positioning, product universes, and trust signals (4.8/5 Google, lab-certified). Built with Ino Digital.",
                 },
                 {
-                  imageSrc: "/projects/green-jardin-shop.webp",
+                  imageSrc: "/projects/green-jardin-shop.png",
                   imageAlt: "Green Jardin product catalogue",
                   linkLabel: "green-jardin.fr",
                   caption:
@@ -239,12 +238,6 @@ export default function GreenJardinCaseStudy() {
                   imageAlt: "Green Jardin Shopify price sync panel",
                   caption:
                     "Shopify bridge — compare in-store menu prices against the online catalogue and push corrections in one click.",
-                },
-                {
-                  imageSrc: "/projects/green-jardin-loyalty.webp",
-                  imageAlt: "Green Jardin loyalty analytics dashboard",
-                  caption:
-                    "Loyalty dashboard — revenue trends, registered customers, cashback distributed, and top spenders.",
                 },
               ]}
             />
