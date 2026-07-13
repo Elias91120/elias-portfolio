@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import WorldMap from "@/components/ui/world-map";
 import { collaborationLocations } from "@/lib/data";
+import { cityLabelLayout } from "@/lib/map-label-layout";
 import { useIsMobile } from "@/lib/use-is-mobile";
 
 const collaborationContexts = [
@@ -12,25 +13,6 @@ const collaborationContexts = [
   "friends & family",
   "client projects",
 ];
-
-const cityLabelLayout: Record<
-  string,
-  { x: number; y: number; anchor?: "start" | "middle" | "end" }
-> = {
-  Seattle: { x: -46, y: -20, anchor: "end" },
-  Dallas: { x: 0, y: 24, anchor: "middle" },
-  "Washington, D.C.": { x: 52, y: -10, anchor: "start" },
-  London: { x: -50, y: -12, anchor: "end" },
-  Paris: { x: 0, y: -22, anchor: "middle" },
-  Palaiseau: { x: -44, y: 26, anchor: "end" },
-  Antony: { x: 42, y: 28, anchor: "start" },
-  Wrocław: { x: 48, y: -16, anchor: "start" },
-  Espoo: { x: 36, y: -30, anchor: "start" },
-  Tunis: { x: -46, y: 8, anchor: "end" },
-  Sousse: { x: 48, y: 20, anchor: "start" },
-  Dubai: { x: 0, y: -22, anchor: "middle" },
-  Bangalore: { x: -52, y: 10, anchor: "end" },
-};
 
 export default function GlobalReach({
   compact = false,

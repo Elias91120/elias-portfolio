@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import DottedMap from "dotted-map";
 import proj4 from "proj4";
 
@@ -27,10 +27,10 @@ interface MapProps {
 /** Cropped region — Americas through India, no East Asia / Pacific. */
 const MAP_REGION = {
   lat: { min: 4, max: 64 },
-  lng: { min: -132, max: 80 },
+  lng: { min: -140, max: 82 },
 };
 
-const LABEL_PADDING = { top: 34, right: 52, bottom: 34, left: 52 };
+const DEFAULT_PADDING = { top: 40, right: 60, bottom: 40, left: 90 };
 
 type DottedMapProjection = {
   width: number;
@@ -40,6 +40,13 @@ type DottedMapProjection = {
   Y_MAX: number;
   Y_RANGE: number;
   proj4String: string;
+};
+
+type Bounds = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
 };
 
 function projectOnMap(map: DottedMapProjection, lat: number, lng: number) {
@@ -52,6 +59,70 @@ function projectOnMap(map: DottedMapProjection, lat: number, lng: number) {
     x: map.width * ((projX - map.X_MIN) / map.X_RANGE),
     y: map.height * ((map.Y_MAX - projY) / map.Y_RANGE),
   };
+}
+
+function estimateLabelBounds(
+  label: string,
+  x: number,
+  y: number,
+  anchor: "start" | "middle" | "end",
+  fontSize: number,
+): Bounds {
+  const charWidth = fontSize * 0.55;
+  const width = label.length * charWidth;
+  const top = y - fontSize;
+  const bottom = y + fontSize * 0.25;
+
+  if (anchor === "start") {
+    return { minX: x, maxX: x + width, minY: top, maxY: bottom };
+  }
+
+  if (anchor === "end") {
+    return { minX: x - width, maxX: x, minY: top, maxY: bottom };
+  }
+
+  return {
+    minX: x - width / 2,
+    maxX: x + width / 2,
+    minY: top,
+    maxY: bottom,
+  };
+}
+
+function computeViewBox(
+  mapWidth: number,
+  mapHeight: number,
+  markerPositions: Array<{ x: number; y: number }>,
+  labelBounds: Bounds[],
+  padding: typeof DEFAULT_PADDING,
+) {
+  const bounds: Bounds = {
+    minX: 0,
+    minY: 0,
+    maxX: mapWidth,
+    maxY: mapHeight,
+  };
+
+  for (const pos of markerPositions) {
+    bounds.minX = Math.min(bounds.minX, pos.x - 6);
+    bounds.maxX = Math.max(bounds.maxX, pos.x + 6);
+    bounds.minY = Math.min(bounds.minY, pos.y - 6);
+    bounds.maxY = Math.max(bounds.maxY, pos.y + 6);
+  }
+
+  for (const label of labelBounds) {
+    bounds.minX = Math.min(bounds.minX, label.minX);
+    bounds.maxX = Math.max(bounds.maxX, label.maxX);
+    bounds.minY = Math.min(bounds.minY, label.minY);
+    bounds.maxY = Math.max(bounds.maxY, label.maxY);
+  }
+
+  const x = bounds.minX - padding.left;
+  const y = bounds.minY - padding.top;
+  const width = bounds.maxX - bounds.minX + padding.left + padding.right;
+  const height = bounds.maxY - bounds.minY + padding.top + padding.bottom;
+
+  return { x, y, width, height };
 }
 
 export default function WorldMap({
@@ -104,16 +175,46 @@ export default function WorldMap({
   const pulseRadius = compact ? 10 : 9;
   const labelSize = compact ? 8 : 11;
 
+  const projectedPoints = uniquePoints.map((point) => {
+    const { x, y } = projectOnMap(mapProjection, point.lat, point.lng);
+    const labelX = x + (point.labelOffset?.x ?? 0);
+    const labelY = y + (point.labelOffset?.y ?? -12);
+    const anchor = point.labelAnchor ?? "middle";
+
+    return { point, x, y, labelX, labelY, anchor };
+  });
+
+  const labelBounds =
+    showLabels
+      ? projectedPoints
+          .filter((entry) => entry.point.label)
+          .map((entry) =>
+            estimateLabelBounds(
+              entry.point.label!,
+              entry.labelX,
+              entry.labelY,
+              entry.anchor,
+              labelSize,
+            ),
+          )
+      : [];
+
+  const viewBoxRect = computeViewBox(
+    mapProjection.width,
+    mapProjection.height,
+    projectedPoints.map((entry) => ({ x: entry.x, y: entry.y })),
+    labelBounds,
+    DEFAULT_PADDING,
+  );
+
   const viewBox = [
-    -LABEL_PADDING.left,
-    -LABEL_PADDING.top,
-    mapProjection.width + LABEL_PADDING.left + LABEL_PADDING.right,
-    mapProjection.height + LABEL_PADDING.top + LABEL_PADDING.bottom,
+    viewBoxRect.x,
+    viewBoxRect.y,
+    viewBoxRect.width,
+    viewBoxRect.height,
   ].join(" ");
 
-  const aspectRatio =
-    (mapProjection.width + LABEL_PADDING.left + LABEL_PADDING.right) /
-    (mapProjection.height + LABEL_PADDING.top + LABEL_PADDING.bottom);
+  const aspectRatio = viewBoxRect.width / viewBoxRect.height;
 
   return (
     <div
@@ -186,11 +287,8 @@ export default function WorldMap({
           );
         })}
 
-        {uniquePoints.map((point, i) => {
-          const { x, y } = projectOnMap(mapProjection, point.lat, point.lng);
-          const labelX = x + (point.labelOffset?.x ?? 0);
-          const labelY = y + (point.labelOffset?.y ?? -12);
-          const anchor = point.labelAnchor ?? "middle";
+        {projectedPoints.map((entry, i) => {
+          const { point, x, y, labelX, labelY, anchor } = entry;
           const showLeader =
             showLabels && point.label && Boolean(point.labelOffset);
 
