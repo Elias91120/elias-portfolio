@@ -21,6 +21,7 @@ const HOME = "~";
 const SLUG_OVERRIDES: Record<string, string> = {
   "Feature Analyzer Dashboard 2.0": "feature-analyzer",
   "Cursor pour les nuls": "cursor-portal",
+  "3geeks Infra": "3geeks-infra",
   PromptOptim: "promptoptim",
   CallKitchen: "callkitchen",
 };
@@ -130,7 +131,11 @@ const NOKIA_CURSOR_PORTAL = `# Cursor pour les nuls — Nokia internal portal
 Internal portal accelerating Cursor adoption across teams:
 knowledge base, RAG assistant, collaborative forum, hands-on demos.
 
-Status: Internal · Tags: RAG, DevEx, AI adoption`;
+Impact: 1,019 views · 75 unique visitors · 100+ RAG questions
+Demos across 4 teams · 1:1 guided coaching on real use cases
+
+Study:   /projects/cursor-portal
+Status:  Internal · Tags: RAG, DevEx, AI adoption, MCP`;
 
 const NOKIA_RAG_ASSISTANT = `# RAG Assistant — Nokia
 

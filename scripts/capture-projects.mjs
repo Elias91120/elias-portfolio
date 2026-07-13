@@ -10,7 +10,7 @@ const targets = [
   { slug: "callkitchen", url: "https://call-kitchen-landing.vercel.app/" },
   { slug: "web-gen", url: "https://www.3geeks.fr" },
   { slug: "prompt-hub", url: "https://prompt-hub.3geeks.fr" },
-  { slug: "promptoptim", url: "https://frontend-prompt-optim.vercel.app/" },
+  { slug: "promptoptim", url: "https://prompt-optim.3geeks.fr/" },
   { slug: "two", url: "https://apps.apple.com/fr/app/two/id6758867716" },
   { slug: "green-jardin", url: "https://green-jardin.fr", ageGate: true },
 ];

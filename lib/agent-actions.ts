@@ -25,6 +25,11 @@ const AGENT_ACTIONS_JSON = /AGENT_ACTIONS\s*:\s*(\[[\s\S]*?\])/i;
 const SCROLL_INTENT_PATTERN =
   /\b(show me|take me to|scroll to|where is|montre(?:-moi)?|va voir)\b/i;
 
+/** True when the visitor explicitly asks to navigate, not just mention a topic. */
+export function hasNavigationIntent(message: string): boolean {
+  return SCROLL_INTENT_PATTERN.test(message.toLowerCase());
+}
+
 const PROJECT_ALIASES: Record<string, string> = {
   nokia: "feature-analyzer",
   "feature analyzer": "feature-analyzer",
@@ -41,6 +46,9 @@ const PROJECT_ALIASES: Record<string, string> = {
   "travel planner": "ai-travel-planner",
   "green jardin": "green-jardin",
   "green-jardin": "green-jardin",
+  "3geeks infra": "3geeks-infra",
+  coolify: "3geeks-infra",
+  "self-host": "3geeks-infra",
 };
 
 const SECTION_HASH: Record<
@@ -120,27 +128,24 @@ export function parseAgentActions(
   userMessage: string,
   assistantText?: string
 ): AgentAction[] {
+  if (!hasNavigationIntent(userMessage)) {
+    return [];
+  }
+
   if (assistantText) {
     const embedded = parseEmbeddedActions(assistantText);
     if (embedded?.length) return embedded;
   }
 
   const msg = userMessage.toLowerCase();
-  const hasScrollIntent =
-    SCROLL_INTENT_PATTERN.test(msg) ||
-    /\b(nokia|feature analyzer|dashboard|web-?gen|cursor portal|promptoptim|express divorce|travel planner)\b/i.test(
-      msg
-    );
 
-  if (hasScrollIntent) {
-    const slug = resolveProjectSlug(msg);
-    if (slug) {
-      return [{ type: "scroll", target: "#projects", highlight: slug }];
-    }
+  const slug = resolveProjectSlug(msg);
+  if (slug) {
+    return [{ type: "scroll", target: "#projects", highlight: slug }];
   }
 
   for (const [keyword, action] of Object.entries(SECTION_KEYWORDS)) {
-    if (msg.includes(keyword)) {
+    if (new RegExp(`\\b${keyword}\\b`, "i").test(msg)) {
       return [action];
     }
   }

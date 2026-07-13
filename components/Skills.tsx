@@ -35,12 +35,13 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
               compact ? "text-sm hidden" : ""
             }`}
           >
-            I ship through AI-native engineering — Cursor, Claude, MCP skills —
-            across data pipelines, agents, and interfaces people actually use.
+            I ship through AI-native engineering — Cursor, Claude, MCP skills,
+            and our self-hosted 3geeks API — across data pipelines, agents, and
+            interfaces people actually use.
           </p>
         </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {visibleGroups.map((group, gi) => {
             const accent = group.accent;
             return (

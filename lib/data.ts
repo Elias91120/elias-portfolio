@@ -103,7 +103,7 @@ export const chapters: Chapter[] = [
     id: "3geeks",
     years: "2025 — now",
     title: "Three Friends, One Studio",
-    text: "Meanwhile, with Noam and Charles, webgen became our studio — made in France, built around Web-Gen, our intent-to-website generator. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, launched Green Jardin — a live CBD shop online and in-store — and released tools like PromptOptim in the open. Three friends, real clients, real code.",
+    text: "Meanwhile, with Noam and Charles, webgen became our studio — made in France, built around Web-Gen, our intent-to-website generator. We shipped Express Divorce USA into production, built CallKitchen, released the Two app, launched Green Jardin — a live CBD shop online and in-store — and released tools like PromptOptim in the open. Behind the products, we run our own prod stack on a Mac Mini: Coolify, Traefik, Cloudflare Tunnel — push to GitHub, live on *.3geeks.fr. Three friends, real clients, real code.",
     image: "/story/chapter-6.jpg",
     video: "/story/chapter-6.mp4",
     imageAlt: "Elias, Noam and Charles celebrating a launch at 3geeks",
@@ -148,6 +148,9 @@ export const skillGroups: SkillGroup[] = [
       "AI-assisted dev at scale",
       "Polyglot development",
       "Any language via AI orchestration",
+      "3geeks API hub (Ollama)",
+      "LLM guardrails & eval",
+      "n8n workflows",
     ],
   },
   {
@@ -159,11 +162,16 @@ export const skillGroups: SkillGroup[] = [
       "ETL / data pipelines",
       "LLM & RAG integration",
       "AI agents",
+      "Multi-agent orchestration",
+      "Gemini API",
+      "Self-hosted LLM (Ollama)",
       "Power BI",
       "DAX",
       "SQL / MySQL",
       "NoSQL / MongoDB",
       "Data governance",
+      "Jira / GitLab / Confluence",
+      "Telemetry integrations",
     ],
   },
   {
@@ -181,9 +189,16 @@ export const skillGroups: SkillGroup[] = [
       "Tailwind CSS",
       "REST APIs",
       "UI/UX design",
+      "GSAP / ScrollTrigger",
+      "Framer Motion",
+      "Playwright",
       "Shopify",
+      "Shopify Admin GraphQL",
       "E-commerce / omnichannel retail",
       "POS systems",
+      "Loyalty systems",
+      "Swift / SwiftUI",
+      "App Store deployment",
     ],
   },
   {
@@ -191,17 +206,38 @@ export const skillGroups: SkillGroup[] = [
     accent: "#fbbf24",
     skills: [
       "AWS (EC2 · S3 · IAM)",
+      "Docker",
+      "Coolify",
+      "Traefik",
+      "Cloudflare (DNS · Tunnel)",
+      "Self-hosting / OrbStack",
+      "PostgreSQL",
+      "Supabase",
       "Git",
       "GitLab CI",
       "Firebase (RTDB · Firestore · Auth)",
+      "Firestore transactions",
       "Vercel serverless",
       "Real-time sync",
+      "CSP / iframe isolation",
       "Payment integrations (SumUp)",
       "Monitoring & self-healing infra",
       "Cross-system integration",
+      "AI voice agents",
       "Agile / JIRA",
       "Technical mentoring",
       "Workflow automation",
+    ],
+  },
+  {
+    title: "Embedded & Hardware",
+    accent: "#f472b6",
+    skills: [
+      "Arduino",
+      "C / C++",
+      "Embedded systems",
+      "Electronics (STI2D SIN)",
+      "Logic gates & digital circuits",
     ],
   },
 ];
@@ -221,6 +257,60 @@ export const certifications = [
     name: "AI & GenAI — Prompt Engineering",
     issuer: "Nokia",
     year: "2024",
+  },
+];
+
+export type EducationStep = {
+  years: string;
+  title: string;
+  subtitle: string;
+  status: "completed" | "current" | "upcoming";
+};
+
+export const educationPath: EducationStep[] = [
+  {
+    years: "2023 — 2026",
+    title: "ECE Paris",
+    subtitle: "Bachelor Informatique — Data & AI",
+    status: "current",
+  },
+  {
+    years: "Sep 2026",
+    title: "EFREI Paris",
+    subtitle: "M.Sc. Data Engineering & AI (RNCP 7)",
+    status: "upcoming",
+  },
+  {
+    years: "2026 — 2028",
+    title: "Apprenticeship",
+    subtitle: "Data engineering / AI — actively seeking",
+    status: "upcoming",
+  },
+];
+
+export type Testimonial = {
+  quote: string;
+  author: string;
+  projectTags: { label: string; accent: string }[];
+  verified?: boolean;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Équipe réactive, process très clair et exécution propre. Le nouveau site a fluidifié notre acquisition.",
+    author: "Adrien",
+    projectTags: [
+      { label: "CallKitchen", accent: "#f472b6" },
+      { label: "Express Divorce", accent: "#818cf8" },
+    ],
+  },
+  {
+    quote:
+      "Ils ont compris notre métier rapidement et proposent des choix utiles. On a vu une vraie progression.",
+    author: "Henry F.",
+    projectTags: [{ label: "Two App", accent: "#c084fc" }],
+    verified: true,
   },
 ];
 
@@ -271,15 +361,15 @@ export const projects: Project[] = [
   },
   {
     name: "CallKitchen",
-    role: "Restaurant phone automation",
+    role: "Restaurant phone automation · webgen",
     description:
-      "A concrete landing page for an AI phone assistant that helps restaurants capture missed calls.",
+      "Restaurants lose orders, reservations, and customer questions when the phone rings during rush hour and staff can't pick up. CallKitchen is the live landing for an AI voice agent that answers 24/7 — takeout, bookings, FAQs from approved menus, SMS confirmations, and kitchen dashboard — with a demo line, pricing tiers, and a full how-it-works narrative. A shipped GTM page recruiters can click through, not a mockup.",
     highlights: [
-      "Product explained clearly",
-      "Direct call-to-action to the demo",
-      "Public landing page live online",
+      "24/7 AI reception — orders, reservations, FAQs, multilingual",
+      "Three-step flow: answer → handle → SMS + kitchen notify",
+      "Live landing with demo CTA, pricing ($449–$1,499/mo), and FAQ",
     ],
-    tags: ["AI voice", "Landing", "Restaurants"],
+    tags: ["AI voice", "SaaS landing", "Restaurants"],
     link: "https://call-kitchen-landing.vercel.app/",
     linkLabel: "call-kitchen-landing.vercel.app",
     ctaLabel: "Open project",
@@ -290,15 +380,15 @@ export const projects: Project[] = [
   },
   {
     name: "Two",
-    role: "Consumer mobile app",
+    role: "Consumer iOS app · webgen",
     description:
-      "A polished iOS experience, designed to be simple and useful from the very first interaction.",
+      "Couples scatter their shared life across chat, calendar, expenses, and memories — nothing feels private or unified. Two is an all-in-one iOS cocoon: distance tracking, mood sharing, a sweet-notes wall, geolocated photo map, shared home vault, synced calendar, expense split, and a playroom — data stays between the two partners only, never sold for ads. Live on the App Store, built for daily recurring use.",
     highlights: [
-      "Public app on the App Store",
-      "Clear mobile interface",
-      "Built for recurring everyday use",
+      "All-in-one couple space — logistics + intimacy in one app",
+      "Privacy-first: secured data, accessible only to the couple",
+      "Shipped on the App Store — real consumer product",
     ],
-    tags: ["iOS", "Mobile", "Product design"],
+    tags: ["iOS", "Swift", "Consumer app"],
     link: "https://apps.apple.com/fr/app/two/id6758867716",
     linkLabel: "App Store",
     ctaLabel: "App Store",
@@ -309,15 +399,15 @@ export const projects: Project[] = [
   },
   {
     name: "Green Jardin",
-    role: "Omnichannel CBD retail · Shopify + custom ops",
+    role: "CBD retail · omnichannel",
     description:
-      "Live CBD shop online and in-store (Palaiseau) — Shopify storefront built with Ino Digital, plus a custom staff platform I built solo: real-time TV menu, POS checkout, 14% loyalty, and Shopify price sync.",
+      "Live CBD shop online and in-store (Palaiseau) — Shopify storefront with Ino Digital, plus a private ops platform: real-time TV menu, gram-scale POS, 14% loyalty, and Shopify price sync.",
     highlights: [
-      "Shopify storefront live with physical tea salon",
-      "Custom POS + TV menu synced in real time",
-      "Loyalty program & Shopify price bridge",
+      "Shopify storefront + live TV embed on green-jardin.fr",
+      "Private ops platform — POS, loyalty, Shopify bridge (no public URL)",
+      "Firebase RTDB real-time sync between counter and customer TV",
     ],
-    tags: ["Shopify", "E-commerce", "Firebase", "POS"],
+    tags: ["Shopify", "Firebase", "POS", "Omnichannel"],
     link: "https://green-jardin.fr",
     linkLabel: "green-jardin.fr",
     ctaLabel: "Read the case study",
@@ -351,16 +441,37 @@ export const projects: Project[] = [
     category: "green-stack",
   },
   {
-    name: "Prompt Hub",
-    role: "AI project planning",
+    name: "3geeks Infra",
+    role: "Self-hosted prod · webgen",
     description:
-      "The natural follow-up to PromptOptim: a beta tool that turns a vague idea into a structured execution plan with contextualized prompts.",
+      "webgen's apps lived on Vercel with scattered env vars and rising bills — no single view of what ran in prod. I built a Mac Mini cluster (Coolify + Traefik + Cloudflare Tunnel) so every *.3geeks.fr service deploys from GitHub in one golden path, with Vercel migrations and PostgreSQL on Coolify. 8+ live apps, 7 public domains, infrastructure we operate.",
     highlights: [
-      "Phases and steps generated from an idea",
-      "Contextualized prompts for coding assistants",
-      "Specialized AI agents and graph in development",
+      "8+ apps on Coolify — landing, API hub, workspace, Prompt Hub, PromptOptim",
+      "Golden path: git push → Coolify → Traefik :443 → CF Tunnel",
+      "3 Vercel → self-host migrations with permanent redirects",
     ],
-    tags: ["AI planning", "Agents", "Beta"],
+    tags: ["Coolify", "Traefik", "Cloudflare", "Docker"],
+    link: "https://www.3geeks.fr",
+    linkLabel: "www.3geeks.fr",
+    ctaLabel: "Read the case study",
+    logo: "/3geeks-logo.png",
+    caseStudy: "/projects/3geeks-infra",
+    caseStudySlug: "3geeks-infra",
+    status: "Live",
+    accent: "#fbbf24",
+    category: "green-stack",
+  },
+  {
+    name: "Prompt Hub",
+    role: "AI project planning · webgen beta",
+    description:
+      "A vague idea in chat doesn't become a build plan — developers lose hours re-explaining stack and context. Prompt Hub turns a short brief into phased steps and copy-paste prompts (objectives, constraints, decisions, skills included), orchestrated by 7+ specialized agents with a dependency graph and versioned history. Beta live and free — idea to executable plan in under a minute.",
+    highlights: [
+      "Plan → steps → contextualized prompts ready for your IDE",
+      "7+ specialized agents: Plan, Chat, Analyser, Prompt Generator…",
+      "Interactive dependency graph + reversible plan mutations",
+    ],
+    tags: ["Multi-agent", "AI planning", "Beta"],
     link: "https://prompt-hub.3geeks.fr",
     linkLabel: "prompt-hub.3geeks.fr",
     ctaLabel: "Open the beta",
@@ -371,17 +482,17 @@ export const projects: Project[] = [
   },
   {
     name: "PromptOptim",
-    role: "Green IT & digital sovereignty",
+    role: "Green IT & digital sovereignty · webgen",
     description:
-      "An AI prompt optimizer designed to reduce token consumption, estimate CO2 impact, and encourage more mindful AI usage.",
+      "Verbose prompts burn tokens and CO₂ with zero visibility into the environmental cost. PromptOptim sharpens prompts for the same intent with fewer tokens, estimates carbon impact per request, and champions European models with a GDPR-conscious stance. Open tool in production — webgen's answer to mindful, sovereign AI usage.",
     highlights: [
-      "More precise prompts with fewer tokens",
-      "CO2 estimation per request",
-      "European models and GDPR positioning",
+      "Same intent, fewer tokens — precision over padding",
+      "CO₂ estimation surfaced on every optimization",
+      "European models + GDPR positioning, live and open",
     ],
     tags: ["Green IT", "AI", "Open tool"],
-    link: "https://frontend-prompt-optim.vercel.app/",
-    linkLabel: "frontend-prompt-optim.vercel.app",
+    link: "https://prompt-optim.3geeks.fr/",
+    linkLabel: "prompt-optim.3geeks.fr",
     ctaLabel: "Open PromptOptim",
     image: "/projects/promptoptim.webp",
     status: "Live",
@@ -428,10 +539,18 @@ export const projects: Project[] = [
   },
   {
     name: "Cursor pour les nuls",
-    role: "Nokia — internal portal",
+    role: "Nokia — portal & AI adoption lead",
     description:
-      "Internal portal accelerating Cursor adoption: centralized knowledge, a RAG-powered AI assistant, a collaborative forum — plus demos and hands-on onboarding across multiple teams.",
-    tags: ["RAG", "DevEx", "AI adoption"],
+      "Internal portal accelerating Cursor adoption: knowledge hub, RAG assistant (100+ questions answered), team demos across 4 squads, and hands-on 1:1 coaching on real use cases.",
+    highlights: [
+      "1,019 portal views · 75 unique visitors",
+      "100+ questions answered by the embedded RAG assistant",
+      "Demos & onboarding across 4 teams in the sector",
+    ],
+    tags: ["RAG", "DevEx", "AI adoption", "MCP"],
+    ctaLabel: "Read the case study",
+    caseStudy: "/projects/cursor-portal",
+    caseStudySlug: "cursor-portal",
     status: "Internal",
     accent: "#fb923c",
     category: "professional",
@@ -458,7 +577,6 @@ export const contact = {
   fiverr: "https://www.fiverr.com/three_geeks",
   fiverrLabel: "@three_geeks",
   languages: "FR native · EN C1 · AR fluent",
-  calUrl: undefined as string | undefined,
-  cvPath: undefined as string | undefined,
-  cvDownloadLabel: undefined as string | undefined,
+  cvPath: "/CV_Elias_Elloumi_FR.pdf",
+  cvDownloadLabel: "Download CV (FR)",
 };

@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView } from "framer-motion";
 
+import { projects } from "@/lib/data";
+
 type Stat = {
   value: number;
   prefix?: string;
@@ -11,10 +13,13 @@ type Stat = {
   accent: string;
 };
 
+const shippedCount = projects.length;
+
 const stats: Stat[] = [
   {
-    value: 7,
-    label: "products shipped & live",
+    value: shippedCount,
+    suffix: "+",
+    label: "projects shipped & live",
     accent: "#4ade80",
   },
   {

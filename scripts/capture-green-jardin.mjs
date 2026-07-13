@@ -4,9 +4,9 @@ import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 const OUT = join(process.cwd(), "public", "projects");
-const OPS_BASE = "https://green-jardin-tele.vercel.app";
-const STAFF_EMAIL = "caisse@greenjardin.fr";
-const STAFF_PASSWORD = process.env.STAFF_PASSWORD || "GreenJardin2026!";
+/** Private staff app — set locally only; never linked from the portfolio. */
+const OPS_BASE = process.env.GREEN_JARDIN_OPS_URL;
+const STAFF_PASSWORD = process.env.STAFF_PASSWORD;
 
 async function savePng(png, slug) {
   const out = join(OUT, `${slug}.webp`);
@@ -51,6 +51,9 @@ async function staffLogin(page) {
   await page.waitForTimeout(2000);
   const passwordInput = page.locator("#staff-password");
   if (await passwordInput.isVisible({ timeout: 5000 }).catch(() => false)) {
+    if (!STAFF_PASSWORD) {
+      throw new Error("STAFF_PASSWORD is required for ops screenshots");
+    }
     await passwordInput.fill(STAFF_PASSWORD);
     await page.getByRole("button", { name: /connexion|connecter|sign in/i }).click();
     await page.waitForTimeout(3000);
@@ -58,12 +61,16 @@ async function staffLogin(page) {
 }
 
 async function captureOps(browser) {
+  if (!OPS_BASE) {
+    console.log("skip ops captures — set GREEN_JARDIN_OPS_URL locally to refresh staff screenshots");
+    return;
+  }
+
   const page = await browser.newPage({
     viewport: { width: 1440, height: 900 },
     deviceScaleFactor: 2,
   });
 
-  // TV menu (embed mode — public read-only view)
   await page.goto(`${OPS_BASE}/tv?embed=1`, {
     waitUntil: "domcontentloaded",
     timeout: 60000,
@@ -85,7 +92,6 @@ async function captureOps(browser) {
     timeout: 60000,
   });
   await page.waitForTimeout(3500);
-  // Scroll to Shopify panel if present
   await page.evaluate(() => {
     const el = document.querySelector(".shopify-sync-panel, [class*='shopify']");
     if (el) el.scrollIntoView({ block: "start" });

@@ -5,7 +5,9 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Story from "@/components/Story";
 import Skills from "@/components/Skills";
+import EducationTimeline from "@/components/EducationTimeline";
 import Projects from "@/components/Projects";
+import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import AskWidget from "@/components/AskWidget";
@@ -13,7 +15,6 @@ import { AgentChatProvider } from "@/components/AgentChatProvider";
 import StatsBand from "@/components/StatsBand";
 import ScrollProgress from "@/components/ScrollProgress";
 import CinematicIntro, { shouldPlayIntro } from "@/components/CinematicIntro";
-import { VisitorModeProvider } from "@/components/VisitorModeProvider";
 import DevTerminal from "@/components/DevTerminal";
 import { DeveloperModeProvider } from "@/components/DeveloperModeProvider";
 import { useIsMobile } from "@/lib/use-is-mobile";
@@ -57,17 +58,15 @@ export default function HomeExperience() {
 
   return (
     <DeveloperModeProvider introComplete={introComplete}>
-      <VisitorModeProvider>
-        {showIntro === true && (
-          <CinematicIntro onComplete={() => setShowIntro(false)} />
-        )}
-        {isMobile ? (
-          <MobileHomeSections showIntro={showIntro} />
-        ) : (
-          <HomeSections showIntro={showIntro} />
-        )}
-        {isMobile === false && <DevTerminal />}
-      </VisitorModeProvider>
+      {showIntro === true && (
+        <CinematicIntro onComplete={() => setShowIntro(false)} />
+      )}
+      {isMobile ? (
+        <MobileHomeSections showIntro={showIntro} />
+      ) : (
+        <HomeSections showIntro={showIntro} />
+      )}
+      {isMobile === false && <DevTerminal />}
     </DeveloperModeProvider>
   );
 }
@@ -92,9 +91,15 @@ function HomeSections({ showIntro }: { showIntro: boolean | null }) {
             <Skills />
           </div>
           <div style={{ order: 4 }}>
-            <Projects />
+            <EducationTimeline />
           </div>
           <div style={{ order: 5 }}>
+            <Projects />
+          </div>
+          <div style={{ order: 6 }}>
+            <Testimonials />
+          </div>
+          <div style={{ order: 7 }}>
             <Contact />
           </div>
         </div>

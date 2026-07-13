@@ -52,6 +52,26 @@ export const caseStudyThemes: Record<string, CaseStudyTheme> = {
     card: "#0f2418",
     grain: false,
   },
+  "3geeks-infra": {
+    bg: "#141008",
+    bgTo: "#0a0804",
+    fg: "#fef9ee",
+    muted: "#c4b08a",
+    accent: "#fbbf24",
+    kickerColor: "#fbbf24",
+    card: "#1f1808",
+    grain: false,
+  },
+  "cursor-portal": {
+    bg: "#1a0f08",
+    bgTo: "#0f0804",
+    fg: "#fef3e8",
+    muted: "#c4a48a",
+    accent: "#fb923c",
+    kickerColor: "#fb923c",
+    card: "#241408",
+    grain: false,
+  },
 };
 
 export function getCaseStudyTheme(slug: string): CaseStudyTheme {

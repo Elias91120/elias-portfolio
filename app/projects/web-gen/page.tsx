@@ -40,13 +40,13 @@ const shipped = [
   },
   {
     name: "Green Jardin",
-    detail: "Omnichannel CBD retail — Shopify storefront + custom staff platform",
+    detail: "CBD retail — live Shopify storefront; private in-store ops platform (no public link)",
     href: "https://green-jardin.fr",
   },
   {
     name: "PromptOptim",
     detail: "Green-IT prompt optimizer, released in the open",
-    href: "https://frontend-prompt-optim.vercel.app/",
+    href: "https://prompt-optim.3geeks.fr/",
   },
 ];
 

@@ -167,6 +167,7 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
       setInput("");
       const fromVoice = voiceSubmitRef.current;
       voiceSubmitRef.current = false;
+      (document.activeElement as HTMLElement | null)?.blur();
       void ask(question, fromVoice ? { fromVoice: true } : undefined);
     },
     [ask, busy, input]

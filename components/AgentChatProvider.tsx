@@ -12,6 +12,7 @@ import {
 } from "react";
 import {
   applyAgentActions,
+  hasNavigationIntent,
   parseAgentActions,
   prepareStreamingDisplay,
   stripAgentActionsComment,
@@ -112,12 +113,6 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
       ];
       setMessages([...history, { role: "assistant", content: "" }]);
 
-      const userActions = parseAgentActions(text);
-      if (userActions.length > 0) {
-        setLastActions(userActions);
-        applyAgentActions(userActions);
-      }
-
       const scheduleStreamUpdate = (display: string) => {
         if (rafRef.current) return;
         rafRef.current = requestAnimationFrame(() => {
@@ -163,17 +158,10 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
           { role: "assistant", content: finalDisplay },
         ]);
 
-        const assistantActions = parseAgentActions(text, withActions);
-        const actionsToApply =
-          assistantActions.length > 0 && userActions.length === 0
-            ? assistantActions
-            : userActions.length > 0
-              ? userActions
-              : assistantActions;
-
-        if (actionsToApply.length > 0) {
-          setLastActions(actionsToApply);
-          if (userActions.length === 0) {
+        if (hasNavigationIntent(text)) {
+          const actionsToApply = parseAgentActions(text, withActions);
+          if (actionsToApply.length > 0) {
+            setLastActions(actionsToApply);
             applyAgentActions(actionsToApply);
           }
         }

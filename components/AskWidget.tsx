@@ -121,7 +121,7 @@ function ChatPanel({
 
       <div
         ref={scrollRef}
-        className="flex-1 space-y-4 overflow-y-auto px-4 py-5"
+        className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-5"
       >
         {messages.length === 0 && (
           <div className="space-y-3">
@@ -136,6 +136,7 @@ function ChatPanel({
                   type="button"
                   onClick={() => {
                     setInput("");
+                    (document.activeElement as HTMLElement | null)?.blur();
                     void ask(s);
                   }}
                   className="rounded-full bg-white/5 px-3 py-1.5 text-left text-xs text-[#cfcae3] ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:text-white hover:ring-white/25 cursor-pointer"
@@ -197,6 +198,7 @@ function ChatPanel({
           const text = input.trim();
           if (!text || busy) return;
           setInput("");
+          (document.activeElement as HTMLElement | null)?.blur();
           void ask(text);
         }}
         className={`flex items-center gap-2 border-t border-white/8 bg-white/[0.02] px-4 py-3.5 ${

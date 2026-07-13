@@ -11,6 +11,7 @@ function buildAllowedHosts(): Set<string> {
     "3geeks.fr",
     "www.3geeks.fr",
     "prompt-hub.3geeks.fr",
+    "prompt-optim.3geeks.fr",
     "linkedin.com",
     "www.linkedin.com",
     "fiverr.com",
@@ -36,6 +37,7 @@ const ALLOWED_HOSTS = buildAllowedHosts();
 /** Patterns that indicate a hallucinated or unsafe assistant reply. */
 const UNTRUSTWORTHY_PATTERNS = [
   /webgen\.com/i,
+  /green-jardin-tele\.vercel\.app/i,
   /outellier/i,
   /michel[- ]?elloumi/i,
   /\[\s*at\s*\]/i,

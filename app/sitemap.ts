@@ -17,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/projects/3geeks-infra`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/projects/express-divorce`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -24,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/projects/nokia-dashboard`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/projects/cursor-portal`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,

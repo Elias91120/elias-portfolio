@@ -5,7 +5,9 @@ import MobileBottomNav from "@/components/mobile/MobileBottomNav";
 import MobileHero from "@/components/mobile/MobileHero";
 import MobileStorySection from "@/components/mobile/MobileStorySection";
 import Skills from "@/components/Skills";
+import EducationTimeline from "@/components/EducationTimeline";
 import Projects from "@/components/Projects";
+import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import AskWidget from "@/components/AskWidget";
@@ -40,9 +42,15 @@ export default function MobileHomeSections({
               <Skills compact />
             </div>
             <div style={{ order: 4 }}>
-              <Projects compact />
+              <EducationTimeline compact />
             </div>
             <div style={{ order: 5 }}>
+              <Projects compact />
+            </div>
+            <div style={{ order: 6 }}>
+              <Testimonials compact />
+            </div>
+            <div style={{ order: 7 }}>
               <Contact compact />
             </div>
           </div>
