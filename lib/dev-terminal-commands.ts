@@ -102,7 +102,7 @@ Shortcuts: press \` (backtick) or Dev mode in the nav.`;
 const WHOAMI_TEXT = `elias-elloumi
 role:    full-stack · data engineering · AI agents
 org:     Nokia (apprenticeship) + webgen (co-founder)
-stack:   Next.js · FastAPI · Python · Mistral · GSAP
+stack:   Next.js · FastAPI · Python · 3Geeks API · GSAP
 status:  open to apprenticeship 2026–2028 (FR)
 site:    https://elias-elloumi.com`;
 

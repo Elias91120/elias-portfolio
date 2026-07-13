@@ -29,7 +29,9 @@ Option 1 — CLI:
 npx vercel
 ```
 
-Option 2 — Git: push this repo to GitHub, then import it on [vercel.com/new](https://vercel.com/new). Every push deploys automatically. No environment variables needed.
+Option 2 — Git: push this repo to GitHub, then import it on [vercel.com/new](https://vercel.com/new). Every push deploys automatically.
+
+**Environment variable** (portfolio chatbot): set `THREEGEEKS_API_KEY` in the Vercel project settings to your [api.3geeks.fr](https://api.3geeks.fr) bearer token. Optional: `THREEGEEKS_MODEL` to override the default model.
 
 ## Structure
 

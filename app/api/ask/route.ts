@@ -1,18 +1,14 @@
-import { Mistral } from "@mistralai/mistralai";
 import { buildSystemPrompt } from "@/lib/agent-context";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
-const MODEL = "mistral-small-latest";
+const API_URL = "https://api.3geeks.fr/v1/chat/completions";
 const MAX_MESSAGES = 16;
 const MAX_MESSAGE_LENGTH = 2000;
+const MAX_TOKENS = 800;
 
 type IncomingMessage = { role: "user" | "assistant"; content: string };
-
-function textFromDelta(content: unknown): string {
-  if (typeof content === "string") return content;
-  return "";
-}
 
 function sanitizeMessages(raw: unknown): IncomingMessage[] | null {
   if (!Array.isArray(raw) || raw.length === 0) return null;
@@ -36,11 +32,128 @@ function sanitizeMessages(raw: unknown): IncomingMessage[] | null {
   return messages as IncomingMessage[];
 }
 
+function textFromSseChunk(payload: string): string {
+  const trimmed = payload.trim();
+  if (!trimmed.startsWith("data:")) return "";
+  const data = trimmed.slice(5).trim();
+  if (!data || data === "[DONE]") return "";
+
+  try {
+    const parsed = JSON.parse(data) as {
+      choices?: Array<{ delta?: { content?: unknown } }>;
+    };
+    const content = parsed.choices?.[0]?.delta?.content;
+    return typeof content === "string" ? content : "";
+  } catch {
+    return "";
+  }
+}
+
+async function streamFromThreeGeeks(
+  messages: IncomingMessage[],
+  apiKey: string,
+): Promise<Response> {
+  const upstream = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      stream: true,
+      max_tokens: MAX_TOKENS,
+      ...(process.env.THREEGEEKS_MODEL
+        ? { model: process.env.THREEGEEKS_MODEL }
+        : {}),
+      messages: [
+        { role: "system", content: buildSystemPrompt() },
+        ...messages,
+      ],
+    }),
+  });
+
+  if (!upstream.ok) {
+    const detail = await upstream.text().catch(() => "");
+    console.error("3geeks API error:", upstream.status, detail);
+    return Response.json(
+      { error: "The assistant is temporarily unavailable." },
+      { status: 502 },
+    );
+  }
+
+  if (!upstream.body) {
+    return Response.json(
+      { error: "The assistant returned an empty response." },
+      { status: 502 },
+    );
+  }
+
+  const encoder = new TextEncoder();
+  const reader = upstream.body.getReader();
+  const decoder = new TextDecoder();
+
+  const readable = new ReadableStream({
+    async start(controller) {
+      let buffer = "";
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+
+          for (const line of lines) {
+            const text = textFromSseChunk(line);
+            if (text) controller.enqueue(encoder.encode(text));
+          }
+        }
+
+        const trailing = textFromSseChunk(buffer);
+        if (trailing) controller.enqueue(encoder.encode(trailing));
+        controller.close();
+      } catch (err) {
+        controller.error(err);
+      }
+    },
+  });
+
+  return new Response(readable, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
 export async function POST(req: Request) {
-  if (!process.env.MISTRAL_API_KEY) {
+  const apiKey = process.env.THREEGEEKS_API_KEY;
+  if (!apiKey) {
     return Response.json(
       { error: "The assistant is not configured yet." },
       { status: 503 },
+    );
+  }
+
+  const rateLimit = checkRateLimit(getClientIp(req));
+  if (!rateLimit.success) {
+    const retryAfter = Math.max(
+      1,
+      rateLimit.reset - Math.floor(Date.now() / 1000),
+    );
+    return Response.json(
+      {
+        error:
+          "Too many messages — please wait a moment before asking again.",
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(retryAfter),
+          "X-RateLimit-Remaining": "0",
+        },
+      },
     );
   }
 
@@ -56,38 +169,5 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid messages." }, { status: 400 });
   }
 
-  const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
-
-  const encoder = new TextEncoder();
-  const readable = new ReadableStream({
-    async start(controller) {
-      try {
-        const stream = await client.chat.stream({
-          model: MODEL,
-          maxTokens: 800,
-          messages: [
-            { role: "system", content: buildSystemPrompt() },
-            ...messages,
-          ],
-        });
-
-        for await (const event of stream) {
-          const text = textFromDelta(event.data?.choices?.[0]?.delta?.content);
-          if (text) {
-            controller.enqueue(encoder.encode(text));
-          }
-        }
-        controller.close();
-      } catch (err) {
-        controller.error(err);
-      }
-    },
-  });
-
-  return new Response(readable, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
-  });
+  return streamFromThreeGeeks(messages, apiKey);
 }

@@ -192,7 +192,7 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
             </h2>
             <p className="flex items-center gap-1 text-[0.65rem] text-muted/80">
               <span className="h-1 w-1 rounded-full bg-emerald-400/80" />
-              AI agent · Mistral
+              AI agent · 3Geeks
             </p>
           </div>
           {speaking && (

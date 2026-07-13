@@ -10,7 +10,6 @@
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
-    "@mistralai/mistralai": "^1.7.4",
     "framer-motion": "^12.42.2",
     "gsap": "^3.15.0",
     "next": "16.2.10",
