@@ -621,7 +621,13 @@ export type CollaborationLocation = {
 
 /** Real cities where Elias has collaborated with people — Nokia, clients, WebGen, OSS, friends & family. */
 export const collaborationLocations: CollaborationLocation[] = [
-  { city: "Dallas", country: "United States", region: "Texas", lat: 32.7767, lng: -96.797 },
+  {
+    city: "Dallas",
+    country: "United States",
+    region: "Texas",
+    lat: 32.7767,
+    lng: -96.797,
+  },
   {
     city: "Washington, D.C.",
     country: "United States",
@@ -647,15 +653,15 @@ export const collaborationLocations: CollaborationLocation[] = [
     city: "Palaiseau",
     country: "France",
     region: "Île-de-France",
-    lat: 48.7148,
-    lng: 2.2444,
+    lat: 48.7142,
+    lng: 2.2415,
   },
   {
     city: "Antony",
     country: "France",
     region: "Île-de-France",
-    lat: 48.7539,
-    lng: 2.2971,
+    lat: 48.7538,
+    lng: 2.298,
   },
   {
     city: "Tunis",
@@ -669,7 +675,7 @@ export const collaborationLocations: CollaborationLocation[] = [
     country: "Tunisia",
     region: "Governorate of Sousse",
     lat: 35.8254,
-    lng: 10.63699,
+    lng: 10.637,
   },
   {
     city: "London",
@@ -689,7 +695,7 @@ export const collaborationLocations: CollaborationLocation[] = [
     city: "Espoo",
     country: "Finland",
     region: "Uusimaa",
-    lat: 60.2055,
+    lat: 60.2052,
     lng: 24.6559,
   },
   {

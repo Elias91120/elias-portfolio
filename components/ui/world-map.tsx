@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import DottedMap from "dotted-map";
+import proj4 from "proj4";
 
 export type MapPoint = {
   lat: number;
   lng: number;
   label?: string;
   labelOffset?: { x: number; y: number };
+  labelAnchor?: "start" | "middle" | "end";
 };
 
 interface MapProps {
@@ -22,6 +24,36 @@ interface MapProps {
   compact?: boolean;
 }
 
+/** Cropped region — Americas through India, no East Asia / Pacific. */
+const MAP_REGION = {
+  lat: { min: 4, max: 64 },
+  lng: { min: -132, max: 80 },
+};
+
+const LABEL_PADDING = { top: 34, right: 52, bottom: 34, left: 52 };
+
+type DottedMapProjection = {
+  width: number;
+  height: number;
+  X_MIN: number;
+  X_RANGE: number;
+  Y_MAX: number;
+  Y_RANGE: number;
+  proj4String: string;
+};
+
+function projectOnMap(map: DottedMapProjection, lat: number, lng: number) {
+  const [projX, projY] = proj4(map.proj4String, [lng, lat]) as [
+    number,
+    number,
+  ];
+
+  return {
+    x: map.width * ((projX - map.X_MIN) / map.X_RANGE),
+    y: map.height * ((map.Y_MAX - projY) / map.Y_RANGE),
+  };
+}
+
 export default function WorldMap({
   dots = [],
   points = [],
@@ -30,20 +62,24 @@ export default function WorldMap({
   compact = false,
 }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
 
-  const svgMap = map.getSVG({
-    radius: compact ? 0.2 : 0.22,
-    color: "#FFFFFF40",
-    shape: "circle",
-    backgroundColor: "transparent",
-  });
+  const { mapProjection, svgMap } = useMemo(() => {
+    const map = new DottedMap({
+      height: compact ? 100 : 130,
+      grid: "diagonal",
+      region: MAP_REGION,
+    });
 
-  const projectPoint = (lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
-    return { x, y };
-  };
+    return {
+      mapProjection: map as unknown as DottedMapProjection,
+      svgMap: map.getSVG({
+        radius: compact ? 0.2 : 0.24,
+        color: "#FFFFFF40",
+        shape: "circle",
+        backgroundColor: "transparent",
+      }),
+    };
+  }, [compact]);
 
   const createCurvedPath = (
     start: { x: number; y: number },
@@ -64,28 +100,31 @@ export default function WorldMap({
       ) === index,
   );
 
-  const dotRadius = compact ? 2.5 : 2;
-  const pulseRadius = compact ? 10 : 8;
+  const dotRadius = compact ? 2.5 : 2.25;
+  const pulseRadius = compact ? 10 : 9;
+  const labelSize = compact ? 8 : 11;
+
+  const viewBox = [
+    -LABEL_PADDING.left,
+    -LABEL_PADDING.top,
+    mapProjection.width + LABEL_PADDING.left + LABEL_PADDING.right,
+    mapProjection.height + LABEL_PADDING.top + LABEL_PADDING.bottom,
+  ].join(" ");
+
+  const aspectRatio =
+    (mapProjection.width + LABEL_PADDING.left + LABEL_PADDING.right) /
+    (mapProjection.height + LABEL_PADDING.top + LABEL_PADDING.bottom);
 
   return (
     <div
-      className={`relative w-full rounded-lg font-sans ${
-        compact ? "aspect-[5/3] min-h-[11rem]" : "aspect-[16/10] sm:aspect-[2/1]"
-      }`}
+      className="relative w-full rounded-lg font-sans"
+      style={{ aspectRatio: compact ? "5 / 3" : `${aspectRatio}` }}
     >
-      <img
-        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="pointer-events-none h-full w-full select-none object-contain [mask-image:linear-gradient(to_bottom,transparent,white_8%,white_92%,transparent)]"
-        alt=""
-        height="495"
-        width="1056"
-        draggable={false}
-      />
       <svg
         ref={svgRef}
-        viewBox="0 0 800 400"
+        viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
-        className="pointer-events-none absolute inset-0 h-full w-full select-none"
+        className="pointer-events-none h-full w-full select-none"
         aria-hidden
       >
         <defs>
@@ -95,11 +134,39 @@ export default function WorldMap({
             <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </linearGradient>
+          <mask id="map-fade-mask">
+            <rect
+              x="0"
+              y="0"
+              width={mapProjection.width}
+              height={mapProjection.height}
+              fill="url(#map-fade-gradient)"
+            />
+          </mask>
+          <linearGradient id="map-fade-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="white" stopOpacity="0.15" />
+            <stop offset="10%" stopColor="white" stopOpacity="1" />
+            <stop offset="90%" stopColor="white" stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="0.15" />
+          </linearGradient>
         </defs>
 
+        <image
+          href={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+          x="0"
+          y="0"
+          width={mapProjection.width}
+          height={mapProjection.height}
+          mask="url(#map-fade-mask)"
+        />
+
         {dots.map((dot, i) => {
-          const startPoint = projectPoint(dot.start.lat, dot.start.lng);
-          const endPoint = projectPoint(dot.end.lat, dot.end.lng);
+          const startPoint = projectOnMap(
+            mapProjection,
+            dot.start.lat,
+            dot.start.lng,
+          );
+          const endPoint = projectOnMap(mapProjection, dot.end.lat, dot.end.lng);
           return (
             <g key={`path-group-${i}`}>
               <motion.path
@@ -120,12 +187,26 @@ export default function WorldMap({
         })}
 
         {uniquePoints.map((point, i) => {
-          const { x, y } = projectPoint(point.lat, point.lng);
+          const { x, y } = projectOnMap(mapProjection, point.lat, point.lng);
           const labelX = x + (point.labelOffset?.x ?? 0);
-          const labelY = y - 10 + (point.labelOffset?.y ?? 0);
+          const labelY = y + (point.labelOffset?.y ?? -12);
+          const anchor = point.labelAnchor ?? "middle";
+          const showLeader =
+            showLabels && point.label && Boolean(point.labelOffset);
 
           return (
             <g key={`point-${point.lat}-${point.lng}-${i}`}>
+              {showLeader ? (
+                <line
+                  x1={x}
+                  y1={y}
+                  x2={labelX}
+                  y2={labelY + 4}
+                  stroke={lineColor}
+                  strokeOpacity="0.35"
+                  strokeWidth="0.75"
+                />
+              ) : null}
               <circle cx={x} cy={y} r={dotRadius} fill={lineColor} />
               <circle cx={x} cy={y} r={dotRadius} fill={lineColor} opacity="0.5">
                 <animate
@@ -149,9 +230,9 @@ export default function WorldMap({
                 <text
                   x={labelX}
                   y={labelY}
-                  textAnchor="middle"
-                  fill="rgba(255,255,255,0.82)"
-                  fontSize={compact ? 8 : 10}
+                  textAnchor={anchor}
+                  fill="rgba(255,255,255,0.9)"
+                  fontSize={labelSize}
                   fontWeight={500}
                   style={{ fontFamily: "var(--font-display), system-ui" }}
                 >
