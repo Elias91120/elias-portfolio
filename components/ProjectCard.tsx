@@ -294,10 +294,10 @@ export default function ProjectCard({
             ))}
           </div>
 
-          {isMobileFeatured && project.caseStudy && (
+          {isMobileFeatured && clickable && (project.ctaLabel || project.caseStudy) && (
             <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
-              Voir le case study
-              <span aria-hidden>→</span>
+              {project.ctaLabel ?? "Voir le case study"}
+              <span aria-hidden>{project.caseStudy ? "→" : "↗"}</span>
             </div>
           )}
 

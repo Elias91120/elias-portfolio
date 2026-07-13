@@ -35,9 +35,7 @@ function ProjectSection({
   compact = false,
   useCarousel = false,
 }: ProjectSectionProps) {
-  const carouselProjects = useCarousel
-    ? projects.filter((p) => p.caseStudy && p.image)
-    : [];
+  const carouselProjects = useCarousel ? projects : [];
 
   return (
     <div className={subdued ? "mt-24" : "mt-0"}>
