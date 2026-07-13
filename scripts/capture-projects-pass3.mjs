@@ -10,7 +10,7 @@ async function main() {
   // Web-Gen: pass language gate, dismiss cookie banner, then capture
   {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
-    await page.goto("https://web-gen-lyart.vercel.app", { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
+    await page.goto("https://www.3geeks.fr", { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
     await page.waitForTimeout(2000);
     await page.locator("text=Français").first().click({ timeout: 10000 }).catch(() => {});
     await page.waitForTimeout(4000);

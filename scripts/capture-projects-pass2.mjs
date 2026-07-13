@@ -16,7 +16,7 @@ async function main() {
   // Web-Gen: pass the language gate, then capture the actual product
   {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
-    await page.goto("https://web-gen-lyart.vercel.app", { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
+    await page.goto("https://www.3geeks.fr", { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
     await page.waitForTimeout(2000);
     await page.locator("text=Français").first().click({ timeout: 10000 }).catch(() => console.warn("web-gen: no lang gate"));
     await page.waitForTimeout(6000);
@@ -27,7 +27,7 @@ async function main() {
   // Prompt Hub: same language gate
   {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
-    await page.goto("https://prompt-hub-rose-xi.vercel.app/", { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
+    await page.goto("https://prompt-hub.3geeks.fr", { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
     await page.waitForTimeout(2000);
     await page.locator("text=Français").first().click({ timeout: 10000 }).catch(() => console.warn("prompt-hub: no lang gate"));
     await page.waitForTimeout(6000);

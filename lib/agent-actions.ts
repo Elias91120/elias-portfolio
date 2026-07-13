@@ -3,6 +3,7 @@ import {
   getProjectSlug,
 } from "@/lib/dev-terminal-commands";
 import { projects } from "@/lib/data";
+import { sanitizeAssistantResponse } from "@/lib/agent-guardrails";
 import { highlightProjectCard } from "@/lib/highlight-project";
 import { prefersReducedMotion, scrollToSection } from "@/lib/scroll-to-section";
 
@@ -105,7 +106,7 @@ export function stripAgentActionsComment(text: string): string {
 
 /** Text safe to render or read aloud in the UI. */
 export function prepareAssistantDisplay(text: string): string {
-  return stripAgentActionsComment(text);
+  return sanitizeAssistantResponse(stripAgentActionsComment(text));
 }
 
 export function parseAgentActions(

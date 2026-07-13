@@ -65,7 +65,7 @@ export default function WebGenCaseStudy() {
             Back to portfolio
           </Link>
           <a
-            href="https://web-gen-lyart.vercel.app"
+            href="https://www.3geeks.fr"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm text-white ring-1 ring-white/15 transition-all hover:bg-white/10 hover:ring-white/30"
@@ -100,7 +100,7 @@ export default function WebGenCaseStudy() {
           slug="web-gen"
           imageSrc="/projects/web-gen.webp"
           imageAlt="Screenshot of the Web-Gen studio site"
-          linkLabel="web-gen-lyart.vercel.app"
+          linkLabel="www.3geeks.fr"
           priority
           className="mt-10"
         />

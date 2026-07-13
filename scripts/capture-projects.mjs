@@ -8,8 +8,8 @@ const OUT = join(process.cwd(), "public", "projects");
 const targets = [
   { slug: "express-divorce", url: "https://expressdivorceusa.co" },
   { slug: "callkitchen", url: "https://call-kitchen-landing.vercel.app/" },
-  { slug: "web-gen", url: "https://web-gen-lyart.vercel.app" },
-  { slug: "prompt-hub", url: "https://prompt-hub-rose-xi.vercel.app/" },
+  { slug: "web-gen", url: "https://www.3geeks.fr" },
+  { slug: "prompt-hub", url: "https://prompt-hub.3geeks.fr" },
   { slug: "promptoptim", url: "https://frontend-prompt-optim.vercel.app/" },
   { slug: "two", url: "https://apps.apple.com/fr/app/two/id6758867716" },
 ];
