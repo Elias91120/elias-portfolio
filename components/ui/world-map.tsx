@@ -1,346 +1,104 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { motion } from "motion/react";
+import { useMemo, useState } from "react";
 import DottedMap from "dotted-map";
-import proj4 from "proj4";
+import { motion } from "motion/react";
+import {
+  collaborationMarkers,
+  MAP_REGION,
+  type LabelSide,
+} from "@/lib/collaboration-map";
 
-export type MapPoint = {
-  lat: number;
-  lng: number;
-  label?: string;
-  labelOffset?: { x: number; y: number };
-  labelAnchor?: "start" | "middle" | "end";
+const labelSideClass: Record<LabelSide, string> = {
+  top: "bottom-full left-1/2 mb-2 -translate-x-1/2",
+  bottom: "top-full left-1/2 mt-2 -translate-x-1/2",
+  left: "right-full top-1/2 mr-2 -translate-y-1/2",
+  right: "left-full top-1/2 ml-2 -translate-y-1/2",
 };
 
-interface MapProps {
-  dots?: Array<{
-    start: MapPoint;
-    end: MapPoint;
-  }>;
-  points?: MapPoint[];
-  lineColor?: string;
-  showLabels?: boolean;
-  compact?: boolean;
-}
+export default function WorldMap({ compact = false }: { compact?: boolean }) {
+  const [activeCity, setActiveCity] = useState<string | null>(null);
 
-/** Cropped region — Americas through India, no East Asia / Pacific. */
-const MAP_REGION = {
-  lat: { min: 4, max: 64 },
-  lng: { min: -140, max: 82 },
-};
-
-const DEFAULT_PADDING = { top: 40, right: 60, bottom: 40, left: 90 };
-
-type DottedMapProjection = {
-  width: number;
-  height: number;
-  X_MIN: number;
-  X_RANGE: number;
-  Y_MAX: number;
-  Y_RANGE: number;
-  proj4String: string;
-};
-
-type Bounds = {
-  minX: number;
-  minY: number;
-  maxX: number;
-  maxY: number;
-};
-
-function projectOnMap(map: DottedMapProjection, lat: number, lng: number) {
-  const [projX, projY] = proj4(map.proj4String, [lng, lat]) as [
-    number,
-    number,
-  ];
-
-  return {
-    x: map.width * ((projX - map.X_MIN) / map.X_RANGE),
-    y: map.height * ((map.Y_MAX - projY) / map.Y_RANGE),
-  };
-}
-
-function estimateLabelBounds(
-  label: string,
-  x: number,
-  y: number,
-  anchor: "start" | "middle" | "end",
-  fontSize: number,
-): Bounds {
-  const charWidth = fontSize * 0.55;
-  const width = label.length * charWidth;
-  const top = y - fontSize;
-  const bottom = y + fontSize * 0.25;
-
-  if (anchor === "start") {
-    return { minX: x, maxX: x + width, minY: top, maxY: bottom };
-  }
-
-  if (anchor === "end") {
-    return { minX: x - width, maxX: x, minY: top, maxY: bottom };
-  }
-
-  return {
-    minX: x - width / 2,
-    maxX: x + width / 2,
-    minY: top,
-    maxY: bottom,
-  };
-}
-
-function computeViewBox(
-  mapWidth: number,
-  mapHeight: number,
-  markerPositions: Array<{ x: number; y: number }>,
-  labelBounds: Bounds[],
-  padding: typeof DEFAULT_PADDING,
-) {
-  const bounds: Bounds = {
-    minX: 0,
-    minY: 0,
-    maxX: mapWidth,
-    maxY: mapHeight,
-  };
-
-  for (const pos of markerPositions) {
-    bounds.minX = Math.min(bounds.minX, pos.x - 6);
-    bounds.maxX = Math.max(bounds.maxX, pos.x + 6);
-    bounds.minY = Math.min(bounds.minY, pos.y - 6);
-    bounds.maxY = Math.max(bounds.maxY, pos.y + 6);
-  }
-
-  for (const label of labelBounds) {
-    bounds.minX = Math.min(bounds.minX, label.minX);
-    bounds.maxX = Math.max(bounds.maxX, label.maxX);
-    bounds.minY = Math.min(bounds.minY, label.minY);
-    bounds.maxY = Math.max(bounds.maxY, label.maxY);
-  }
-
-  const x = bounds.minX - padding.left;
-  const y = bounds.minY - padding.top;
-  const width = bounds.maxX - bounds.minX + padding.left + padding.right;
-  const height = bounds.maxY - bounds.minY + padding.top + padding.bottom;
-
-  return { x, y, width, height };
-}
-
-export default function WorldMap({
-  dots = [],
-  points = [],
-  lineColor = "#a78bfa",
-  showLabels = true,
-  compact = false,
-}: MapProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  const { mapProjection, svgMap } = useMemo(() => {
+  const mapImage = useMemo(() => {
     const map = new DottedMap({
-      height: compact ? 100 : 130,
+      height: 140,
       grid: "diagonal",
       region: MAP_REGION,
     });
 
-    return {
-      mapProjection: map as unknown as DottedMapProjection,
-      svgMap: map.getSVG({
-        radius: compact ? 0.2 : 0.24,
-        color: "#FFFFFF40",
-        shape: "circle",
-        backgroundColor: "transparent",
-      }),
-    };
-  }, [compact]);
+    const svg = map.getSVG({
+      radius: 0.2,
+      color: "#FFFFFF35",
+      shape: "circle",
+      backgroundColor: "transparent",
+    });
 
-  const createCurvedPath = (
-    start: { x: number; y: number },
-    end: { x: number; y: number },
-  ) => {
-    const midX = (start.x + end.x) / 2;
-    const midY = Math.min(start.y, end.y) - 50;
-    return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
-  };
-
-  const uniquePoints = [
-    ...points,
-    ...dots.flatMap((dot) => [dot.start, dot.end]),
-  ].filter(
-    (point, index, list) =>
-      list.findIndex(
-        (item) => item.lat === point.lat && item.lng === point.lng,
-      ) === index,
-  );
-
-  const dotRadius = compact ? 2.5 : 2.25;
-  const pulseRadius = compact ? 10 : 9;
-  const labelSize = compact ? 8 : 11;
-
-  const projectedPoints = uniquePoints.map((point) => {
-    const { x, y } = projectOnMap(mapProjection, point.lat, point.lng);
-    const labelX = x + (point.labelOffset?.x ?? 0);
-    const labelY = y + (point.labelOffset?.y ?? -12);
-    const anchor = point.labelAnchor ?? "middle";
-
-    return { point, x, y, labelX, labelY, anchor };
-  });
-
-  const labelBounds =
-    showLabels
-      ? projectedPoints
-          .filter((entry) => entry.point.label)
-          .map((entry) =>
-            estimateLabelBounds(
-              entry.point.label!,
-              entry.labelX,
-              entry.labelY,
-              entry.anchor,
-              labelSize,
-            ),
-          )
-      : [];
-
-  const viewBoxRect = computeViewBox(
-    mapProjection.width,
-    mapProjection.height,
-    projectedPoints.map((entry) => ({ x: entry.x, y: entry.y })),
-    labelBounds,
-    DEFAULT_PADDING,
-  );
-
-  const viewBox = [
-    viewBoxRect.x,
-    viewBoxRect.y,
-    viewBoxRect.width,
-    viewBoxRect.height,
-  ].join(" ");
-
-  const aspectRatio = viewBoxRect.width / viewBoxRect.height;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }, []);
 
   return (
     <div
-      className="relative w-full rounded-lg font-sans"
-      style={{ aspectRatio: compact ? "5 / 3" : `${aspectRatio}` }}
+      className={`relative w-full select-none ${
+        compact ? "aspect-[2.4/1]" : "aspect-[2.95/1] sm:min-h-[300px] lg:min-h-[360px]"
+      }`}
+      onMouseLeave={() => setActiveCity(null)}
     >
-      <svg
-        ref={svgRef}
-        viewBox={viewBox}
-        preserveAspectRatio="xMidYMid meet"
-        className="pointer-events-none h-full w-full select-none"
+      {/* Map bitmap — fills the entire frame */}
+      <img
+        src={mapImage}
+        alt=""
         aria-hidden
-      >
-        <defs>
-          <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="5%" stopColor={lineColor} stopOpacity="1" />
-            <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-          <mask id="map-fade-mask">
-            <rect
-              x="0"
-              y="0"
-              width={mapProjection.width}
-              height={mapProjection.height}
-              fill="url(#map-fade-gradient)"
-            />
-          </mask>
-          <linearGradient id="map-fade-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="white" stopOpacity="0.15" />
-            <stop offset="10%" stopColor="white" stopOpacity="1" />
-            <stop offset="90%" stopColor="white" stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0.15" />
-          </linearGradient>
-        </defs>
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+        draggable={false}
+      />
 
-        <image
-          href={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-          x="0"
-          y="0"
-          width={mapProjection.width}
-          height={mapProjection.height}
-          mask="url(#map-fade-mask)"
-        />
+      {/* Soft edge vignette */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_42%,rgba(8,6,15,0.55)_100%)]"
+        aria-hidden
+      />
 
-        {dots.map((dot, i) => {
-          const startPoint = projectOnMap(
-            mapProjection,
-            dot.start.lat,
-            dot.start.lng,
-          );
-          const endPoint = projectOnMap(mapProjection, dot.end.lat, dot.end.lng);
-          return (
-            <g key={`path-group-${i}`}>
-              <motion.path
-                d={createCurvedPath(startPoint, endPoint)}
-                fill="none"
-                stroke="url(#path-gradient)"
-                strokeWidth="1"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
+      {/* City markers */}
+      {collaborationMarkers.map((marker, index) => {
+        const isActive = activeCity === marker.city;
+
+        return (
+          <button
+            key={marker.city}
+            type="button"
+            className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 focus:outline-none"
+            style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
+            onMouseEnter={() => setActiveCity(marker.city)}
+            onFocus={() => setActiveCity(marker.city)}
+            onBlur={() => setActiveCity(null)}
+            aria-label={marker.city}
+          >
+            <span className="relative flex h-5 w-5 items-center justify-center">
+              <motion.span
+                className="absolute inset-0 rounded-full bg-accent/30"
+                animate={{ scale: [1, 1.8, 1], opacity: [0.45, 0, 0.45] }}
                 transition={{
-                  duration: 1,
-                  delay: 0.5 * i,
+                  duration: 2.2,
+                  delay: index * 0.1,
+                  repeat: Infinity,
                   ease: "easeOut",
                 }}
               />
-            </g>
-          );
-        })}
+              <span className="relative h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_14px_rgba(167,139,250,0.85)] ring-2 ring-accent/25" />
+            </span>
 
-        {projectedPoints.map((entry, i) => {
-          const { point, x, y, labelX, labelY, anchor } = entry;
-          const showLeader =
-            showLabels && point.label && Boolean(point.labelOffset);
-
-          return (
-            <g key={`point-${point.lat}-${point.lng}-${i}`}>
-              {showLeader ? (
-                <line
-                  x1={x}
-                  y1={y}
-                  x2={labelX}
-                  y2={labelY + 4}
-                  stroke={lineColor}
-                  strokeOpacity="0.35"
-                  strokeWidth="0.75"
-                />
-              ) : null}
-              <circle cx={x} cy={y} r={dotRadius} fill={lineColor} />
-              <circle cx={x} cy={y} r={dotRadius} fill={lineColor} opacity="0.5">
-                <animate
-                  attributeName="r"
-                  from={String(dotRadius)}
-                  to={String(pulseRadius)}
-                  dur="1.5s"
-                  begin={`${i * 0.15}s`}
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="1.5s"
-                  begin={`${i * 0.15}s`}
-                  repeatCount="indefinite"
-                />
-              </circle>
-              {showLabels && point.label ? (
-                <text
-                  x={labelX}
-                  y={labelY}
-                  textAnchor={anchor}
-                  fill="rgba(255,255,255,0.9)"
-                  fontSize={labelSize}
-                  fontWeight={500}
-                  style={{ fontFamily: "var(--font-display), system-ui" }}
-                >
-                  {point.label}
-                </text>
-              ) : null}
-            </g>
-          );
-        })}
-      </svg>
+            {!compact ? (
+              <span
+                className={`pointer-events-none absolute whitespace-nowrap rounded-md bg-[#1a1528]/90 px-2 py-0.5 text-[0.65rem] font-medium text-white/90 opacity-0 shadow-lg ring-1 ring-white/10 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-[0.7rem] ${
+                  labelSideClass[marker.labelSide]
+                } ${isActive ? "opacity-100" : ""}`}
+              >
+                {marker.city}
+              </span>
+            ) : null}
+          </button>
+        );
+      })}
     </div>
   );
 }

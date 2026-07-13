@@ -2,8 +2,8 @@
 
 import { motion } from "motion/react";
 import WorldMap from "@/components/ui/world-map";
+import { collaborationRegions } from "@/lib/collaboration-map";
 import { collaborationLocations } from "@/lib/data";
-import { cityLabelLayout } from "@/lib/map-label-layout";
 import { useIsMobile } from "@/lib/use-is-mobile";
 
 const collaborationContexts = [
@@ -21,18 +21,10 @@ export default function GlobalReach({
 }) {
   const isMobile = useIsMobile();
   const isCompactLayout = compact || isMobile === true;
-  const showMapLabels = !isCompactLayout;
 
-  const mapPoints = collaborationLocations.map((location) => {
-    const layout = cityLabelLayout[location.city];
-    return {
-      lat: location.lat,
-      lng: location.lng,
-      label: location.city,
-      labelOffset: layout ? { x: layout.x, y: layout.y } : undefined,
-      labelAnchor: layout?.anchor,
-    };
-  });
+  const cityLookup = Object.fromEntries(
+    collaborationLocations.map((location) => [location.city, location]),
+  );
 
   return (
     <section
@@ -100,44 +92,45 @@ export default function GlobalReach({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.65, delay: 0.1 }}
-          className="mt-6 overflow-hidden rounded-2xl bg-card p-3 ring-1 ring-white/10 sm:mt-10 sm:rounded-3xl sm:p-6"
+          className="mt-6 overflow-hidden rounded-2xl bg-card ring-1 ring-white/10 sm:mt-10 sm:rounded-3xl"
         >
-          <WorldMap
-            points={mapPoints}
-            lineColor="#a78bfa"
-            showLabels={showMapLabels}
-            compact={isCompactLayout}
-          />
-          <p className="mt-3 px-1 text-center text-[0.7rem] leading-relaxed text-muted sm:mt-4 sm:text-sm">
-            {isCompactLayout
-              ? "Each city is a real collaboration point — colleagues, clients, contributors, or people close to me."
-              : "Each city marks where I've actually collaborated with someone — colleagues, clients, contributors, or people close to me. Nothing decorative, nothing made up."}
-          </p>
-        </motion.div>
+          <WorldMap compact={isCompactLayout} />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.55, delay: 0.15 }}
-          className="mt-5 sm:mt-8"
-        >
-          <p className="mb-3 text-center text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted sm:hidden">
-            {collaborationLocations.length} collaboration cities
-          </p>
-          <ul
-            className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-2"
-            aria-label="Collaboration cities"
-          >
-            {collaborationLocations.map((location) => (
-              <li
-                key={location.city}
-                className="rounded-xl bg-white/5 px-3 py-2 text-center text-xs font-medium text-[#d4d0e8] ring-1 ring-white/10 sm:rounded-full sm:px-3 sm:py-1.5"
-              >
-                {location.city}
-              </li>
-            ))}
-          </ul>
+          <div className="border-t border-white/5 px-4 py-5 sm:px-6 sm:py-6">
+            <p className="mb-4 text-center text-[0.7rem] leading-relaxed text-muted sm:mb-5 sm:text-sm">
+              {isCompactLayout
+                ? "Each city is a real collaboration point — colleagues, clients, contributors, or people close to me."
+                : "Each city marks where I've actually collaborated with someone — colleagues, clients, contributors, or people close to me. Nothing decorative, nothing made up."}
+            </p>
+
+            <div className="grid gap-4 sm:grid-cols-3 sm:gap-6">
+              {collaborationRegions.map((region) => (
+                <div key={region.id}>
+                  <p className="mb-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-accent/80 sm:text-[0.65rem]">
+                    {region.label}
+                  </p>
+                  <ul className="space-y-1.5">
+                    {region.cities.map((city) => {
+                      const location = cityLookup[city];
+                      if (!location) return null;
+
+                      return (
+                        <li
+                          key={city}
+                          className="flex items-baseline justify-between gap-2 text-sm text-[#d4d0e8]"
+                        >
+                          <span className="font-medium">{city}</span>
+                          <span className="text-[0.65rem] text-muted">
+                            {location.country}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
