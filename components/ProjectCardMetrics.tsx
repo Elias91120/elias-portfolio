@@ -17,17 +17,20 @@ export default function ProjectCardMetrics({
   className = "",
 }: ProjectCardMetricsProps) {
   const shown = compact ? metrics.slice(0, 2) : metrics.slice(0, 4);
+  const isSingle = shown.length === 1;
 
   return (
     <div
-      className={`grid grid-cols-2 gap-2.5 ${compact ? "gap-2" : "sm:gap-3"} ${className}`}
+      className={`grid gap-2.5 ${compact ? "gap-2" : "sm:gap-3"} ${
+        isSingle ? "grid-cols-1" : "grid-cols-2"
+      } ${className}`}
     >
       {shown.map((metric) => (
         <div
           key={metric.label}
           className={`flex flex-col rounded-2xl ring-1 ring-white/10 ${
             compact ? "px-3 py-3" : "px-4 py-3.5 sm:py-4"
-          }`}
+          } ${isSingle ? "items-center px-6 py-4 text-center sm:py-5" : ""}`}
           style={{
             backgroundColor: `${accent}0d`,
             borderColor: `${accent}22`,

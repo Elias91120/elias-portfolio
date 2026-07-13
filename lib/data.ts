@@ -290,6 +290,7 @@ export const educationPath: EducationStep[] = [
 
 export type Testimonial = {
   quote: string;
+  quoteEn: string;
   author: string;
   projectTags: { label: string; accent: string }[];
   verified?: boolean;
@@ -299,6 +300,8 @@ export const testimonials: Testimonial[] = [
   {
     quote:
       "Équipe réactive, process très clair et exécution propre. Le nouveau site a fluidifié notre acquisition.",
+    quoteEn:
+      "Responsive team, very clear process and clean execution. The new site has streamlined our acquisition.",
     author: "Adrien",
     projectTags: [
       { label: "CallKitchen", accent: "#f472b6" },
@@ -308,6 +311,8 @@ export const testimonials: Testimonial[] = [
   {
     quote:
       "Ils ont compris notre métier rapidement et proposent des choix utiles. On a vu une vraie progression.",
+    quoteEn:
+      "They understood our business quickly and suggest useful choices. We saw real progress.",
     author: "Henry F.",
     projectTags: [{ label: "Two App", accent: "#c084fc" }],
     verified: true,
@@ -419,8 +424,8 @@ export const projects: Project[] = [
       "Firebase RTDB real-time sync between counter and customer TV",
     ],
     metrics: [
-      { value: "14%", label: "loyalty cashback" },
       { value: "3", label: "channels synced live" },
+      { value: "GraphQL", label: "Shopify price sync" },
     ],
     tags: ["Shopify", "Firebase", "POS", "Omnichannel"],
     link: "https://green-jardin.fr",
@@ -463,7 +468,7 @@ export const projects: Project[] = [
     name: "3geeks Infra",
     role: "Self-hosted prod · 3geeks",
     description:
-      "3geeks apps lived on Vercel with scattered env vars and rising bills — no single view of what ran in prod. I built a Mac Mini cluster (Coolify + Traefik + Cloudflare Tunnel) so every *.3geeks.fr service deploys from GitHub in one golden path, with Vercel migrations and PostgreSQL on Coolify. 8+ live apps, 5 public domains, infrastructure we operate.",
+      "3geeks apps lived on Vercel with scattered env vars and rising bills — no single view of what ran in prod. The studio runs 3 Mac Minis; I consolidated every *.3geeks.fr service on one (Coolify + Traefik + Cloudflare Tunnel) with a golden-path deploy from GitHub, Vercel migrations, and PostgreSQL on Coolify. 8+ live apps, 5 public domains, infrastructure we operate.",
     highlights: [
       "8+ apps on Coolify — landing, Prompt Hub, PromptOptim (+ private studio services)",
       "Golden path: git push → Coolify → Traefik :443 → CF Tunnel",
@@ -473,7 +478,7 @@ export const projects: Project[] = [
       { value: "8+", label: "apps on Coolify" },
       { value: "5", label: "public domains" },
       { value: "3", label: "Vercel migrations" },
-      { value: "1", label: "Mac Mini cluster" },
+      { value: "3", label: "Mac Mini servers" },
     ],
     tags: ["Coolify", "Traefik", "Cloudflare", "Docker"],
     link: "https://www.3geeks.fr",
@@ -605,6 +610,103 @@ export const greenStackProjects = projects.filter(
 export const professionalProjects = projects.filter(
   (p) => p.category === "professional",
 );
+
+export type CollaborationLocation = {
+  city: string;
+  country: string;
+  region: string;
+  lat: number;
+  lng: number;
+};
+
+/** Real cities where Elias has collaborated with people — Nokia, clients, WebGen, OSS, friends & family. */
+export const collaborationLocations: CollaborationLocation[] = [
+  { city: "Dallas", country: "United States", region: "Texas", lat: 32.7767, lng: -96.797 },
+  {
+    city: "Washington, D.C.",
+    country: "United States",
+    region: "District of Columbia",
+    lat: 38.9072,
+    lng: -77.0369,
+  },
+  {
+    city: "Seattle",
+    country: "United States",
+    region: "Washington",
+    lat: 47.6062,
+    lng: -122.3321,
+  },
+  {
+    city: "Paris",
+    country: "France",
+    region: "Île-de-France",
+    lat: 48.8566,
+    lng: 2.3522,
+  },
+  {
+    city: "Palaiseau",
+    country: "France",
+    region: "Île-de-France",
+    lat: 48.7148,
+    lng: 2.2444,
+  },
+  {
+    city: "Antony",
+    country: "France",
+    region: "Île-de-France",
+    lat: 48.7539,
+    lng: 2.2971,
+  },
+  {
+    city: "Tunis",
+    country: "Tunisia",
+    region: "Governorate of Tunis",
+    lat: 36.8065,
+    lng: 10.1815,
+  },
+  {
+    city: "Sousse",
+    country: "Tunisia",
+    region: "Governorate of Sousse",
+    lat: 35.8254,
+    lng: 10.63699,
+  },
+  {
+    city: "London",
+    country: "United Kingdom",
+    region: "England",
+    lat: 51.5074,
+    lng: -0.1278,
+  },
+  {
+    city: "Dubai",
+    country: "United Arab Emirates",
+    region: "Emirate of Dubai",
+    lat: 25.2048,
+    lng: 55.2708,
+  },
+  {
+    city: "Espoo",
+    country: "Finland",
+    region: "Uusimaa",
+    lat: 60.2055,
+    lng: 24.6559,
+  },
+  {
+    city: "Wrocław",
+    country: "Poland",
+    region: "Lower Silesian Voivodeship",
+    lat: 51.1079,
+    lng: 17.0385,
+  },
+  {
+    city: "Bangalore",
+    country: "India",
+    region: "Karnataka",
+    lat: 12.9716,
+    lng: 77.5946,
+  },
+];
 
 export const contact = {
   email: "e.elloumi15@gmail.com",

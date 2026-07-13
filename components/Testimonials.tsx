@@ -86,6 +86,9 @@ export default function Testimonials({
               <blockquote className="mt-5 text-base leading-relaxed text-[#d4d0e8]">
                 &ldquo;{item.quote}&rdquo;
               </blockquote>
+              <p className="mt-3 text-sm leading-relaxed text-[#8a849e]">
+                {item.quoteEn}
+              </p>
               <footer className="mt-6 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10">

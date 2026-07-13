@@ -16,7 +16,7 @@ const impactMetrics = [
   { value: "8+", label: "apps on self-hosted Coolify" },
   { value: "5", label: "public *.3geeks.fr domains" },
   { value: "3", label: "Vercel → self-host migrations" },
-  { value: "1", label: "Mac Mini prod cluster" },
+  { value: "3", label: "Mac Mini servers" },
 ];
 
 const infraTags = ["Coolify", "Traefik", "Cloudflare Tunnel", "Docker"];
@@ -30,7 +30,7 @@ const hostedServices = [
 export const metadata: Metadata = {
   title: "3geeks Infra — Case Study",
   description:
-    "Self-hosted production stack for 3geeks — Mac Mini, Coolify, Traefik, and Cloudflare Tunnel powering 8+ live apps on *.3geeks.fr.",
+    "Self-hosted production stack for 3geeks — 3 Mac Mini servers; Coolify, Traefik, and Cloudflare Tunnel on the prod node powering 8+ live apps on *.3geeks.fr.",
   alternates: { canonical: "/projects/3geeks-infra" },
   openGraph: {
     title: "3geeks Infra — Case Study · Elias Elloumi",
@@ -71,10 +71,11 @@ export default function ThreeGeeksInfraCaseStudy() {
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--cs-muted)]">
-            The production backbone behind 3geeks — a Mac Mini cluster running
-            Coolify, Traefik, and Cloudflare Tunnel so studio apps ship to{" "}
+            The production backbone behind 3geeks — the studio runs three Mac
+            Mini servers; I consolidated every live{" "}
             <em className="font-serif text-[var(--cs-fg)]">*.3geeks.fr</em>{" "}
-            without depending on a single PaaS.
+            service on one of them with Coolify, Traefik, and Cloudflare Tunnel
+            so apps ship without depending on a single PaaS.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {infraTags.map((tag) => (
@@ -125,14 +126,15 @@ export default function ThreeGeeksInfraCaseStudy() {
 
           <CaseStudySection title="The stack">
             <p>
-              A Mac Mini runs OrbStack with a Linux VM hosting Coolify. Traefik
-              terminates TLS on port 443 inside the private network.
-              Cloudflare Tunnel exposes selected hostnames to the internet —
-              every public{" "}
+              3geeks operates three on-prem Mac Mini servers. Production for{" "}
               <code className="rounded bg-white/5 px-1.5 py-0.5 text-sm text-[var(--cs-fg)]">
                 *.3geeks.fr
               </code>{" "}
-              route goes through Traefik, never directly to a container port.
+              runs on one of them — OrbStack with a Linux VM hosting Coolify.
+              Traefik terminates TLS on port 443 inside the private network.
+              Cloudflare Tunnel exposes selected hostnames to the internet —
+              every public route goes through Traefik, never directly to a
+              container port.
             </p>
             <InfraStackDiagram />
           </CaseStudySection>
@@ -176,10 +178,12 @@ export default function ThreeGeeksInfraCaseStudy() {
 
           <CaseStudySection title="What I operate">
             <p>
-              I designed and run this stack for 3geeks — Coolify app provisioning,
-              Traefik routing rules, Cloudflare DNS and tunnel ingress, PostgreSQL
-              on Coolify, env-var management, health monitoring, and Vercel
-              migrations with zero-downtime redirects.
+              I designed and run the prod stack on our primary Mac Mini —
+              Coolify app provisioning, Traefik routing rules, Cloudflare DNS
+              and tunnel ingress, PostgreSQL on Coolify, env-var management,
+              health monitoring, and Vercel migrations with zero-downtime
+              redirects. The studio&apos;s two other Mac Minis handle separate
+              workloads outside this case study.
             </p>
             <p>
               The goal is not &ldquo;cheap hosting&rdquo; — it is{" "}

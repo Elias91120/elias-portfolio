@@ -1,5 +1,5 @@
 const layers = [
-  { label: "Mac Mini + OrbStack", detail: "On-prem prod VM" },
+  { label: "Mac Mini · prod node", detail: "1 of 3 studio servers · OrbStack VM" },
   { label: "Coolify", detail: "8+ apps · PostgreSQL · deploys" },
   { label: "Traefik", detail: "Routing · TLS termination" },
   { label: "Cloudflare", detail: "Tunnel · DNS · edge proxy" },

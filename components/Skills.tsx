@@ -155,8 +155,9 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
         </motion.div>
 
         {/* Category tabs */}
-        <div className="mt-10 -mx-5 px-5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex min-w-max gap-2 sm:gap-3">
+        <div className="mt-10 -mx-5 px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="overflow-x-auto py-2 -my-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex min-w-max gap-2 px-px sm:gap-3">
             {skillGroups.map((group, i) => {
               const isActive = i === activeIndex;
               return (
@@ -164,7 +165,7 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
                   key={group.title}
                   type="button"
                   onClick={() => setActiveIndex(i)}
-                  className="shrink-0 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300 ring-1 sm:px-5"
+                  className="shrink-0 rounded-full border px-4 py-2.5 text-sm font-medium transition-all duration-300 sm:px-5"
                   style={
                     isActive
                       ? {
@@ -188,6 +189,7 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
                 </button>
               );
             })}
+            </div>
           </div>
         </div>
 

@@ -7,6 +7,7 @@ import Story from "@/components/Story";
 import Skills from "@/components/Skills";
 import EducationTimeline from "@/components/EducationTimeline";
 import Projects from "@/components/Projects";
+import GlobalReach from "@/components/GlobalReach";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -97,9 +98,12 @@ function HomeSections({ showIntro }: { showIntro: boolean | null }) {
             <Projects />
           </div>
           <div style={{ order: 6 }}>
-            <Testimonials />
+            <GlobalReach />
           </div>
           <div style={{ order: 7 }}>
+            <Testimonials />
+          </div>
+          <div style={{ order: 8 }}>
             <Contact />
           </div>
         </div>

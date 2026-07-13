@@ -7,6 +7,7 @@ import MobileStorySection from "@/components/mobile/MobileStorySection";
 import Skills from "@/components/Skills";
 import EducationTimeline from "@/components/EducationTimeline";
 import Projects from "@/components/Projects";
+import GlobalReach from "@/components/GlobalReach";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -48,9 +49,12 @@ export default function MobileHomeSections({
               <Projects compact />
             </div>
             <div style={{ order: 6 }}>
-              <Testimonials compact />
+              <GlobalReach compact />
             </div>
             <div style={{ order: 7 }}>
+              <Testimonials compact />
+            </div>
+            <div style={{ order: 8 }}>
               <Contact compact />
             </div>
           </div>
