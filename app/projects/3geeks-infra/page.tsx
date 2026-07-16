@@ -22,9 +22,9 @@ const impactMetrics = [
 const infraTags = ["Coolify", "Traefik", "Cloudflare Tunnel", "Docker"];
 
 const hostedServices = [
-  "3geeks.fr — studio landing",
-  "prompt-hub.3geeks.fr — Prompt Hub",
-  "prompt-optim.3geeks.fr — PromptOptim",
+  { href: "https://www.3geeks.fr", label: "3geeks.fr — studio landing" },
+  { href: "https://prompt-hub.3geeks.fr", label: "prompt-hub.3geeks.fr — Prompt Hub" },
+  { href: "https://prompt-optim.3geeks.fr", label: "prompt-optim.3geeks.fr — PromptOptim" },
 ];
 
 export const metadata: Metadata = {
@@ -158,14 +158,21 @@ export default function ThreeGeeksInfraCaseStudy() {
             <ul className="mt-4 space-y-2">
               {hostedServices.map((service) => (
                 <li
-                  key={service}
+                  key={service.href}
                   className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--cs-muted)]"
                 >
                   <span
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
                     style={{ backgroundColor: "var(--cs-accent)" }}
                   />
-                  {service}
+                  <a
+                    href={service.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline-offset-2 transition-colors hover:text-[var(--cs-fg)] hover:underline"
+                  >
+                    {service.label}
+                  </a>
                 </li>
               ))}
             </ul>
