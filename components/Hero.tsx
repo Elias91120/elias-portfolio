@@ -2,32 +2,39 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import HeroAgentBlock from "@/components/HeroAgentBlock";
 import { useDeveloperMode } from "@/components/DeveloperModeProvider";
-import { scrollToSection, prefersReducedMotion } from "@/lib/scroll-to-section";
-import { consumeIntroHandoff } from "@/lib/intro-handoff";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-const easeOut = [0.16, 1, 0.3, 1] as const;
+const ease = [0.16, 1, 0.3, 1] as const;
 const AVATAR_CLICKS_REQUIRED = 5;
 const AVATAR_CLICK_WINDOW_MS = 2000;
 
-export default function Hero({ ready = true }: { ready?: boolean }) {
+const stagger = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.04 },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.62, ease },
+  },
+};
+
+export default function Hero() {
   const { openTerminal } = useDeveloperMode();
-  const reducedMotion = prefersReducedMotion();
+  const reducedMotion = useReducedMotion();
 
   const [avatarClicks, setAvatarClicks] = useState(0);
   const [showAvatarTooltip, setShowAvatarTooltip] = useState(false);
   const clickCountRef = useRef(0);
   const lastAvatarClickRef = useRef(0);
   const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const introHandoffRef = useRef<boolean | null>(null);
-
-  if (ready && introHandoffRef.current === null) {
-    introHandoffRef.current = consumeIntroHandoff();
-  }
-  const fromIntro = introHandoffRef.current === true;
 
   const handleAvatarClick = useCallback(() => {
     const now = Date.now();
@@ -66,9 +73,8 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-x-hidden px-5 pt-20 pb-24 sm:pt-24 sm:pb-28"
+      className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-x-hidden px-5 pt-20 pb-16 sm:pt-24 sm:pb-20"
     >
-      {/* Ambient aurora */}
       <div aria-hidden className="absolute inset-0 overflow-hidden">
         <div
           className="aurora absolute -top-48 left-1/2 h-[40rem] w-[64rem] -translate-x-1/2 rounded-full opacity-30 blur-3xl"
@@ -91,31 +97,30 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
         />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center text-center max-w-4xl">
-        <motion.div
-          initial={
-            fromIntro
-              ? { opacity: 0.92, scale: 1, y: 0 }
-              : { opacity: 0, scale: 0.85 }
-          }
-          animate={
-            ready
-              ? { opacity: 1, scale: 1, y: 0 }
-              : fromIntro
-                ? { opacity: 0.92, scale: 1, y: 0 }
-                : { opacity: 0, scale: 0.85 }
-          }
-          transition={{
-            duration: fromIntro ? 0.55 : 0.8,
-            ease: fromIntro ? easeOut : ease,
-          }}
-          className="animate-float mt-2 sm:mt-4"
-        >
+      <motion.div
+        initial={reducedMotion ? false : "hidden"}
+        animate="show"
+        variants={stagger}
+        className="relative z-10 flex max-w-4xl flex-col items-center text-center"
+      >
+        <motion.div variants={fadeUp} className="relative mt-2 sm:mt-4">
+          {!reducedMotion && (
+            <motion.div
+              aria-hidden
+              animate={{ rotate: 360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-1.5 rounded-full opacity-45"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 12%, #a78bfa 38%, #38bdf8 62%, transparent 88%)",
+              }}
+            />
+          )}
           <button
             type="button"
             onClick={handleAvatarClick}
             aria-label="Elias avatar — 5 quick taps open dev terminal"
-            className={`relative h-48 w-48 sm:h-60 sm:w-60 md:h-72 md:w-72 rounded-full overflow-hidden ring-2 shadow-[0_0_80px_rgba(167,139,250,0.3)] cursor-pointer transition-shadow ${
+            className={`relative h-36 w-36 overflow-hidden rounded-full ring-2 shadow-[0_0_64px_rgba(167,139,250,0.28)] transition-shadow sm:h-44 sm:w-44 md:h-52 md:w-52 ${
               avatarClicks >= 3 && !reducedMotion
                 ? "ring-accent animate-pulse"
                 : "ring-accent/40"
@@ -125,7 +130,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
               src="/story/avatar-hero.jpg"
               alt="Cartoon portrait of Elias Elloumi waving"
               fill
-              sizes="(min-width: 768px) 18rem, (min-width: 640px) 15rem, 12rem"
+              sizes="(min-width: 768px) 13rem, (min-width: 640px) 11rem, 9rem"
               className="object-cover"
               priority
             />
@@ -138,7 +143,7 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
                   transition={{ duration: reducedMotion ? 0 : 0.15 }}
                   className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-card px-3 py-1 text-xs font-medium text-accent ring-1 ring-accent/40"
                 >
-                  {avatarClicks}/5 — keep going
+                  {avatarClicks}/5 - keep going
                 </motion.span>
               )}
             </AnimatePresence>
@@ -146,117 +151,60 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: fromIntro ? 10 : 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: fromIntro ? 10 : 16 }}
-          transition={{
-            delay: ready ? (fromIntro ? 0.35 : 0.2) : 0,
-            duration: fromIntro ? 0.85 : 0.7,
-            ease: fromIntro ? easeOut : ease,
-          }}
-          className="mt-8 flex items-center gap-3 text-accent"
+          variants={fadeUp}
+          className="mt-7 flex items-center gap-3 text-accent"
         >
           <span className="h-px w-8 bg-accent/40" />
-          <span className="font-display text-xs sm:text-sm uppercase tracking-[0.35em]">
+          <span className="font-display text-xs uppercase tracking-[0.35em] sm:text-sm">
             Elias Elloumi
           </span>
           <span className="h-px w-8 bg-accent/40" />
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: fromIntro ? 14 : 20 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: fromIntro ? 14 : 20 }}
-          transition={{
-            delay: ready ? (fromIntro ? 0.48 : 0.35) : 0,
-            duration: fromIntro ? 0.9 : 0.7,
-            ease: fromIntro ? easeOut : ease,
-          }}
-          className="font-display mt-5 text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.05]"
+          variants={fadeUp}
+          className="font-display mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl md:text-7xl"
         >
           From a Minecraft kid
           <br />
           to a{" "}
-          <span className="font-serif italic font-semibold bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text font-serif font-semibold italic text-transparent">
             Full-Stack Developer
           </span>
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ delay: ready ? 0.45 : 0, duration: 0.7, ease }}
-          className="mt-4 text-sm sm:text-base font-medium tracking-wide text-sky-300/90"
+          variants={fadeUp}
+          className="mt-4 text-sm font-medium tracking-wide text-sky-300/90 sm:text-base"
         >
           Data Engineering &amp; AI Agents
         </motion.p>
 
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ delay: ready ? 0.5 : 0, duration: 0.7, ease }}
-          className="mt-5 max-w-xl text-base sm:text-lg text-muted leading-relaxed"
+          variants={fadeUp}
+          className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
         >
-          Professional vibe coder from the fresh new wave — building data
-          pipelines, AI agents, and production products at{" "}
+          I build data pipelines, AI agents, and production products at{" "}
           <span className="text-foreground">Nokia</span> and{" "}
-          <span className="text-foreground">3geeks</span>. This is the story of
-          how I got here — one scroll at a time.
+          <span className="text-foreground">3geeks</span>.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ delay: ready ? 0.62 : 0, duration: 0.6, ease }}
-          className="mt-8"
-        >
+        <motion.div variants={fadeUp} className="mt-7">
           <span className="inline-flex items-center gap-2.5 rounded-full bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/25">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              {!reducedMotion && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              )}
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            Actively seeking apprenticeship — 2026–2028
+            Actively seeking apprenticeship, 2026-2028
           </span>
         </motion.div>
 
-        <HeroAgentBlock ready={ready} />
-
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ delay: ready ? 0.68 : 0, duration: 0.5, ease }}
-          className="mt-6 text-xs sm:text-sm text-muted"
-        >
-          <span className="hidden sm:inline">
-            Prefer the terminal? Press{" "}
-            <kbd className="rounded bg-white/8 px-1.5 py-0.5 font-mono text-[0.7rem] text-accent ring-1 ring-white/10">
-              `
-            </kbd>{" "}
-            or click{" "}
-            <span className="text-accent">Dev mode</span> above.
-          </span>
-          <span className="sm:hidden">
-            Tap <span className="text-accent">Dev mode</span> in the nav.
-          </span>
-        </motion.p>
-
-        <motion.button
-          type="button"
-          initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: ready ? 0.95 : 0, duration: 0.9 }}
-          className="mt-8 sm:mt-10 flex flex-col items-center gap-2.5 text-muted cursor-pointer group"
-          onClick={() =>
-            scrollToSection("#story", prefersReducedMotion() ? "auto" : "smooth")
-          }
-          aria-label="Scroll to open the story"
-        >
-          <span className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] group-hover:text-foreground transition-colors">
-            Scroll to open the story
-          </span>
-          <div className="h-9 w-6 rounded-full border-2 border-muted/40 group-hover:border-accent/50 flex justify-center pt-1.5 transition-colors">
-            <div className="h-2 w-1 rounded-full bg-accent animate-wheel" />
-          </div>
-        </motion.button>
-      </div>
+        <motion.div variants={fadeUp} className="w-full">
+          <HeroAgentBlock />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

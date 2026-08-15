@@ -5,6 +5,7 @@ import WorldMap from "@/components/ui/world-map";
 import { collaborationRegions } from "@/lib/collaboration-map";
 import { collaborationLocations } from "@/lib/data";
 import { useIsMobile } from "@/lib/use-is-mobile";
+import { Reveal } from "@/components/Reveal";
 
 const collaborationContexts = [
   "Nokia",
@@ -34,12 +35,7 @@ export default function GlobalReach({
       }`}
     >
       <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-        >
+        <Reveal>
           <span className="section-kicker font-display text-[0.65rem] font-semibold tracking-[0.22em] text-accent sm:text-sm sm:tracking-[0.3em]">
             ALL OVER THE WORLD
           </span>
@@ -85,7 +81,7 @@ export default function GlobalReach({
               </li>
             ))}
           </ul>
-        </motion.div>
+        </Reveal>
 
         <motion.div
           initial={{ opacity: 0, y: 28 }}

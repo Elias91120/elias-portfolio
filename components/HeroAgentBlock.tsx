@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import AgentMessageContent, {
   AgentTypingIndicator,
 } from "@/components/AgentMessageContent";
@@ -10,8 +9,6 @@ import { useAgentChat } from "@/components/AgentChatProvider";
 import { findProjectBySlug } from "@/lib/dev-terminal-commands";
 import { prepareAssistantDisplay } from "@/lib/agent-actions";
 import { prefersReducedMotion } from "@/lib/scroll-to-section";
-
-const ease = [0.22, 1, 0.36, 1] as const;
 
 const suggestions = [
   "Show me the Nokia dashboard project",
@@ -55,7 +52,7 @@ function pickVoice(lang: string): SpeechSynthesisVoice | null {
   );
 }
 
-export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
+export default function HeroAgentBlock() {
   const { ask, busy, streaming, messages, openPanel, lastActions, consumeVoiceFlag } =
     useAgentChat();
   const [input, setInput] = useState("");
@@ -174,10 +171,7 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-      transition={{ delay: ready ? 0.66 : 0, duration: 0.6, ease }}
+    <div
       role="region"
       aria-label="Portfolio AI assistant"
       className="relative z-10 mt-6 w-full max-w-md"
@@ -332,9 +326,9 @@ export default function HeroAgentBlock({ ready = true }: { ready?: boolean }) {
           role="status"
           className="mt-2 text-center text-xs text-muted"
         >
-          Microphone access denied — type your question instead
+          Microphone access denied. Type your question instead.
         </p>
       )}
-    </motion.div>
+    </div>
   );
 }

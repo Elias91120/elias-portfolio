@@ -21,10 +21,7 @@ function canUseSpotlight() {
 }
 
 function isSpotlightActive() {
-  return (
-    !document.body.hasAttribute("data-intro") &&
-    !document.body.hasAttribute("data-ask-open")
-  );
+  return !document.body.hasAttribute("data-ask-open");
 }
 
 function readStoryAccent(): string {
@@ -74,7 +71,6 @@ export default function SpotlightCursor() {
     bodyObserver.observe(document.body, {
       attributes: true,
       attributeFilter: [
-        "data-intro",
         "data-ask-open",
         "data-story",
         "data-story-chapter-id",

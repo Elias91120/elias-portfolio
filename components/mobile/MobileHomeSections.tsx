@@ -16,22 +16,14 @@ import { AgentChatProvider } from "@/components/AgentChatProvider";
 import StatsBand from "@/components/StatsBand";
 import ScrollProgress from "@/components/ScrollProgress";
 
-type MobileHomeSectionsProps = {
-  showIntro: boolean | null;
-};
-
-export default function MobileHomeSections({
-  showIntro,
-}: MobileHomeSectionsProps) {
-  const heroReady = showIntro === false;
-
+export default function MobileHomeSections() {
   return (
     <>
       <ScrollProgress />
       <MobileNavbar />
       <AgentChatProvider>
         <div className="pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))]">
-          <MobileHero ready={heroReady} />
+          <MobileHero />
           <div className="flex flex-col">
             <div style={{ order: 1 }}>
               <MobileStorySection />

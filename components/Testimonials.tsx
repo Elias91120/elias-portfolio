@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { testimonials } from "@/lib/data";
+import { Reveal } from "@/components/Reveal";
 
 function Stars() {
   return (
@@ -34,12 +35,7 @@ export default function Testimonials({
       className={`relative px-5 ${compact ? "py-12" : "py-20"}`}
     >
       <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-        >
+        <Reveal>
           <span className="section-kicker font-display text-xs sm:text-sm font-semibold tracking-[0.3em] text-accent">
             CLIENT FEEDBACK
           </span>
@@ -53,7 +49,7 @@ export default function Testimonials({
               say
             </span>
           </h2>
-        </motion.div>
+        </Reveal>
 
         <div
           className={`mt-10 grid gap-6 ${

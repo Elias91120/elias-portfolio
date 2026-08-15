@@ -23,7 +23,6 @@ type DeveloperModeContextValue = {
   closeTerminal: () => void;
   lastSource: TerminalSource | null;
   showKonamiToast: boolean;
-  introComplete: boolean;
 };
 
 const DeveloperModeContext = createContext<DeveloperModeContextValue | null>(
@@ -62,10 +61,8 @@ function shouldOpenFromUrl(): boolean {
 
 export function DeveloperModeProvider({
   children,
-  introComplete,
 }: {
   children: ReactNode;
-  introComplete: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [lastSource, setLastSource] = useState<TerminalSource | null>(null);
@@ -78,19 +75,12 @@ export function DeveloperModeProvider({
     }
   }, []);
 
-  const openTerminal = useCallback(
-    (source: TerminalSource) => {
-      if (isOpen) return;
-      if (!introComplete) {
-        if (source === "url") pendingUrlOpen.current = true;
-        return;
-      }
-      setLastSource(source);
-      setIsOpen(true);
-      if (source === "url") cleanDevUrlParam();
-    },
-    [isOpen, introComplete]
-  );
+  const openTerminal = useCallback((source: TerminalSource) => {
+    if (isOpen) return;
+    setLastSource(source);
+    setIsOpen(true);
+    if (source === "url") cleanDevUrlParam();
+  }, [isOpen]);
 
   const closeTerminal = useCallback(() => {
     setIsOpen(false);
@@ -98,12 +88,11 @@ export function DeveloperModeProvider({
   }, []);
 
   useEffect(() => {
-    if (!introComplete) return;
     if (pendingUrlOpen.current || shouldOpenFromUrl()) {
       pendingUrlOpen.current = false;
       openTerminal("url");
     }
-  }, [introComplete, openTerminal]);
+  }, [openTerminal]);
 
   useLayoutEffect(() => {
     if (isOpen) {
@@ -111,15 +100,11 @@ export function DeveloperModeProvider({
       document.body.style.overflow = "hidden";
     } else {
       document.body.removeAttribute("data-dev-terminal");
-      if (!document.body.hasAttribute("data-intro")) {
-        document.body.style.overflow = "";
-      }
+      document.body.style.overflow = "";
     }
     return () => {
       document.body.removeAttribute("data-dev-terminal");
-      if (!document.body.hasAttribute("data-intro")) {
-        document.body.style.overflow = "";
-      }
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -135,10 +120,10 @@ export function DeveloperModeProvider({
     }
   }, [isOpen, openTerminal]);
 
-  useKonamiCode(handleKonami, introComplete && !isOpen);
+  useKonamiCode(handleKonami, !isOpen);
 
   useEffect(() => {
-    if (!introComplete || isOpen) return;
+    if (isOpen) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "`" && e.code !== "Backquote") return;
@@ -156,7 +141,7 @@ export function DeveloperModeProvider({
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [introComplete, isOpen, openTerminal]);
+  }, [isOpen, openTerminal]);
 
   const value = useMemo(
     () => ({
@@ -165,9 +150,8 @@ export function DeveloperModeProvider({
       closeTerminal,
       lastSource,
       showKonamiToast,
-      introComplete,
     }),
-    [isOpen, openTerminal, closeTerminal, lastSource, showKonamiToast, introComplete]
+    [isOpen, openTerminal, closeTerminal, lastSource, showKonamiToast]
   );
 
   return (

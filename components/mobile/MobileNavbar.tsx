@@ -47,7 +47,7 @@ export default function MobileNavbar() {
   return (
     <>
       <header
-        className={`site-nav fixed top-0 inset-x-0 z-50 ${
+        className={`site-nav nav-enter fixed top-0 inset-x-0 z-50 ${
           scrolled || open
             ? "bg-[#08060f]/85 backdrop-blur-md border-b border-white/5"
             : "bg-transparent"

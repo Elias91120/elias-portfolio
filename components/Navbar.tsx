@@ -26,7 +26,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`site-nav fixed top-0 inset-x-0 z-50 overflow-hidden ${
+      className={`site-nav nav-enter fixed top-0 inset-x-0 z-50 overflow-hidden ${
         scrolled
           ? "bg-[#08060f]/70 backdrop-blur-md border-b border-white/5"
           : "bg-transparent"

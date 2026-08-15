@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { skillGroups, certifications, type SkillGroup } from "@/lib/data";
+import { Reveal } from "@/components/Reveal";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -113,12 +114,7 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
       className={`relative px-5 ${compact ? "py-16" : "py-28"}`}
     >
       <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-        >
+        <Reveal>
           <span className="section-kicker font-display text-xs sm:text-sm font-semibold tracking-[0.3em] text-accent">
             TOOLBOX
           </span>
@@ -152,7 +148,7 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
               </>
             )}
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* Category tabs */}
         <div className="mt-10 -mx-5 px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

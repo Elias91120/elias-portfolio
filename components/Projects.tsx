@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   clientLiveProjects,
   greenStackProjects,
@@ -8,6 +7,7 @@ import {
 } from "@/lib/data";
 import ProjectCard from "@/components/ProjectCard";
 import MobileProjectCarousel from "@/components/mobile/MobileProjectCarousel";
+import { Reveal } from "@/components/Reveal";
 import type { Project } from "@/lib/data";
 
 type ProjectSectionProps = {
@@ -39,12 +39,7 @@ function ProjectSection({
 
   return (
     <div className={subdued ? "mt-24" : "mt-0"}>
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6 }}
-      >
+      <Reveal>
         <span
           className={`section-kicker font-display font-semibold tracking-[0.3em] text-accent ${
             subdued ? "text-xs tracking-[0.25em]" : "text-xs sm:text-sm tracking-[0.3em]"
@@ -75,7 +70,7 @@ function ProjectSection({
         >
           {description}
         </p>
-      </motion.div>
+      </Reveal>
 
       {useCarousel && carouselProjects.length > 0 ? (
         <div className="mt-10">

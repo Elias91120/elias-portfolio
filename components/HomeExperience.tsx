@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Story from "@/components/Story";
@@ -15,37 +15,12 @@ import AskWidget from "@/components/AskWidget";
 import { AgentChatProvider } from "@/components/AgentChatProvider";
 import StatsBand from "@/components/StatsBand";
 import ScrollProgress from "@/components/ScrollProgress";
-import CinematicIntro, { shouldPlayIntro } from "@/components/CinematicIntro";
 import DevTerminal from "@/components/DevTerminal";
 import { DeveloperModeProvider } from "@/components/DeveloperModeProvider";
 import { useIsMobile } from "@/lib/use-is-mobile";
 import MobileHomeSections from "@/components/mobile/MobileHomeSections";
 
 export default function HomeExperience() {
-  const [showIntro, setShowIntro] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    setShowIntro(shouldPlayIntro());
-  }, []);
-
-  useEffect(() => {
-    if (showIntro !== false) {
-      document.body.setAttribute("data-intro", "");
-      if (showIntro === true) {
-        document.body.style.overflow = "hidden";
-      }
-    } else {
-      document.body.removeAttribute("data-intro");
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.removeAttribute("data-intro");
-      document.body.style.overflow = "";
-    };
-  }, [showIntro]);
-
-  const introComplete = showIntro === false;
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -58,29 +33,20 @@ export default function HomeExperience() {
   }, [isMobile]);
 
   return (
-    <DeveloperModeProvider introComplete={introComplete}>
-      {showIntro === true && (
-        <CinematicIntro onComplete={() => setShowIntro(false)} />
-      )}
-      {isMobile ? (
-        <MobileHomeSections showIntro={showIntro} />
-      ) : (
-        <HomeSections showIntro={showIntro} />
-      )}
+    <DeveloperModeProvider>
+      {isMobile ? <MobileHomeSections /> : <HomeSections />}
       {isMobile === false && <DevTerminal />}
     </DeveloperModeProvider>
   );
 }
 
-function HomeSections({ showIntro }: { showIntro: boolean | null }) {
-  const heroReady = showIntro === false;
-
+function HomeSections() {
   return (
     <>
       <ScrollProgress />
       <Navbar />
       <AgentChatProvider>
-        <Hero ready={heroReady} />
+        <Hero />
         <div className="flex flex-col">
           <div style={{ order: 1 }}>
             <Story />

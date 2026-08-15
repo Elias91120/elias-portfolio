@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { contact } from "@/lib/data";
 import Magnetic from "@/components/Magnetic";
+import { Reveal } from "@/components/Reveal";
 
 export default function Contact({ compact = false }: { compact?: boolean }) {
   return (
@@ -19,13 +19,7 @@ export default function Contact({ compact = false }: { compact?: boolean }) {
         }}
       />
 
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6 }}
-        className="relative mx-auto max-w-3xl text-center"
-      >
+      <Reveal className="relative mx-auto max-w-3xl text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/30">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -251,7 +245,7 @@ export default function Contact({ compact = false }: { compact?: boolean }) {
             </a>
           </div>
         )}
-      </motion.div>
+      </Reveal>
     </section>
   );
 }
