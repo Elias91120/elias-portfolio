@@ -174,7 +174,7 @@ export default function HeroAgentBlock() {
     <div
       role="region"
       aria-label="Portfolio AI assistant"
-      className="relative z-10 mt-6 w-full max-w-md"
+      className="relative z-10 mt-5 w-full max-w-md"
     >
       <div className="rounded-2xl bg-card/40 backdrop-blur-sm p-3.5 ring-1 ring-white/8">
         <div className="flex items-center gap-2.5">

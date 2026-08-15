@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { contact } from "@/lib/data";
 import Magnetic from "@/components/Magnetic";
 import { Reveal } from "@/components/Reveal";
@@ -8,24 +9,27 @@ export default function Contact({ compact = false }: { compact?: boolean }) {
   return (
     <section
       id="contact"
-      className={`relative px-5 overflow-hidden ${compact ? "py-16" : "py-28"}`}
+      className={`relative overflow-hidden px-5 ${compact ? "py-16" : "py-28"}`}
     >
-      {/* Ambient glow */}
-      <div
-        aria-hidden
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[30rem] w-[46rem] rounded-full opacity-15 blur-3xl"
-        style={{
-          background: "radial-gradient(circle, #7c3aed 0%, transparent 65%)",
-        }}
-      />
+      <div aria-hidden className="absolute inset-0">
+        <Image
+          src="/story/chapter-7.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-[50%_35%]"
+        />
+        <div className="absolute inset-0 bg-[#08060f]/72" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#08060f] via-[#08060f]/40 to-[#08060f]/55" />
+      </div>
 
       <Reveal className="relative mx-auto max-w-3xl text-center">
-        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/30">
+        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/12 px-4 py-1.5 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/30 backdrop-blur-sm">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
-          Actively seeking apprenticeship — 2026–2028
+          Actively seeking apprenticeship, 2026-2028
         </span>
 
         <h2

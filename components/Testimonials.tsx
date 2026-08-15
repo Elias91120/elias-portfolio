@@ -1,8 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { testimonials } from "@/lib/data";
 import { Reveal } from "@/components/Reveal";
+
+const tagArt: Record<string, string> = {
+  CallKitchen: "/projects/callkitchen.webp",
+  "Express Divorce": "/projects/express-divorce.webp",
+  "Two App": "/projects/two.webp",
+};
 
 function Stars() {
   return (
@@ -36,9 +43,6 @@ export default function Testimonials({
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <span className="section-kicker font-display text-xs sm:text-sm font-semibold tracking-[0.3em] text-accent">
-            CLIENT FEEDBACK
-          </span>
           <h2
             className={`font-display mt-4 font-bold tracking-tight text-white ${
               compact ? "text-2xl" : "text-3xl sm:text-5xl"
@@ -63,22 +67,26 @@ export default function Testimonials({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.55, delay: i * 0.12 }}
-              className="relative overflow-hidden rounded-3xl bg-card p-7 ring-1 ring-white/10"
+              className="relative overflow-hidden rounded-3xl bg-card ring-1 ring-white/10"
             >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-40"
-                style={{
-                  background:
-                    "linear-gradient(to bottom, rgba(56, 189, 248, 0.12), transparent)",
-                }}
-              />
-              <span className="inline-flex rounded-full bg-emerald-400/10 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-emerald-300 ring-1 ring-emerald-400/20">
-                Retours clients
-              </span>
-              <div className="mt-5">
-                <Stars />
+              <div className="relative flex h-28 gap-1 overflow-hidden">
+                {item.projectTags.map((tag) =>
+                  tagArt[tag.label] ? (
+                    <div key={tag.label} className="relative min-w-0 flex-1">
+                      <Image
+                        src={tagArt[tag.label]}
+                        alt=""
+                        fill
+                        sizes="20rem"
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  ) : null,
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
               </div>
+              <div className="p-7 pt-5">
+              <Stars />
               <blockquote className="mt-5 text-base leading-relaxed text-[#d4d0e8]">
                 &ldquo;{item.quote}&rdquo;
               </blockquote>
@@ -117,6 +125,7 @@ export default function Testimonials({
                   </span>
                 )}
               </footer>
+              </div>
             </motion.article>
           ))}
         </div>

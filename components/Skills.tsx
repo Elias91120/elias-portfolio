@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { skillGroups, certifications, type SkillGroup } from "@/lib/data";
 import { Reveal } from "@/components/Reveal";
@@ -49,18 +50,21 @@ function SkillPanel({ group }: { group: SkillGroup }) {
       className="relative overflow-hidden rounded-3xl bg-card ring-1 ring-white/10"
       style={{ boxShadow: `0 24px 80px -40px ${group.accent}44` }}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-25 blur-3xl"
-        style={{ backgroundColor: group.accent }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
-        style={{
-          background: `linear-gradient(90deg, transparent, ${group.accent}88, transparent)`,
-        }}
-      />
+      <div className="relative min-h-[10rem] sm:min-h-[13rem]">
+        <Image
+          src="/art/skill-workshop.png"
+          alt="Painted workbench with circuits, a laptop, and a Minecraft figurine"
+          fill
+          sizes="(min-width: 768px) 56rem, 92vw"
+          className="object-cover object-[50%_40%]"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top, #120e20 0%, color-mix(in srgb, ${group.accent} 18%, transparent) 42%, transparent 78%)`,
+          }}
+        />
+      </div>
 
       <div className="relative p-6 sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -115,9 +119,6 @@ export default function Skills({ compact = false }: { compact?: boolean }) {
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <span className="section-kicker font-display text-xs sm:text-sm font-semibold tracking-[0.3em] text-accent">
-            TOOLBOX
-          </span>
           <h2
             className={`font-display mt-4 font-bold tracking-tight text-white ${
               compact ? "text-3xl" : "text-3xl sm:text-5xl"

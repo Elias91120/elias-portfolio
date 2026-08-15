@@ -13,16 +13,16 @@ const AVATAR_CLICK_WINDOW_MS = 2000;
 const stagger = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.04 },
+    transition: { staggerChildren: 0.08, delayChildren: 0.08 },
   },
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 18 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.62, ease },
+    transition: { duration: 0.7, ease },
   },
 };
 
@@ -73,46 +73,87 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-x-hidden px-5 pt-20 pb-16 sm:pt-24 sm:pb-20"
+      className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden px-5 pb-10 pt-20 sm:justify-center sm:pb-16 sm:pt-24"
     >
-      <div aria-hidden className="absolute inset-0 overflow-hidden">
-        <div
-          className="aurora absolute -top-48 left-1/2 h-[40rem] w-[64rem] -translate-x-1/2 rounded-full opacity-30 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, #6d28d9 0%, rgba(109,40,217,0.35) 40%, transparent 70%)",
-          }}
+      <div aria-hidden className="absolute inset-0">
+        <Image
+          src="/art/hero-world.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[70%_50%]"
         />
-        <div
-          className="aurora-slow absolute bottom-[-8rem] right-[4%] h-96 w-96 rounded-full opacity-15 blur-3xl"
-          style={{
-            background: "radial-gradient(circle, #f59e0b 0%, transparent 65%)",
-          }}
-        />
-        <div
-          className="aurora-slow absolute bottom-[10%] left-[-6rem] h-80 w-80 rounded-full opacity-10 blur-3xl"
-          style={{
-            background: "radial-gradient(circle, #38bdf8 0%, transparent 65%)",
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#08060f] via-[#08060f]/82 to-[#08060f]/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#08060f] via-transparent to-[#08060f]/45" />
       </div>
 
       <motion.div
         initial={reducedMotion ? false : "hidden"}
         animate="show"
         variants={stagger}
-        className="relative z-10 flex max-w-4xl flex-col items-center text-center"
+        className="relative z-10 mx-auto grid w-full max-w-6xl items-end gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center"
       >
-        <motion.div variants={fadeUp} className="relative mt-2 sm:mt-4">
+        <div className="max-w-xl text-left">
+          <motion.p
+            variants={fadeUp}
+            className="font-display text-xs uppercase tracking-[0.35em] text-amber-200/90 sm:text-sm"
+          >
+            Elias Elloumi
+          </motion.p>
+
+          <motion.h1
+            variants={fadeUp}
+            className="font-display mt-4 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
+          >
+            From a Minecraft kid
+            <br />
+            to a{" "}
+            <span className="bg-gradient-to-r from-amber-200 via-violet-200 to-sky-200 bg-clip-text font-serif font-semibold italic text-transparent">
+              Full-Stack Developer
+            </span>
+          </motion.h1>
+
+          <motion.p
+            variants={fadeUp}
+            className="mt-5 max-w-md text-base leading-relaxed text-[#d7d2ea] sm:text-lg"
+          >
+            I build data pipelines, AI agents, and production products at{" "}
+            <span className="text-white">Nokia</span> and{" "}
+            <span className="text-white">3geeks</span>.
+          </motion.p>
+
+          <motion.div variants={fadeUp} className="mt-6">
+            <span className="inline-flex items-center gap-2.5 rounded-full bg-emerald-400/12 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/25 backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                {!reducedMotion && (
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                )}
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Actively seeking apprenticeship, 2026-2028
+            </span>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="mt-2">
+            <HeroAgentBlock />
+          </motion.div>
+        </div>
+
+        <motion.div
+          variants={fadeUp}
+          className="relative mx-auto w-full max-w-sm lg:mx-0 lg:justify-self-end"
+        >
+          <div className="pointer-events-none absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgba(251,191,36,0.18),transparent_62%)]" />
           {!reducedMotion && (
             <motion.div
               aria-hidden
               animate={{ rotate: 360 }}
-              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-              className="absolute -inset-1.5 rounded-full opacity-45"
+              transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-2 rounded-full opacity-50"
               style={{
                 background:
-                  "conic-gradient(from 0deg, transparent 12%, #a78bfa 38%, #38bdf8 62%, transparent 88%)",
+                  "conic-gradient(from 0deg, transparent 10%, #f59e0b 32%, #a78bfa 55%, #38bdf8 72%, transparent 90%)",
               }}
             />
           )}
@@ -120,17 +161,17 @@ export default function Hero() {
             type="button"
             onClick={handleAvatarClick}
             aria-label="Elias avatar — 5 quick taps open dev terminal"
-            className={`relative h-36 w-36 overflow-hidden rounded-full ring-2 shadow-[0_0_64px_rgba(167,139,250,0.28)] transition-shadow sm:h-44 sm:w-44 md:h-52 md:w-52 ${
+            className={`relative aspect-square w-full overflow-hidden rounded-full ring-2 shadow-[0_20px_80px_rgba(8,6,15,0.55)] ${
               avatarClicks >= 3 && !reducedMotion
-                ? "ring-accent animate-pulse"
-                : "ring-accent/40"
+                ? "ring-amber-300 animate-pulse"
+                : "ring-amber-200/40"
             }`}
           >
             <Image
               src="/story/avatar-hero.jpg"
               alt="Cartoon portrait of Elias Elloumi waving"
               fill
-              sizes="(min-width: 768px) 13rem, (min-width: 640px) 11rem, 9rem"
+              sizes="(min-width: 1024px) 22rem, 18rem"
               className="object-cover"
               priority
             />
@@ -141,68 +182,13 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: reducedMotion ? 0 : 0.15 }}
-                  className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-card px-3 py-1 text-xs font-medium text-accent ring-1 ring-accent/40"
+                  className="absolute bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-card px-3 py-1 text-xs font-medium text-accent ring-1 ring-accent/40"
                 >
                   {avatarClicks}/5 - keep going
                 </motion.span>
               )}
             </AnimatePresence>
           </button>
-        </motion.div>
-
-        <motion.div
-          variants={fadeUp}
-          className="mt-7 flex items-center gap-3 text-accent"
-        >
-          <span className="h-px w-8 bg-accent/40" />
-          <span className="font-display text-xs uppercase tracking-[0.35em] sm:text-sm">
-            Elias Elloumi
-          </span>
-          <span className="h-px w-8 bg-accent/40" />
-        </motion.div>
-
-        <motion.h1
-          variants={fadeUp}
-          className="font-display mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl md:text-7xl"
-        >
-          From a Minecraft kid
-          <br />
-          to a{" "}
-          <span className="bg-gradient-to-r from-violet-300 via-sky-300 to-amber-200 bg-clip-text font-serif font-semibold italic text-transparent">
-            Full-Stack Developer
-          </span>
-        </motion.h1>
-
-        <motion.p
-          variants={fadeUp}
-          className="mt-4 text-sm font-medium tracking-wide text-sky-300/90 sm:text-base"
-        >
-          Data Engineering &amp; AI Agents
-        </motion.p>
-
-        <motion.p
-          variants={fadeUp}
-          className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
-        >
-          I build data pipelines, AI agents, and production products at{" "}
-          <span className="text-foreground">Nokia</span> and{" "}
-          <span className="text-foreground">3geeks</span>.
-        </motion.p>
-
-        <motion.div variants={fadeUp} className="mt-7">
-          <span className="inline-flex items-center gap-2.5 rounded-full bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-emerald-400/25">
-            <span className="relative flex h-2 w-2">
-              {!reducedMotion && (
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-              )}
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            </span>
-            Actively seeking apprenticeship, 2026-2028
-          </span>
-        </motion.div>
-
-        <motion.div variants={fadeUp} className="w-full">
-          <HeroAgentBlock />
         </motion.div>
       </motion.div>
     </section>
