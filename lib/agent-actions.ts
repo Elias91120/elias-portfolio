@@ -1,8 +1,21 @@
-import {
-  findProjectBySlug,
-  getProjectSlug,
-} from "@/lib/dev-terminal-commands";
-import { projects } from "@/lib/data";
+import { projects, type Project } from "@/lib/data";
+
+export function getProjectSlug(project: Project): string {
+  return (
+    project.caseStudySlug ??
+    project.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+  );
+}
+
+export function findProjectBySlug(slug: string): Project | undefined {
+  const norm = slug.toLowerCase().trim();
+  return projects.find(
+    (p) =>
+      getProjectSlug(p).toLowerCase() === norm ||
+      p.caseStudySlug?.toLowerCase() === norm ||
+      p.name.toLowerCase() === norm
+  );
+}
 import { sanitizeAssistantResponse } from "@/lib/agent-guardrails";
 import { highlightProjectCard } from "@/lib/highlight-project";
 import { prefersReducedMotion, scrollToSection } from "@/lib/scroll-to-section";

@@ -8,13 +8,16 @@
 /* ------------------------------------------------------------------ */
 
 :root {
-  --background: #08060f;
+  --background: #0C0C0C;
   --foreground: #ece9f6;
   --muted: #928caa;
   --accent: #a78bfa;
   --accent-warm: #f0b429;
-  --card: #100d1c;
+  --card: #141414;
   --border: rgba(255, 255, 255, 0.09);
+
+  --font-display: var(--font-kanit), "Kanit", sans-serif;
+  --font-body: var(--font-kanit), "Kanit", sans-serif;
 
   --spotlight-x: 50vw;
   --spotlight-y: 50vh;
@@ -37,14 +40,23 @@
   --font-serif: var(--font-story);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
-body {
-  background: var(--background);
+body,
+#root {
+  background: #0C0C0C;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   color: var(--foreground);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-body), "Kanit", sans-serif;
   overflow-x: clip;
   scroll-behavior: smooth;
 }
@@ -68,33 +80,27 @@ section[id] {
   width: 9px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0814;
+  background: #0C0C0C;
 }
 ::-webkit-scrollbar-thumb {
-  background: #262040;
+  background: #242424;
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #372f5c;
+  background: #383838;
 }
 
 .font-display {
-  font-family: var(--font-display), system-ui, sans-serif;
+  font-family: var(--font-display), "Kanit", sans-serif;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Display headings                                                   */
-/*  A vertical wash from cool grey to white: the type reads as lit     */
-/*  from above rather than painted a flat colour.                      */
+/*  Gradient text: #646973 (top) to #BBCCD7 (bottom)                   */
 /* ------------------------------------------------------------------ */
 
 .hero-heading {
-  background: linear-gradient(
-    180deg,
-    #5f5a75 0%,
-    #b9b3d0 46%,
-    #f3f1fb 100%
-  );
+  background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -171,11 +177,6 @@ section[id] {
 /* ------------------------------------------------------------------ */
 /*  Portfolio assistant                                                */
 /* ------------------------------------------------------------------ */
-
-body[data-dev-terminal] .ask-widget {
-  opacity: 0;
-  pointer-events: none;
-}
 
 .agent-message {
   font-size: 0.8125rem;
@@ -256,9 +257,8 @@ body[data-dev-terminal] .ask-widget {
     0 8px 20px -14px rgba(167, 139, 250, 0.35);
 }
 
-/* Card highlight driven by the assistant or `open <slug>` in the terminal */
-[data-project-slug].agent-highlight,
-[data-project-slug].dev-terminal-highlight {
+/* Card highlight driven by the assistant */
+[data-project-slug].agent-highlight {
   box-shadow:
     0 0 0 2px rgba(167, 139, 250, 0.65),
     0 20px 60px -32px rgba(167, 139, 250, 0.35) !important;

@@ -9,6 +9,7 @@ export type Visual =
 export type Work = {
   id: string;
   name: string;
+  origin?: "3geeks" | "nokia" | "client" | "academic";
   category: L;
   context: L;
   description: L;
@@ -26,6 +27,7 @@ export const featuredWork: Work[] = [
   {
     id: "nokia-dashboard",
     name: "Feature Analyzer 2.0",
+    origin: "nokia",
     category: {
       en: "Nokia · Creator & lead developer",
       fr: "Nokia · Créateur & lead developer",
@@ -51,9 +53,10 @@ export const featuredWork: Work[] = [
   {
     id: "3geeks-infra",
     name: "3geeks Infra",
+    origin: "3geeks",
     category: {
-      en: "3geeks · Self-hosted production",
-      fr: "3geeks · Production auto-hébergée",
+      en: "3geeks Studio · Co-founder & DevOps",
+      fr: "3geeks Studio · Co-fondateur & DevOps",
     },
     context: { en: "Infrastructure", fr: "Infrastructure" },
     description: {
@@ -85,6 +88,7 @@ export const featuredWork: Work[] = [
   {
     id: "cursor-portal",
     name: "Cursor pour les nuls",
+    origin: "nokia",
     category: { en: "Nokia · AI adoption lead", fr: "Nokia · Lead adoption IA" },
     context: { en: "Developer experience", fr: "Developer experience" },
     description: {
@@ -115,7 +119,8 @@ export const featuredWork: Work[] = [
   {
     id: "express-divorce",
     name: "Express Divorce USA",
-    category: { en: "3geeks · Legal-tech SaaS", fr: "3geeks · SaaS legal-tech" },
+    origin: "3geeks",
+    category: { en: "3geeks Studio · Legal-tech SaaS", fr: "3geeks Studio · SaaS legal-tech" },
     context: { en: "Client · in production", fr: "Client · en production" },
     description: {
       en: "A regulated-sector SaaS that guides US couples through the divorce paperwork of their own state. Multi-state compliance, personal-data security and data sovereignty were constraints from day one, not an afterthought.",
@@ -139,6 +144,7 @@ export const featuredWork: Work[] = [
   {
     id: "green-jardin",
     name: "Green Jardin",
+    origin: "client",
     category: {
       en: "Omnichannel retail · online + in-store",
       fr: "Retail omnicanal · en ligne + boutique",
@@ -166,9 +172,10 @@ export const featuredWork: Work[] = [
   {
     id: "prompt-hub",
     name: "Prompt Hub",
+    origin: "3geeks",
     category: {
-      en: "3geeks · Multi-agent planning",
-      fr: "3geeks · Planification multi-agents",
+      en: "3geeks Studio · Multi-agent planning",
+      fr: "3geeks Studio · Planification multi-agents",
     },
     context: { en: "Product · beta", fr: "Produit · bêta" },
     description: {
@@ -197,6 +204,7 @@ export const featuredWork: Work[] = [
 
 export type SideProject = {
   name: string;
+  origin?: "3geeks" | "nokia" | "client" | "academic";
   tagline: L;
   stack: string[];
   status: L;
@@ -208,9 +216,10 @@ export type SideProject = {
 export const otherWork: SideProject[] = [
   {
     name: "Trading Orchestrator",
+    origin: "3geeks",
     tagline: {
-      en: "Deterministic trading desk on Kraken spot: a LangGraph workflow with no LLM anywhere on the decision path, and a fail-closed risk manager that holds sole approval authority.",
-      fr: "Desk de trading déterministe sur Kraken spot : un workflow LangGraph sans aucun LLM sur le chemin de décision, et un risk manager fail-closed seul détenteur de l'autorité d'approbation.",
+      en: "3geeks live trading desk on Kraken spot: a LangGraph workflow with no LLM anywhere on the decision path, and a fail-closed risk manager that holds sole approval authority.",
+      fr: "Desk de trading 3geeks sur Kraken spot : un workflow LangGraph sans aucun LLM sur le chemin de décision, et un risk manager fail-closed seul détenteur de l'autorité d'approbation.",
     },
     stack: ["Python", "LangGraph", "ccxt", "PostgreSQL", "Docker"],
     status: { en: "Running in production", fr: "En production" },
@@ -218,6 +227,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "VIPA",
+    origin: "3geeks",
     tagline: {
       en: "iOS productivity assistant — AI planning, tasks, notes and habits on an Expo + Supabase monorepo, with its own billing API in production.",
       fr: "Assistant de productivité iOS — planning IA, tâches, notes et habitudes sur un monorepo Expo + Supabase, avec son API de facturation en production.",
@@ -228,6 +238,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "Two",
+    origin: "client",
     tagline: {
       en: "All-in-one iOS space for couples — shared calendar, expenses, memories and a geolocated photo map. Data stays between the two partners, never sold.",
       fr: "Espace iOS tout-en-un pour les couples — calendrier partagé, dépenses, souvenirs et carte photo géolocalisée. Les données restent entre les deux partenaires, jamais revendues.",
@@ -239,6 +250,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "3geeks API Hub",
+    origin: "3geeks",
     tagline: {
       en: "A fully local, OpenAI-compatible gateway in front of Ollama — personal tokens, live usage stats and model management for the whole studio.",
       fr: "Une passerelle 100% locale compatible OpenAI devant Ollama — tokens personnels, statistiques d'usage en direct et gestion des modèles pour tout le studio.",
@@ -249,6 +261,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "PromptOptim",
+    origin: "3geeks",
     tagline: {
       en: "Same intent, fewer tokens: a prompt optimiser that surfaces the CO₂ cost of every request and favours European models.",
       fr: "Même intention, moins de tokens : un optimiseur de prompts qui affiche le coût CO₂ de chaque requête et privilégie les modèles européens.",
@@ -260,6 +273,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "3geeks",
+    origin: "3geeks",
     tagline: {
       en: "The studio flagship: an intent-to-website generator where a written brief becomes a fully laid-out site, plus our own landing.",
       fr: "Le produit phare du studio : un générateur de sites à partir d'une intention, où un brief écrit devient un site entièrement mis en page.",
@@ -272,6 +286,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "CallKitchen",
+    origin: "3geeks",
     tagline: {
       en: "An AI voice agent that answers a restaurant's phone 24/7 — takeout, bookings and menu questions, with SMS confirmation and a kitchen dashboard.",
       fr: "Un agent vocal IA qui répond au téléphone d'un restaurant 24h/24 — commandes, réservations et questions menu, avec confirmation SMS et dashboard cuisine.",
@@ -283,6 +298,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "Filament",
+    origin: "3geeks",
     tagline: {
       en: "A 4v4 .io game in Canvas 2D — territory painting, filaments between teammates and heart destruction, with a bot benchmark to balance matches.",
       fr: "Un jeu .io 4v4 en Canvas 2D — peinture de territoire, filaments entre coéquipiers et destruction du Cœur adverse, avec un benchmark de bots pour équilibrer les parties.",
@@ -294,6 +310,7 @@ export const otherWork: SideProject[] = [
   },
   {
     name: "AI Travel Planner",
+    origin: "academic",
     tagline: {
       en: "Intent-based travel planning powered by Gemini: a natural-language brief becomes a day-by-day itinerary. Elected best Bachelor project at ECE Paris.",
       fr: "Planification de voyage par intention avec Gemini : un brief en langage naturel devient un itinéraire jour par jour. Élu meilleur projet de Bachelor de l'ECE Paris.",
@@ -307,6 +324,7 @@ export const otherWork: SideProject[] = [
     // Client work under NDA — described by its architecture only, with no
     // brand, sector or operator detail.
     name: "Telegram Mini-App",
+    origin: "client",
     tagline: {
       en: "A private ordering mini-app running entirely inside Telegram, paired with a PIN-protected operator dashboard built to live pinned on a single phone.",
       fr: "Une mini-app de commande privée qui tourne entièrement dans Telegram, avec un dashboard opérateur protégé par code PIN, pensé pour vivre épinglé sur un seul téléphone.",

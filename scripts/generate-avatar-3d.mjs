@@ -145,10 +145,11 @@ const body = {
   texture_resolution: "4k",
   image_enhancement: true,
   should_remesh: false, // Keep Meshy's dense mesh; we decimate downstream.
+  remove_lighting: true, // Strips baked lighting so Three.js lights work dynamically
   alpha_thumbnail: true,
   target_formats: ["glb"],
   texture_prompt:
-    "clean stylized 3D character portrait, smooth even skin, dark navy t-shirt, thin silver chain necklace, dark curly hair, neutral unlit albedo, no baked shadows or highlights, no background",
+    "clean stylized 3D character bust, young man smiling, dark curly hair, short beard, dark navy blue t-shirt, silver chain necklace, smooth skin, neutral ambient lighting, high detail, studio quality, no background",
 };
 
 console.log("Creating Meshy 7 ultra task …");

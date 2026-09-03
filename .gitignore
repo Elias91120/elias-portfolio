@@ -47,9 +47,11 @@ next-env.d.ts
 .vercel
 .env*
 
-# 3D source model — the optimised 568 KB build lives in public/3d/head.glb.
-# Keep the ~10 MB Meshy export out of the repo; see scripts/render-head-poster.mjs.
+# 3D source models — the web build lives in public/3d/head.glb.
+# Keep Meshy exports and the uncompressed avatar out of the repo
+# (GitHub rejects files over 100 MB). See scripts/optimize-avatar.mjs.
 Meshy_*.glb
+public/3d/avatar-raw.glb
 
 # agent skills installed locally
 /.agents

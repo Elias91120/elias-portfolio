@@ -177,6 +177,13 @@ export default function Head3D({ className }: { className?: string }) {
       );
       visObserver.observe(host);
 
+      let nodEnergy = 0;
+      const onPointerDown = () => {
+        nodEnergy = 1.0;
+      };
+      host.addEventListener("pointerdown", onPointerDown);
+      host.style.cursor = "pointer";
+
       const clock = new THREE.Clock();
       let firstFrameDone = false;
 
@@ -198,9 +205,19 @@ export default function Head3D({ className }: { className?: string }) {
         current.x += (wantX - current.x) * 0.045;
         current.y += (wantY - current.y) * 0.045;
 
+        // Friendly nod on click/tap
+        if (nodEnergy > 0.005) {
+          nodEnergy *= 0.91;
+        } else {
+          nodEnergy = 0;
+        }
+        const nodAngle = Math.sin((1 - nodEnergy) * Math.PI * 3) * nodEnergy * 0.08;
+        const nodHop = Math.sin((1 - nodEnergy) * Math.PI) * nodEnergy * 0.035;
+
         pivot.rotation.y = current.x * 0.55;
-        pivot.rotation.x = current.y * 0.3;
-        pivot.position.y = Math.sin(t * 0.6) * 0.012;
+        pivot.rotation.x = current.y * 0.3 + nodAngle;
+        pivot.position.y = Math.sin(t * 0.6) * 0.012 + nodHop;
+        rim.intensity = 2.4 + nodEnergy * 1.6;
 
         renderer.render(scene, camera);
 
@@ -217,6 +234,7 @@ export default function Head3D({ className }: { className?: string }) {
         observer.disconnect();
         visObserver.disconnect();
         window.removeEventListener("pointermove", onPointerMove);
+        host.removeEventListener("pointerdown", onPointerDown);
         envRT.texture.dispose();
         pmrem.dispose();
         model?.traverse((child) => {

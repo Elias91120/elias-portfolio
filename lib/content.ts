@@ -16,8 +16,8 @@ export const profile = {
     fr: "ingénieur data & ia — je livre des produits, pas des slides",
   } satisfies L,
   status: {
-    en: "Apprentice @ Cleva Solutions — ClevAI",
-    fr: "Alternant @ Cleva Solutions — ClevAI",
+    en: "Apprentice @ Cleva Solutions (ClevAI) · EFREI Paris",
+    fr: "Alternant @ Cleva Solutions (ClevAI) · EFREI Paris",
   } satisfies L,
 };
 
@@ -43,8 +43,8 @@ export const ui = {
 export const about = {
   heading: { en: "About me", fr: "Mon profil" } satisfies L,
   paragraph: {
-    en: "I build the unglamorous parts that make products actually work — data pipelines, AI agents, and the infrastructure underneath. Two years at Nokia turned scattered analyses into one real-time platform and put AI tooling in the hands of four teams. With 3geeks I co-run a studio that ships to real users and hosts its own production stack. Now heading into an M.Sc. in Data Engineering & AI, and an apprenticeship at Cleva Solutions.",
-    fr: "Je construis ce qui ne se voit pas mais qui fait tourner un produit : pipelines de données, agents IA, et l'infrastructure en dessous. Deux ans chez Nokia ont transformé des analyses éparpillées en une plateforme temps réel et mis l'outillage IA entre les mains de quatre équipes. Avec 3geeks, je co-dirige un studio qui livre à de vrais utilisateurs et héberge sa propre prod. Direction maintenant : M.Sc. Data Engineering & IA, et une alternance chez Cleva Solutions.",
+    en: "I build the systems that make products actually work — data pipelines, AI agents, and the infrastructure underneath. Two years at Nokia turned scattered analyses into one real-time platform and put AI tooling in the hands of four teams. With 3geeks I co-run a studio that ships to real users and operates its own production stack. Now pursuing an M.Sc. in Data Engineering & AI at EFREI Paris, and working as an apprentice at Cleva Solutions (ClevAI).",
+    fr: "Je construis les systèmes qui font réellement tourner les produits : pipelines de données, agents IA et infrastructure de production. Deux ans chez Nokia ont transformé des analyses éparpillées en une plateforme temps réel et mis l'outillage IA entre les mains de quatre équipes. Avec 3geeks, je co-dirige un studio qui livre à de vrais utilisateurs et opère sa propre infrastructure de production. Actuellement en M.Sc. Data Engineering & IA à l'EFREI Paris, et alternant chez Cleva Solutions (branche ClevAI).",
   } satisfies L,
 };
 

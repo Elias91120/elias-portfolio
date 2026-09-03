@@ -186,17 +186,17 @@ export const path: PathStep[] = [
     status: "current",
   },
   {
-    period: { en: "Incoming", fr: "À venir" },
+    period: { en: "2026 — 2028", fr: "2026 — 2028" },
     title: "Cleva Solutions — ClevAI",
     subtitle: {
-      en: "Apprentice, Data & AI",
-      fr: "Alternant, Data & IA",
+      en: "Apprentice, Data & AI (ClevAI Hub)",
+      fr: "Alternant, Data & IA (Hub ClevAI)",
     },
     detail: {
-      en: "Joining the AI branch of a 40-year-old insurance software company, where ClevAI orchestrates document intelligence, multi-agent workflows and process configuration for European insurers.",
-      fr: "Rejoindre la branche IA d'un éditeur de logiciels d'assurance créé il y a 40 ans, où ClevAI orchestre l'intelligence documentaire, les workflows multi-agents et la configuration des processus pour les assureurs européens.",
+      en: "Contract signed with the AI branch of Cleva Solutions: developing agentic workflows, IDP (Intelligent Document Processing), and sovereign AI assistants for insurance.",
+      fr: "Contrat signé au sein du hub IA de Cleva Solutions : développement de workflows agentiques, IDP (traitement intelligent de documents) et assistants IA souverains pour l'assurance.",
     },
-    status: "next",
+    status: "current",
   },
 ];
 

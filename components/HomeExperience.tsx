@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { AgentChatProvider } from "@/components/AgentChatProvider";
-import { DeveloperModeProvider } from "@/components/DeveloperModeProvider";
 import ScrollProgress from "@/components/ScrollProgress";
 import Nav from "@/components/v2/Nav";
 import Hero from "@/components/v2/Hero";
@@ -24,30 +23,24 @@ const GlobalReach = dynamic(() => import("@/components/GlobalReach"), {
 const AskWidget = dynamic(() => import("@/components/AskWidget"), {
   ssr: false,
 });
-const DevTerminal = dynamic(() => import("@/components/DevTerminal"), {
-  ssr: false,
-});
 
 export default function HomeExperience() {
   return (
-    <DeveloperModeProvider>
-      <AgentChatProvider>
-        <ScrollProgress />
-        <Nav />
-        <Hero />
-        <Marquee />
-        <About />
-        <Expertise />
-        <WorkStack />
-        <OtherWork />
-        <Path />
-        <Skills />
-        <GlobalReach />
-        <Recommendations />
-        <Contact />
-        <AskWidget />
-      </AgentChatProvider>
-      <DevTerminal />
-    </DeveloperModeProvider>
+    <AgentChatProvider>
+      <ScrollProgress />
+      <Nav />
+      <Hero />
+      <Marquee />
+      <About />
+      <Expertise />
+      <WorkStack />
+      <OtherWork />
+      <Path />
+      <Skills />
+      <GlobalReach />
+      <Recommendations />
+      <Contact />
+      <AskWidget />
+    </AgentChatProvider>
   );
 }

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   motion,
   useReducedMotion,
@@ -76,6 +76,11 @@ function Card({
   stacked: boolean;
 }) {
   const { t } = useLocale();
+  const [glare, setGlare] = useState<{ x: number; y: number; opacity: number }>({
+    x: 0,
+    y: 0,
+    opacity: 0,
+  });
   const targetScale = 1 - (total - 1 - index) * SCALE_STEP;
   const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
 
@@ -96,8 +101,30 @@ function Card({
           top: stacked ? `${index * 26}px` : 0,
           backgroundColor: "#0C0A16",
         }}
+        onPointerMove={(e) => {
+          if (e.pointerType !== "mouse") return;
+          const rect = e.currentTarget.getBoundingClientRect();
+          setGlare({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+            opacity: 1,
+          });
+        }}
+        onPointerLeave={() => {
+          setGlare((prev) => ({ ...prev, opacity: 0 }));
+        }}
         className="relative flex w-full flex-col gap-6 overflow-hidden rounded-[28px] border border-white/[0.13] p-5 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)] sm:gap-8 sm:rounded-[44px] sm:p-7 md:rounded-[56px] md:p-9"
       >
+        {/* Subtle specular glare tracking cursor */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={{
+            opacity: glare.opacity,
+            background: `radial-gradient(circle 380px at ${glare.x}px ${glare.y}px, rgba(255,255,255,0.06), transparent 75%)`,
+          }}
+        />
+
         {/* Accent wash, keyed to the project. */}
         <div
           aria-hidden
@@ -105,7 +132,7 @@ function Card({
           style={{ background: work.accent }}
         />
 
-        <header className="relative flex flex-wrap items-start justify-between gap-4">
+        <header className="relative z-20 flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-4 sm:gap-6">
             <span
               className="font-display font-bold leading-[0.8] tracking-[-0.05em] text-white/15"
@@ -114,14 +141,32 @@ function Card({
               {String(index + 1).padStart(2, "0")}
             </span>
             <div className="pt-1">
-              <p
-                className="text-[0.7rem] font-medium uppercase tracking-[0.16em]"
-                style={{ color: work.accent }}
-              >
-                {t(work.context)}
-              </p>
+              <div className="mb-1 flex flex-wrap items-center gap-2">
+                <p
+                  className="text-[0.7rem] font-medium uppercase tracking-[0.16em]"
+                  style={{ color: work.accent }}
+                >
+                  {t(work.context)}
+                </p>
+                {work.origin === "3geeks" && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/35 bg-amber-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-amber-300">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    3geeks Studio · Co-fondateur
+                  </span>
+                )}
+                {work.origin === "nokia" && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/35 bg-violet-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-violet-300">
+                    Nokia · R&D
+                  </span>
+                )}
+                {work.origin === "client" && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/35 bg-sky-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-sky-300">
+                    Client · Production
+                  </span>
+                )}
+              </div>
               <h3
-                className="mt-1.5 font-display font-semibold leading-tight tracking-tight text-white"
+                className="mt-1 font-display font-semibold leading-tight tracking-tight text-white"
                 style={{ fontSize: "clamp(1.35rem, 3vw, 2.5rem)" }}
               >
                 {work.name}
@@ -164,7 +209,7 @@ function Card({
                       >
                         {m.value}
                       </span>
-                      <span className="mt-0.5 block text-[0.7rem] uppercase tracking-[0.1em] text-muted">
+                      <span className="mt-0.5 block text-xs text-muted sm:text-sm">
                         {t(m.label)}
                       </span>
                     </dd>
@@ -195,6 +240,56 @@ function Card({
 function Visual({ work }: { work: Work }) {
   const { t } = useLocale();
   const visual = work.visual;
+
+  if (work.id === "3geeks-infra") {
+    return (
+      <div className="flex min-h-[220px] flex-col justify-between rounded-[24px] border border-amber-400/25 bg-gradient-to-br from-amber-500/[0.06] via-black/40 to-purple-500/[0.04] p-5 sm:rounded-[32px] sm:p-7 md:min-h-[280px] md:rounded-[40px]">
+        <div className="flex items-center justify-between gap-3 border-b border-white/[0.08] pb-3.5">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <span className="font-mono text-xs uppercase tracking-wider text-emerald-300">
+              Mac Mini M2 · Production Live
+            </span>
+          </div>
+          <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-0.5 font-mono text-xs font-medium text-amber-300">
+            13 apps en prod
+          </span>
+        </div>
+
+        <div className="my-3 flex flex-col gap-2">
+          {[
+            { step: "01", name: "GitHub Main", desc: "push webhook", badge: "Git Push" },
+            { step: "02", name: "Coolify CI/CD", desc: "OrbStack Docker", badge: "Build" },
+            { step: "03", name: "Traefik :443", desc: "SSL reverse proxy", badge: "Route" },
+            { step: "04", name: "Cloudflare Tunnel", desc: "zero-trust ingress", badge: "Tunnel" },
+            { step: "05", name: "3geeks.fr", desc: "production live", badge: "Live" },
+          ].map((node) => (
+            <div
+              key={node.step}
+              className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-black/30 px-3 py-1.5 transition-colors hover:border-amber-400/40 hover:bg-amber-400/[0.05]"
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-xs text-amber-400/80">{node.step}</span>
+                <span className="text-xs font-medium text-white">{node.name}</span>
+                <span className="hidden text-xs text-muted sm:inline">{node.desc}</span>
+              </div>
+              <span className="rounded-md border border-white/10 px-2 py-0.5 font-mono text-xs text-muted">
+                {node.badge}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between border-t border-white/[0.06] pt-3 text-xs text-muted">
+          <span>Golden Path · Self-hosted</span>
+          <span className="font-mono text-amber-300">3geeks studio infra</span>
+        </div>
+      </div>
+    );
+  }
 
   if (visual.kind === "image") {
     return (

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Kanit, Inter } from "next/font/google";
 import SpotlightCursor from "@/components/SpotlightCursor";
 import ViewTransitionRoot from "@/components/ViewTransitionRoot";
 import { LocaleProvider } from "@/lib/i18n";
 import "./globals.css";
 
-const display = Space_Grotesk({
-  variable: "--font-display",
+const kanit = Kanit({
+  variable: "--font-kanit",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -19,7 +20,7 @@ const body = Inter({
 
 const title = "Elias Elloumi — Data & AI Engineer";
 const description =
-  "Data pipelines, AI agents and production products — Nokia, 3geeks studio, and an apprenticeship at Cleva Solutions. Selected work, proof and recommendations.";
+  "Data pipelines, AI agents and production systems — Nokia, 3geeks studio, EFREI Paris and apprenticeship at Cleva Solutions (ClevAI). Shipped work and verified recommendations.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://elias-elloumi.com"),
@@ -89,7 +90,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} h-full antialiased`}
+      className={`${kanit.variable} ${body.variable} h-full antialiased`}
     >
       <body className="min-h-full grain">
         <script
