@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import DottedMap from "dotted-map";
-import { motion } from "motion/react";
-import {
-  collaborationMarkers,
-  MAP_REGION,
-  type LabelSide,
-} from "@/lib/collaboration-map";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { collaborationMarkers, type LabelSide } from "@/lib/collaboration-map";
+
+/**
+ * Pre-rendered at build time by scripts/build-world-map.mjs. Generating the
+ * dot grid in the browser meant shipping dotted-map + proj4 (~390 KB of JS)
+ * to draw a picture that never changes.
+ */
+const MAP_SRC = "/world-dots.webp";
 
 const labelSideClass: Record<LabelSide, string> = {
   top: "bottom-full left-1/2 mb-2 -translate-x-1/2",
@@ -19,25 +21,10 @@ const labelSideClass: Record<LabelSide, string> = {
 export default function WorldMap({ compact = false }: { compact?: boolean }) {
   const [activeCity, setActiveCity] = useState<string | null>(null);
 
-  const mapImage = useMemo(() => {
-    const map = new DottedMap({
-      height: 140,
-      grid: "diagonal",
-      region: MAP_REGION,
-    });
-
-    const svg = map.getSVG({
-      radius: 0.2,
-      color: "#FFFFFF35",
-      shape: "circle",
-      backgroundColor: "transparent",
-    });
-
-    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-  }, []);
 
   return (
     <div
+      data-world-map
       className={`relative w-full select-none ${
         compact ? "aspect-[2.4/1]" : "aspect-[2.95/1] sm:min-h-[300px] lg:min-h-[360px]"
       }`}
@@ -45,7 +32,9 @@ export default function WorldMap({ compact = false }: { compact?: boolean }) {
     >
       {/* Map bitmap — fills the entire frame */}
       <img
-        src={mapImage}
+        src={MAP_SRC}
+        loading="lazy"
+        decoding="async"
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
@@ -66,7 +55,7 @@ export default function WorldMap({ compact = false }: { compact?: boolean }) {
           <button
             key={marker.city}
             type="button"
-            className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 focus:outline-none"
+            className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 p-1.5 focus:outline-none"
             style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
             onMouseEnter={() => setActiveCity(marker.city)}
             onFocus={() => setActiveCity(marker.city)}
@@ -89,7 +78,7 @@ export default function WorldMap({ compact = false }: { compact?: boolean }) {
 
             {!compact ? (
               <span
-                className={`pointer-events-none absolute whitespace-nowrap rounded-md bg-[#1a1528]/90 px-2 py-0.5 text-[0.65rem] font-medium text-white/90 opacity-0 shadow-lg ring-1 ring-white/10 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-[0.7rem] ${
+                className={`pointer-events-none absolute whitespace-nowrap rounded-md bg-[#1a1528]/90 px-2 py-0.5 text-[0.7rem] font-medium text-white/90 opacity-0 shadow-lg ring-1 ring-white/10 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-[0.7rem] ${
                   labelSideClass[marker.labelSide]
                 } ${isActive ? "opacity-100" : ""}`}
               >

@@ -149,7 +149,7 @@ export default function AiTravelPlannerCaseStudy() {
                   mock: <TravelItineraryMock />,
                 },
                 {
-                  imageSrc: "/story/chapter-4.jpg",
+                  imageSrc: "/case-study/ece-presentation.webp",
                   imageAlt: "Elias presenting the AI travel planner on stage at ECE",
                   linkLabel: "ECE Paris · Best Bachelor",
                   caption:
@@ -159,7 +159,7 @@ export default function AiTravelPlannerCaseStudy() {
             />
             <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-white/10">
               <Image
-                src="/story/chapter-4.jpg"
+                src="/case-study/ece-presentation.webp"
                 alt="Elias presenting AI Travel Planner at ECE Paris"
                 width={1400}
                 height={600}

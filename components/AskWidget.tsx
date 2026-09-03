@@ -3,10 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import AgentMessageContent, {
-  AgentTypingIndicator,
-} from "@/components/AgentMessageContent";
+import { AgentTypingIndicator } from "@/components/AgentTypingIndicator";
+
+// The markdown renderer only matters once the assistant replies, so it is
+// fetched on demand rather than shipped with the landing page.
+const AgentMessageContent = dynamic(
+  () => import("@/components/AgentMessageContent"),
+  { ssr: false, loading: () => <AgentTypingIndicator /> },
+);
 import { useAgentChat } from "@/components/AgentChatProvider";
 import { prefersReducedMotion } from "@/lib/scroll-to-section";
 import { useIsMobile } from "@/lib/use-is-mobile";
@@ -84,7 +90,7 @@ function ChatPanel({
       <div className={`flex items-center gap-3 border-b border-white/8 bg-white/[0.03] px-5 py-4 ${isMobile ? "pt-2" : ""}`}>
         <span className="relative h-9 w-9 overflow-hidden rounded-full ring-1 ring-accent/40">
           <Image
-            src="/story/avatar-hero.jpg"
+            src="/3d/head-poster.webp"
             alt=""
             fill
             sizes="2.25rem"
@@ -162,7 +168,7 @@ function ChatPanel({
               {!isUser && (
                 <span className="relative mt-1 h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-accent/30">
                   <Image
-                    src="/story/avatar-hero.jpg"
+                    src="/3d/head-poster.webp"
                     alt=""
                     fill
                     sizes="1.75rem"

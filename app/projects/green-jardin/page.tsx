@@ -89,7 +89,7 @@ export default function GreenJardinCaseStudy() {
 
       <ProjectBrowserPreview
         slug="green-jardin"
-        imageSrc="/projects/image.png"
+        imageSrc="/projects/green-jardin-storefront.webp"
         imageAlt="Screenshot of Green Jardin Shopify storefront"
         linkLabel="green-jardin.fr"
         priority
@@ -227,14 +227,14 @@ export default function GreenJardinCaseStudy() {
             <UseCaseScreenGrid
               screens={[
                 {
-                  imageSrc: "/projects/image.png",
+                  imageSrc: "/projects/green-jardin-storefront.webp",
                   imageAlt: "Green Jardin Shopify homepage",
                   linkLabel: "green-jardin.fr",
                   caption:
                     "Shopify storefront — premium positioning, product universes, and trust signals (4.8/5 Google, lab-certified).",
                 },
                 {
-                  imageSrc: "/projects/green-jardin-shop.png",
+                  imageSrc: "/projects/green-jardin-shop.webp",
                   imageAlt: "Green Jardin product catalogue",
                   linkLabel: "green-jardin.fr",
                   caption:

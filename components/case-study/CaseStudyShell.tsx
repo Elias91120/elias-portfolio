@@ -1,5 +1,16 @@
 import Link from "next/link";
+import { Fraunces } from "next/font/google";
 import type { CaseStudyTheme } from "@/lib/case-study-themes";
+
+// Loaded here rather than in the root layout: the italic accent only appears
+// in case studies, so the landing page no longer pays for a third family.
+const serif = Fraunces({
+  variable: "--font-story",
+  subsets: ["latin"],
+  weight: "600",
+  style: "italic",
+  display: "swap",
+});
 
 type CaseStudyShellProps = {
   theme: CaseStudyTheme;
@@ -48,7 +59,7 @@ export default function CaseStudyShell({
 
   return (
     <main
-      className="case-study-page relative min-h-screen"
+      className={`case-study-page relative min-h-screen ${serif.variable}`}
       style={
         {
           "--cs-bg": theme.bg,

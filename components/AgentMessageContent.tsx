@@ -59,15 +59,6 @@ type AgentMessageContentProps = {
   isStreaming?: boolean;
 };
 
-export function AgentTypingIndicator() {
-  return (
-    <span className="inline-flex items-center gap-1 py-0.5" aria-hidden>
-      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent [animation-delay:0ms]" />
-      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent [animation-delay:150ms]" />
-      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-accent [animation-delay:300ms]" />
-    </span>
-  );
-}
 
 export default function AgentMessageContent({
   content,

@@ -1,46 +1,46 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, Fraunces } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import SpotlightCursor from "@/components/SpotlightCursor";
 import ViewTransitionRoot from "@/components/ViewTransitionRoot";
+import { LocaleProvider } from "@/lib/i18n";
 import "./globals.css";
 
 const display = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const body = Inter({
   variable: "--font-body",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const serif = Fraunces({
-  variable: "--font-story",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["SOFT", "opsz"],
-});
+const title = "Elias Elloumi — Data & AI Engineer";
+const description =
+  "Data pipelines, AI agents and production products — Nokia, 3geeks studio, and an apprenticeship at Cleva Solutions. Selected work, proof and recommendations.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://elias-elloumi.com"),
   title: {
-    default: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
+    default: title,
     template: "%s · Elias Elloumi",
   },
-  description:
-    "Professional vibe coder building data pipelines, AI agents & production products at Nokia and 3geeks. A portfolio that reads like an illustrated book — one scroll at a time.",
+  description,
   keywords: [
     "Elias Elloumi",
-    "Full-Stack Developer",
-    "Data Engineering",
+    "Data Engineer",
     "AI Engineer",
-    "Vibe coding",
+    "AI agents",
+    "Data pipelines",
+    "Full-Stack Developer",
     "Portfolio",
     "Nokia",
     "3geeks",
+    "Cleva Solutions",
     "EFREI Paris",
     "ECE Paris",
-    "Data & AI",
   ],
   authors: [{ name: "Elias Elloumi", url: "https://elias-elloumi.com" }],
   creator: "Elias Elloumi",
@@ -48,22 +48,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://elias-elloumi.com",
-    siteName: "Elias Elloumi — Portfolio",
+    siteName: "Elias Elloumi",
     locale: "en_US",
-    title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
-    description:
-      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and 3geeks. A story that reads like an illustrated book.",
+    title,
+    description,
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Elias Elloumi — Full-Stack Developer · Data Engineering & AI",
-    description:
-      "Professional vibe coder building data pipelines, AI agents & production products at Nokia and 3geeks. A story that reads like an illustrated book.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  twitter: { card: "summary_large_image", title, description },
+  robots: { index: true, follow: true },
 };
 
 const personJsonLd = {
@@ -71,8 +62,7 @@ const personJsonLd = {
   "@type": "Person",
   name: "Elias Elloumi",
   url: "https://elias-elloumi.com",
-  jobTitle: "Full-Stack Developer · Data Engineering & AI Agent Developer",
-  worksFor: { "@type": "Organization", name: "Nokia" },
+  jobTitle: "Data & AI Engineer",
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "ECE Paris" },
     { "@type": "CollegeOrUniversity", name: "EFREI Paris" },
@@ -80,12 +70,14 @@ const personJsonLd = {
   knowsAbout: [
     "Data Engineering",
     "Artificial Intelligence",
-    "Vibe coding",
+    "AI agents",
     "Web Development",
+    "Cloud Infrastructure",
   ],
   sameAs: [
     "https://www.linkedin.com/in/elias-elloumi/",
-    "https://www.fiverr.com/three_geeks",
+    "https://github.com/Elias91120",
+    "https://www.3geeks.fr",
   ],
 };
 
@@ -97,15 +89,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${serif.variable} h-full antialiased`}
+      className={`${display.variable} ${body.variable} h-full antialiased`}
     >
       <body className="min-h-full grain">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        <ViewTransitionRoot>{children}</ViewTransitionRoot>
-        <SpotlightCursor />
+        <LocaleProvider>
+          <ViewTransitionRoot>{children}</ViewTransitionRoot>
+          <SpotlightCursor />
+        </LocaleProvider>
       </body>
     </html>
   );

@@ -131,7 +131,7 @@ export default function NokiaDashboardCaseStudy() {
                   mock: <NokiaDashboardMock />,
                 },
                 {
-                  imageSrc: "/story/chapter-5.jpg",
+                  imageSrc: "/case-study/nokia-scene.webp",
                   imageAlt: "Elias presenting data dashboards at Nokia",
                   linkLabel: "Nokia · Paris-Saclay",
                   caption:
@@ -141,7 +141,7 @@ export default function NokiaDashboardCaseStudy() {
             />
             <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-white/10">
               <Image
-                src="/story/chapter-5.jpg"
+                src="/case-study/nokia-scene.webp"
                 alt="Elias presenting at Nokia"
                 width={1400}
                 height={600}

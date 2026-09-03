@@ -1,81 +1,53 @@
 "use client";
 
-import { useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Story from "@/components/Story";
-import Skills from "@/components/Skills";
-import EducationTimeline from "@/components/EducationTimeline";
-import Projects from "@/components/Projects";
-import GlobalReach from "@/components/GlobalReach";
-import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import AskWidget from "@/components/AskWidget";
+import dynamic from "next/dynamic";
 import { AgentChatProvider } from "@/components/AgentChatProvider";
-import StatsBand from "@/components/StatsBand";
-import ScrollProgress from "@/components/ScrollProgress";
-import DevTerminal from "@/components/DevTerminal";
 import { DeveloperModeProvider } from "@/components/DeveloperModeProvider";
-import { useIsMobile } from "@/lib/use-is-mobile";
-import MobileHomeSections from "@/components/mobile/MobileHomeSections";
+import ScrollProgress from "@/components/ScrollProgress";
+import Nav from "@/components/v2/Nav";
+import Hero from "@/components/v2/Hero";
+import Marquee from "@/components/v2/Marquee";
+import About from "@/components/v2/About";
+import Expertise from "@/components/v2/Expertise";
+import WorkStack from "@/components/v2/WorkStack";
+import OtherWork from "@/components/v2/OtherWork";
+import Path from "@/components/v2/Path";
+import Skills from "@/components/v2/Skills";
+import Recommendations from "@/components/v2/Recommendations";
+import Contact from "@/components/v2/Contact";
+
+// Below-the-fold and interaction-only surfaces: kept out of the first bundle
+// so the hero is interactive as early as possible.
+const GlobalReach = dynamic(() => import("@/components/GlobalReach"), {
+  ssr: false,
+});
+const AskWidget = dynamic(() => import("@/components/AskWidget"), {
+  ssr: false,
+});
+const DevTerminal = dynamic(() => import("@/components/DevTerminal"), {
+  ssr: false,
+});
 
 export default function HomeExperience() {
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    if (isMobile) {
-      document.body.setAttribute("data-mobile-layout", "");
-    } else {
-      document.body.removeAttribute("data-mobile-layout");
-    }
-    return () => document.body.removeAttribute("data-mobile-layout");
-  }, [isMobile]);
-
   return (
     <DeveloperModeProvider>
-      {isMobile ? <MobileHomeSections /> : <HomeSections />}
-      {isMobile === false && <DevTerminal />}
-    </DeveloperModeProvider>
-  );
-}
-
-function HomeSections() {
-  return (
-    <>
-      <ScrollProgress />
-      <Navbar />
       <AgentChatProvider>
+        <ScrollProgress />
+        <Nav />
         <Hero />
-        <div className="flex flex-col">
-          <div style={{ order: 1 }}>
-            <Story />
-          </div>
-          <div style={{ order: 2 }}>
-            <StatsBand />
-          </div>
-          <div style={{ order: 3 }}>
-            <Skills />
-          </div>
-          <div style={{ order: 4 }}>
-            <EducationTimeline />
-          </div>
-          <div style={{ order: 5 }}>
-            <Projects />
-          </div>
-          <div style={{ order: 6 }}>
-            <GlobalReach />
-          </div>
-          <div style={{ order: 7 }}>
-            <Testimonials />
-          </div>
-          <div style={{ order: 8 }}>
-            <Contact />
-          </div>
-        </div>
-        <Footer />
+        <Marquee />
+        <About />
+        <Expertise />
+        <WorkStack />
+        <OtherWork />
+        <Path />
+        <Skills />
+        <GlobalReach />
+        <Recommendations />
+        <Contact />
         <AskWidget />
       </AgentChatProvider>
-    </>
+      <DevTerminal />
+    </DeveloperModeProvider>
   );
 }

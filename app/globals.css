@@ -1,16 +1,26 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ */
+/*  Palette                                                            */
+/*  One dominant accent (violet), one rare secondary (amber). Anything */
+/*  else is a project marker, never chrome — that restraint is what    */
+/*  separates a studio look from a demo.                               */
+/* ------------------------------------------------------------------ */
+
 :root {
   --background: #08060f;
   --foreground: #ece9f6;
-  --muted: #9d97b5;
+  --muted: #928caa;
   --accent: #a78bfa;
-  --card: #120e20;
-  --border: rgba(167, 139, 250, 0.14);
+  --accent-warm: #f0b429;
+  --card: #100d1c;
+  --border: rgba(255, 255, 255, 0.09);
+
   --spotlight-x: 50vw;
   --spotlight-y: 50vh;
   --spotlight-accent: #a78bfa;
   --spotlight-radius: 160px;
+
   --vt-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --vt-duration-page: 200ms;
   --vt-duration-morph: 400ms;
@@ -27,47 +37,81 @@
   --font-serif: var(--font-story);
 }
 
-/* Note: no CSS scroll-behavior smooth here — it fights GSAP ScrollTrigger snapping.
-   Smooth anchor scrolling is handled in JS instead. */
+html,
 body {
   background: var(--background);
+}
+
+body {
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    scroll-behavior: auto;
+  }
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
 }
 
 ::selection {
-  background: rgba(167, 139, 250, 0.35);
+  background: rgba(167, 139, 250, 0.32);
   color: #fff;
 }
 
-/* Thin custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 9px;
 }
 ::-webkit-scrollbar-track {
   background: #0a0814;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2c2547;
+  background: #262040;
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d3364;
+  background: #372f5c;
 }
 
 .font-display {
   font-family: var(--font-display), system-ui, sans-serif;
 }
 
-/* Grain overlay for a crafted feel */
+/* ------------------------------------------------------------------ */
+/*  Display headings                                                   */
+/*  A vertical wash from cool grey to white: the type reads as lit     */
+/*  from above rather than painted a flat colour.                      */
+/* ------------------------------------------------------------------ */
+
+.hero-heading {
+  background: linear-gradient(
+    180deg,
+    #5f5a75 0%,
+    #b9b3d0 46%,
+    #f3f1fb 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Texture                                                            */
+/* ------------------------------------------------------------------ */
+
 .grain::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -124,110 +168,15 @@ body {
   user-select: none;
 }
 
-/* Story background layer driven by GSAP via CSS variables */
-.story-bg {
-  --bg-a: #2b1708;
-  --bg-b: #160b03;
-  --bg-accent: #f59e0b;
-  background:
-    radial-gradient(ellipse 90% 70% at 80% 20%, color-mix(in srgb, var(--bg-accent) 18%, transparent), transparent 65%),
-    radial-gradient(ellipse 120% 90% at 50% 10%, var(--bg-a), transparent 70%),
-    var(--bg-b);
-  transition: none;
-}
+/* ------------------------------------------------------------------ */
+/*  Portfolio assistant                                                */
+/* ------------------------------------------------------------------ */
 
-.story-section {
-  transform-origin: center center;
-  touch-action: pan-y;
-}
-
-.story-grain {
-  pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.story-vignette {
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 85% 75% at 50% 45%,
-    transparent 35%,
-    color-mix(in srgb, var(--vignette-color, #000) 55%, transparent) 100%
-  );
-  opacity: 0.45;
-}
-
-.page-wipe {
-  background: linear-gradient(
-    105deg,
-    transparent 0%,
-    color-mix(in srgb, var(--wipe-accent, #fff) 35%, transparent) 50%,
-    transparent 100%
-  );
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.story-kicker {
-  text-shadow: 0 0 24px color-mix(in srgb, var(--kicker-accent, #fff) 45%, transparent);
-}
-
-.story-page.is-transitioning .page-img {
-  will-change: transform, opacity, filter;
-}
-
-.story-video {
-  will-change: opacity;
-}
-
-/* Before GSAP takes over, only the first page shows
-   (prevents a flash of all stacked pages pre-hydration) */
-.story-page:not(:first-child) {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* The site chrome steps aside while the book is open */
-.site-nav {
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
-}
-body[data-story] .site-nav {
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-}
-
-/* Story choice overlay — scroll paused while open (desktop) */
-body[data-story-choice] .story-section {
-  touch-action: none;
-}
-
-.story-section.story-paused {
-  overflow: hidden;
-}
-
-.story-choice-btn:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--choice-accent, #a78bfa);
-}
-
-/* Hide ask widget during fullscreen story mode */
-body[data-story] .ask-widget {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-/* Developer terminal — hide ask widget to avoid z-index overlap */
 body[data-dev-terminal] .ask-widget {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Portfolio agent — rendered markdown in chat bubbles */
 .agent-message {
   font-size: 0.8125rem;
   line-height: 1.65;
@@ -286,12 +235,11 @@ body[data-dev-terminal] .ask-widget {
 }
 
 .agent-bubble-assistant {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0.03) 100%
-    );
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 8px 24px -16px rgba(0, 0, 0, 0.55);
@@ -308,135 +256,29 @@ body[data-dev-terminal] .ask-widget {
     0 8px 20px -14px rgba(167, 139, 250, 0.35);
 }
 
-/* Project card highlight from agent or `open <slug>` */
-[data-project-slug].agent-highlight [class*="rounded-3xl"],
-[data-project-slug].dev-terminal-highlight [class*="rounded-3xl"] {
-  --tw-ring-color: rgba(167, 139, 250, 0.8);
+/* Card highlight driven by the assistant or `open <slug>` in the terminal */
+[data-project-slug].agent-highlight,
+[data-project-slug].dev-terminal-highlight {
   box-shadow:
     0 0 0 2px rgba(167, 139, 250, 0.65),
     0 20px 60px -32px rgba(167, 139, 250, 0.35) !important;
+  border-radius: 1.5rem;
   transition: box-shadow 0.2s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  [data-project-slug].agent-highlight [class*="rounded-3xl"] {
-    animation: agent-highlight-pulse 2.5s ease-in-out;
-  }
-}
+/* ------------------------------------------------------------------ */
+/*  View transitions between the home page and the case studies        */
+/* ------------------------------------------------------------------ */
 
-@keyframes agent-highlight-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 2px rgba(167, 139, 250, 0.65),
-      0 20px 60px -32px rgba(167, 139, 250, 0.35);
-  }
-  50% {
-    box-shadow:
-      0 0 0 3px rgba(167, 139, 250, 0.9),
-      0 24px 72px -24px rgba(167, 139, 250, 0.55);
-  }
-}
-
-/* Soft floating animation for the hero avatar */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-.animate-float {
-  animation: float 5s ease-in-out infinite;
-}
-
-@keyframes nav-enter {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.nav-enter {
-  animation: nav-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* Slow-drifting ambient glows */
-@keyframes aurora {
-  0%,
-  100% {
-    transform: translate(-50%, 0) scale(1);
-  }
-  50% {
-    transform: translate(-46%, 4%) scale(1.08);
-  }
-}
-.aurora {
-  animation: aurora 14s ease-in-out infinite;
-}
-@keyframes auroraSlow {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-4%, -6%) scale(1.12);
-  }
-}
-.aurora-slow {
-  animation: auroraSlow 18s ease-in-out infinite;
-}
-
-/* Section header underline flourish */
-.section-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.section-kicker::before {
-  content: "";
-  width: 2rem;
-  height: 1px;
-  background: color-mix(in srgb, currentColor 50%, transparent);
-}
-
-/* Scroll hint mouse wheel */
-@keyframes wheel {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  70% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-.animate-wheel {
-  animation: wheel 1.8s ease-out infinite;
-}
-
-/* ── View Transitions (Web-Gen case study morph) ── */
 @view-transition {
   navigation: auto;
 }
 
-/* Stable dark background — no white flash between routes */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   background-color: #08060f;
 }
 
-/* Shared browser preview morph (all case studies via share="morph") */
 ::view-transition-group(.morph) {
   animation-duration: var(--vt-duration-morph);
   animation-timing-function: var(--vt-ease);
@@ -458,7 +300,6 @@ body[data-dev-terminal] .ask-widget {
   }
 }
 
-/* Page crossfade on forward / back navigation */
 ::view-transition-old(.page-exit),
 ::view-transition-old(.page-exit-back) {
   animation: var(--vt-duration-page) var(--vt-ease) both vt-page-fade-out;
@@ -487,12 +328,10 @@ body[data-dev-terminal] .ask-widget {
   }
 }
 
-/* Card text fades out during forward nav morph */
 ::view-transition-old(.card-content-exit) {
   animation: 180ms var(--vt-ease) both vt-page-fade-out;
 }
 
-/* Case study copy fades in after morph */
 ::view-transition-new(.case-study-content-enter) {
   animation: 220ms var(--vt-ease) 180ms both vt-page-fade-in;
 }
@@ -506,10 +345,25 @@ body[data-dev-terminal] .ask-widget {
   animation: 150ms var(--vt-ease) both vt-page-fade-out;
 }
 
-/* Keep fixed chrome above transition layers */
 ::view-transition-group(site-header) {
   animation: none;
   z-index: 100;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Motion & pointer preferences                                       */
+/* ------------------------------------------------------------------ */
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-kicker::before {
+  content: "";
+  width: 2rem;
+  height: 1px;
+  background: color-mix(in srgb, currentColor 50%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -524,28 +378,8 @@ body[data-dev-terminal] .ask-widget {
     animation-delay: 0s !important;
   }
 
-  .animate-float,
-  .animate-wheel,
-  .aurora,
-  .aurora-slow,
-  .nav-enter {
-    animation: none;
-  }
-
-  .story-video {
-    display: none;
-  }
-
-  .story-page.is-transitioning .page-img {
-    will-change: auto;
-  }
-
   .spotlight-layer {
     display: none !important;
-  }
-
-  [data-mobile-layout] .touch-press:active {
-    transform: none;
   }
 }
 
@@ -553,54 +387,4 @@ body[data-dev-terminal] .ask-widget {
   .spotlight-layer {
     display: none !important;
   }
-}
-
-/* ── Mobile layout (data-mobile-layout set by HomeExperience) ── */
-[data-mobile-layout] {
-  scroll-behavior: smooth;
-}
-
-[data-mobile-layout] section[id] {
-  scroll-margin-top: 3.5rem;
-}
-
-[data-mobile-layout] .mobile-story-carousel,
-[data-mobile-layout] .mobile-project-carousel {
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-[data-mobile-layout] .mobile-story-carousel::-webkit-scrollbar,
-[data-mobile-layout] .mobile-project-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-[data-mobile-layout] .touch-press:active {
-  transform: scale(0.97);
-  transition: transform 0.15s ease;
-}
-
-[data-mobile-layout] .pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-[data-mobile-layout] .mobile-bottom-nav {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-[data-mobile-layout] .ask-widget-sheet-form {
-  padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
-}
-
-[data-mobile-layout] .stats-band-value {
-  font-size: 3.75rem;
-  line-height: 1;
-}
-
-[data-mobile-layout] .stats-band-grid {
-  gap: 2rem 1.5rem;
-}
-
-[data-mobile-layout] .ask-widget-fab {
-  display: none;
 }

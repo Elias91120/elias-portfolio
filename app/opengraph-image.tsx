@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const alt =
-  "Elias Elloumi — Full-Stack Developer · Data Engineering & AI. A portfolio that reads like an illustrated book.";
+  "Elias Elloumi — Data & AI Engineer. Pipelines, AI agents and production products at Nokia, 3geeks and Cleva.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -11,9 +11,9 @@ export default async function OpenGraphImage() {
   const [fraunces, grotesk, avatar] = await Promise.all([
     readFile(join(process.cwd(), "assets/fonts/Fraunces-SemiBold.ttf")),
     readFile(join(process.cwd(), "assets/fonts/SpaceGrotesk-Medium.ttf")),
-    readFile(join(process.cwd(), "public/story/avatar-hero.jpg")),
+    readFile(join(process.cwd(), "assets/og-portrait.png")),
   ]);
-  const avatarSrc = `data:image/jpeg;base64,${avatar.toString("base64")}`;
+  const avatarSrc = `data:image/png;base64,${avatar.toString("base64")}`;
 
   return new ImageResponse(
     (
@@ -72,7 +72,7 @@ export default async function OpenGraphImage() {
               letterSpacing: -1,
             }}
           >
-            From a Minecraft kid to a Full-Stack Developer.
+            Data pipelines, AI agents, and products that ship.
           </div>
 
           <div
@@ -83,8 +83,7 @@ export default async function OpenGraphImage() {
               lineHeight: 1.5,
             }}
           >
-            Nokia · 3geeks · EFREI Paris — a story that reads like an illustrated
-            book, one scroll at a time.
+            Nokia · 3geeks · Cleva Solutions · EFREI Paris
           </div>
 
           <div

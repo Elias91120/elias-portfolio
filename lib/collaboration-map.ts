@@ -26,6 +26,7 @@ export const collaborationMarkers: CollaborationMarker[] = [
   { city: "Paris", x: 62.1, y: 31.5, labelSide: "top" },
   { city: "Palaiseau", x: 60.8, y: 34.8, labelSide: "left" },
   { city: "Antony", x: 63.6, y: 34.8, labelSide: "right" },
+  { city: "Lisbon", x: 56.6, y: 52.6, labelSide: "left" },
   { city: "Espoo", x: 72.7, y: 5.2, labelSide: "bottom" },
   { city: "Wrocław", x: 69.1, y: 27.9, labelSide: "top" },
   { city: "Tunis", x: 65.5, y: 54.5, labelSide: "left" },
@@ -43,7 +44,7 @@ export const collaborationRegions = [
   {
     id: "europe",
     label: "Europe",
-    cities: ["London", "Paris", "Palaiseau", "Antony", "Espoo", "Wrocław"],
+    cities: ["London", "Lisbon", "Paris", "Palaiseau", "Antony", "Espoo", "Wrocław"],
   },
   {
     id: "mena-asia",
