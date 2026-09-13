@@ -42,16 +42,6 @@ export const caseStudyThemes: Record<string, CaseStudyTheme> = {
     card: "#241540",
     grain: false,
   },
-  "green-jardin": {
-    bg: "#0a1a0f",
-    bgTo: "#061208",
-    fg: "#ecfdf5",
-    muted: "#86b89a",
-    accent: "#22c55e",
-    kickerColor: "#22c55e",
-    card: "#0f2418",
-    grain: false,
-  },
   "3geeks-infra": {
     bg: "#141008",
     bgTo: "#0a0804",

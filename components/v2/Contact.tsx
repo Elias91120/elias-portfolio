@@ -1,7 +1,7 @@
 "use client";
 
 import { contact } from "@/lib/people";
-import { profile, ui } from "@/lib/content";
+import { ui } from "@/lib/content";
 import { useLocale } from "@/lib/i18n";
 import {
   FadeIn,
@@ -37,7 +37,10 @@ export default function Contact() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
-              {t(profile.status)}
+              {t({
+                en: "Open to freelance work through 3geeks",
+                fr: "Ouvert au freelance via 3geeks",
+              })}
             </span>
           </FadeIn>
 

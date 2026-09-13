@@ -10,7 +10,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { featuredWork, type Work } from "@/lib/work";
+import { featuredWork, tierLabel, type Work } from "@/lib/work";
 import { ui } from "@/lib/content";
 import { useLocale } from "@/lib/i18n";
 import { useIsMobile } from "@/lib/use-is-mobile";
@@ -45,17 +45,28 @@ export default function WorkStack() {
 
       <div ref={listRef} className="mx-auto mt-12 max-w-6xl sm:mt-16">
         {featuredWork.map((work, i) => (
-          <Card
-            key={work.id}
-            work={work}
-            index={i}
-            total={featuredWork.length}
-            progress={scrollYProgress}
-            // The stack is a desktop delight. On a phone a card is already
-            // taller than the screen, so pinning and scaling it would only
-            // clip the content — plain vertical cards read better.
-            stacked={isMobile === false && !reduce}
-          />
+          <div key={work.id}>
+            {/* Printed once, when the tier changes: it is this heading that
+                separates paid professional work from the studio's own
+                products, rather than leaving a visitor to guess. */}
+            {work.tier !== featuredWork[i - 1]?.tier && (
+              <FadeIn y={16}>
+                <p className="section-kicker mb-5 pt-6 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-accent sm:mb-7 sm:pt-10">
+                  {t(tierLabel[work.tier])}
+                </p>
+              </FadeIn>
+            )}
+            <Card
+              work={work}
+              index={i}
+              total={featuredWork.length}
+              progress={scrollYProgress}
+              // The stack is a desktop delight. On a phone a card is already
+              // taller than the screen, so pinning and scaling it would only
+              // clip the content — plain vertical cards read better.
+              stacked={isMobile === false && !reduce}
+            />
+          </div>
         ))}
       </div>
     </section>
@@ -148,22 +159,6 @@ function Card({
                 >
                   {t(work.context)}
                 </p>
-                {work.origin === "3geeks" && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/35 bg-amber-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-amber-300">
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-                    3geeks Studio · Co-fondateur
-                  </span>
-                )}
-                {work.origin === "nokia" && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/35 bg-violet-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-violet-300">
-                    Nokia · R&D
-                  </span>
-                )}
-                {work.origin === "client" && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/35 bg-sky-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-sky-300">
-                    Client · Production
-                  </span>
-                )}
               </div>
               <h3
                 className="mt-1 font-display font-semibold leading-tight tracking-tight text-white"

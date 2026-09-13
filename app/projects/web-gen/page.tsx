@@ -39,9 +39,9 @@ const shipped = [
     href: "https://apps.apple.com/fr/app/two/id6758867716",
   },
   {
-    name: "Green Jardin",
-    detail: "CBD retail — live Shopify storefront; private in-store ops platform (no public link)",
-    href: "https://green-jardin.fr",
+    name: "Retail ops platform",
+    detail:
+      "Client project — online storefront, counter point of sale and a live wall display kept in sync",
   },
   {
     name: "PromptOptim",

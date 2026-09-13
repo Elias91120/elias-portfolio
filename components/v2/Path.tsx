@@ -7,7 +7,6 @@ import { FadeIn } from "@/components/v2/Primitives";
 const dotStyles: Record<string, string> = {
   past: "border-white/25 bg-background",
   current: "border-emerald-400/70 bg-emerald-400/20",
-  next: "border-accent/70 bg-accent/20",
 };
 
 export default function Path() {
@@ -44,11 +43,6 @@ export default function Path() {
                 <div>
                   <h3 className="font-display text-lg font-semibold tracking-tight text-white sm:text-xl">
                     {step.title}
-                    {step.status === "next" && (
-                      <span className="ml-3 align-middle rounded-full border border-accent/35 px-2.5 py-0.5 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-accent">
-                        {t({ en: "Incoming", fr: "À venir" })}
-                      </span>
-                    )}
                   </h3>
                   <p className="mt-1 text-sm text-[#C9C4DC]">{t(step.subtitle)}</p>
                   <p className="mt-2.5 max-w-xl text-sm font-light leading-[1.7] text-muted">

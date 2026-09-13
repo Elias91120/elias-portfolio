@@ -32,7 +32,7 @@ KEY FACTS:
 - Data & AI engineer. One year at Nokia (internship then apprenticeship, 2025–2026).
 - Feature Analyzer Dashboard 2.0: FastAPI + React, 7+ data sources, real-time pipelines.
 - Led Cursor adoption: "Cursor pour les nuls" portal (1,019 views, 75 visitors, 100+ RAG questions), demos across 4 teams, 1:1 coaching. Case study: ${PORTFOLIO_URL}/projects/cursor-portal
-- 3geeks studio (Noam & Charles): 3geeks landing, 3geeks Infra (self-hosted Coolify/Traefik/CF Tunnel, *.3geeks.fr), Express Divorce USA, CallKitchen, Two, Green Jardin (storefront: green-jardin.fr; private ops: TV menu, POS, 14% loyalty, Shopify GraphQL sync — no public URL), PromptOptim, Prompt Hub.
+- 3geeks studio (Noam & Charles): 3geeks landing, 3geeks Infra (self-hosted Coolify/Traefik/CF Tunnel, *.3geeks.fr), Express Divorce USA, CallKitchen, Two, PromptOptim, Prompt Hub. Some client work is under NDA and is described by architecture only — never name a client, its sector or its town.
 - ECE: AI Travel Planner (best Bachelor project, Gemini).
 - Currently: M.Sc. Data Engineering & AI at EFREI Paris (RNCP 7), started Sep 2026.
 - Currently: **apprentice at Cleva Solutions (ClevAI branch)** — insurance software, AI orchestration. Already signed, no results to report yet.

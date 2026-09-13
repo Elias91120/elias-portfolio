@@ -141,8 +141,21 @@ export const path: PathStep[] = [
       fr: "Bachelor Informatique — Data & IA",
     },
     detail: {
-      en: "Graduated with the best Bachelor project of the school: an intent-based travel planner powered by Gemini.",
-      fr: "Diplômé avec le meilleur projet de Bachelor de l'école : un planificateur de voyage par intention propulsé par Gemini.",
+      en: "Three years of data and AI fundamentals, closed by the best Bachelor project of the year.",
+      fr: "Trois années de fondamentaux data et IA, clôturées par le meilleur projet de Bachelor de la promotion.",
+    },
+    status: "past",
+  },
+  {
+    period: { en: "2023 — 2024", fr: "2023 — 2024" },
+    title: "La Chorba",
+    subtitle: {
+      en: "Volunteer — customer service",
+      fr: "Bénévole — service clients",
+    },
+    detail: {
+      en: "Fifteen months of regular volunteering with an association fighting poverty.",
+      fr: "Quinze mois de bénévolat régulier auprès d'une association de lutte contre la pauvreté.",
     },
     status: "past",
   },
@@ -150,8 +163,8 @@ export const path: PathStep[] = [
     period: { en: "2025 — 2026", fr: "2025 — 2026" },
     title: "Nokia",
     subtitle: {
-      en: "Apprentice developer & test engineer",
-      fr: "Alternant développeur & testeur",
+      en: "Data & AI Tools Specialist",
+      fr: "Data & AI Tools Specialist",
     },
     detail: {
       en: "A six-month internship became a full apprenticeship: one real-time analysis platform, automated workflows, and AI tooling adopted across four teams.",
@@ -193,8 +206,8 @@ export const path: PathStep[] = [
       fr: "Alternant, Data & IA (Hub ClevAI)",
     },
     detail: {
-      en: "Contract signed with the AI branch of Cleva Solutions: developing agentic workflows, IDP (Intelligent Document Processing), and sovereign AI assistants for insurance.",
-      fr: "Contrat signé au sein du hub IA de Cleva Solutions : développement de workflows agentiques, IDP (traitement intelligent de documents) et assistants IA souverains pour l'assurance.",
+      en: "Data & AI engineering inside Cleva's AI hub, on a two-year apprenticeship running alongside the M.Sc.",
+      fr: "Ingénierie Data & IA au sein du hub IA de Cleva, en alternance sur deux ans, adossée au M.Sc.",
     },
     status: "current",
   },
@@ -274,9 +287,10 @@ export const skillGroups: SkillGroup[] = [
 ];
 
 export const certifications = [
+  { name: "IA & GenAI — Prompt Engineering N1", issuer: "Liora", year: "2026" },
+  { name: "AWS Academy — Machine Learning Foundations", issuer: "Amazon Web Services", year: "2026" },
   { name: "AWS Academy — Cloud Architecting", issuer: "Amazon Web Services", year: "2026" },
   { name: "Python for Data Scientists", issuer: "DataScientest", year: "2025" },
-  { name: "AI & GenAI — Prompt Engineering", issuer: "Nokia", year: "2024" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -293,8 +307,8 @@ export const contact = {
   studio: "https://www.3geeks.fr",
   studioLabel: "3geeks studio",
   languages: {
-    en: "French native · English C1 · Arabic fluent",
-    fr: "Français natif · Anglais C1 · Arabe courant",
+    en: "French native · English C1 · Arabic basics",
+    fr: "Français natif · Anglais C1 · Arabe notions de base",
   } satisfies L,
   cvPath: "/CV_Elias_Elloumi_FR.pdf",
 };

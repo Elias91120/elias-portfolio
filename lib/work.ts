@@ -6,9 +6,34 @@ export type Visual =
   | { kind: "image"; src: string; alt: L }
   | { kind: "panel"; title: L; rows: { k: string; v: string }[] };
 
+/**
+ * The three tiers the featured cards are grouped into.
+ *
+ * The label is printed once, above the first card of each group — that heading
+ * is what separates paid professional work from the studio's own products,
+ * instead of leaving a visitor to infer it from sixteen equal-looking cards.
+ */
+export type Tier = "pro" | "studio" | "infra";
+
+export const tierLabel: Record<Tier, L> = {
+  pro: {
+    en: "Professional — Nokia",
+    fr: "Professionnel — Nokia",
+  },
+  studio: {
+    en: "3geeks Studio — products in production",
+    fr: "3geeks Studio — produits en production",
+  },
+  infra: {
+    en: "3geeks Studio — what runs them",
+    fr: "3geeks Studio — ce qui les fait tourner",
+  },
+};
+
 export type Work = {
   id: string;
   name: string;
+  tier: Tier;
   origin?: "3geeks" | "nokia" | "client" | "academic";
   category: L;
   context: L;
@@ -22,15 +47,17 @@ export type Work = {
   accent: string;
 };
 
-/** The cards that stack on scroll — strongest proof first. */
+/** The cards that stack on scroll, grouped by tier. */
 export const featuredWork: Work[] = [
+  /* ---------------- Professional — Nokia ---------------- */
   {
     id: "nokia-dashboard",
     name: "Feature Analyzer 2.0",
+    tier: "pro",
     origin: "nokia",
     category: {
-      en: "Nokia · Creator & lead developer",
-      fr: "Nokia · Créateur & lead developer",
+      en: "Creator & lead developer",
+      fr: "Créateur & lead developer",
     },
     context: { en: "Internal platform", fr: "Plateforme interne" },
     description: {
@@ -51,45 +78,11 @@ export const featuredWork: Work[] = [
     accent: "#8b7ef8",
   },
   {
-    id: "3geeks-infra",
-    name: "3geeks Infra",
-    origin: "3geeks",
-    category: {
-      en: "3geeks Studio · Co-founder & DevOps",
-      fr: "3geeks Studio · Co-fondateur & DevOps",
-    },
-    context: { en: "Infrastructure", fr: "Infrastructure" },
-    description: {
-      en: "Our apps were scattered across Vercel with drifting env vars and no single view of production. I consolidated every 3geeks service onto one Mac Mini — Coolify, Traefik, Cloudflare Tunnel — with a golden path from git push to a live HTTPS domain, plus three Vercel migrations behind permanent redirects.",
-      fr: "Nos apps étaient éparpillées sur Vercel, variables d'environnement à la dérive, sans vue d'ensemble de la prod. J'ai consolidé tous les services 3geeks sur un Mac Mini — Coolify, Traefik, Cloudflare Tunnel — avec un chemin direct du git push au domaine HTTPS, plus trois migrations Vercel derrière des redirections permanentes.",
-    },
-    metrics: [
-      { value: "13", label: { en: "apps in production", fr: "apps en production" } },
-      { value: "10+", label: { en: "domains routed", fr: "domaines routés" } },
-      { value: "3", label: { en: "Vercel migrations", fr: "migrations Vercel" } },
-    ],
-    stack: ["Docker", "Coolify", "Traefik", "Cloudflare", "PostgreSQL"],
-    visual: {
-      kind: "panel",
-      title: { en: "Deploy path", fr: "Chemin de déploiement" },
-      rows: [
-        { k: "push", v: "GitHub main" },
-        { k: "build", v: "Coolify · Dockerfile" },
-        { k: "route", v: "Traefik :443" },
-        { k: "expose", v: "Cloudflare Tunnel" },
-        { k: "live", v: "3geeks.fr" },
-      ],
-    },
-    link: "https://www.3geeks.fr",
-    linkLabel: "3geeks.fr",
-    caseStudy: "/projects/3geeks-infra",
-    accent: "#f0b429",
-  },
-  {
     id: "cursor-portal",
     name: "Cursor pour les nuls",
+    tier: "pro",
     origin: "nokia",
-    category: { en: "Nokia · AI adoption lead", fr: "Nokia · Lead adoption IA" },
+    category: { en: "AI adoption lead", fr: "Lead adoption IA" },
     context: { en: "Developer experience", fr: "Developer experience" },
     description: {
       en: "Buying AI licences is easy; getting engineers to actually use them is not. I built an internal portal with a RAG assistant trained on our own documentation, then ran demos and one-to-one sessions team after team until the tooling stuck.",
@@ -116,11 +109,74 @@ export const featuredWork: Work[] = [
     caseStudy: "/projects/cursor-portal",
     accent: "#f08a3c",
   },
+
+  /* ------------- 3geeks Studio — in production ------------- */
+  {
+    id: "prompt-hub",
+    name: "Prompt Hub",
+    tier: "studio",
+    origin: "3geeks",
+    category: {
+      en: "Multi-agent planning",
+      fr: "Planification multi-agents",
+    },
+    context: { en: "Product · open beta", fr: "Produit · bêta ouverte" },
+    description: {
+      en: "A vague idea in a chat window never becomes a build plan. Prompt Hub turns a short brief into phased steps and copy-paste prompts, orchestrated by seven specialised agents over a dependency graph. Since launch it has gained multiplayer — invite a teammate by email and watch their cursor move on the same plan — and it runs end to end on our own infrastructure. Free, open beta.",
+      fr: "Une idée floue dans une fenêtre de chat ne devient jamais un plan de build. Prompt Hub transforme un brief court en étapes séquencées et prompts prêts à coller, orchestrés par sept agents spécialisés sur un graphe de dépendances. Depuis le lancement il est passé en multijoueur — on invite un coéquipier par email et on voit son curseur bouger sur le même plan — et il tourne de bout en bout sur notre propre infrastructure. Bêta ouverte et gratuite.",
+    },
+    metrics: [
+      {
+        value: "20k+",
+        label: { en: "reach on the launch post", fr: "portée du post de lancement" },
+      },
+      { value: "7+", label: { en: "specialised agents", fr: "agents spécialisés" } },
+      { value: "< 1 min", label: { en: "idea to plan", fr: "de l'idée au plan" } },
+    ],
+    stack: ["Multi-agent", "FastAPI", "React", "PostgreSQL"],
+    visual: {
+      kind: "image",
+      src: "/projects/prompt-hub.webp",
+      alt: { en: "Prompt Hub interface", fr: "Interface Prompt Hub" },
+    },
+    link: "https://prompt-hub.3geeks.fr",
+    linkLabel: "prompt-hub.3geeks.fr",
+    accent: "#a78bfa",
+  },
+  {
+    id: "promptoptim",
+    name: "PromptOptim",
+    tier: "studio",
+    origin: "3geeks",
+    category: {
+      en: "Green IT & sovereignty",
+      fr: "Green IT & souveraineté",
+    },
+    context: { en: "Product · live and open", fr: "Produit · en ligne et ouvert" },
+    description: {
+      en: "Verbose prompts burn tokens and CO₂ with nothing on screen to show it. PromptOptim rewrites a prompt for the same intent with fewer tokens, puts the carbon cost of every request in front of the user, and favours European models — an answer to AI usage that has to account for itself.",
+      fr: "Les prompts verbeux brûlent des tokens et du CO₂ sans que rien ne le montre à l'écran. PromptOptim réécrit un prompt à intention égale avec moins de tokens, met le coût carbone de chaque requête sous les yeux de l'utilisateur et privilégie les modèles européens — une réponse à un usage de l'IA qui doit pouvoir se justifier.",
+    },
+    metrics: [
+      { value: "CO₂", label: { en: "shown per request", fr: "affiché par requête" } },
+      { value: "EU", label: { en: "models favoured", fr: "modèles privilégiés" } },
+    ],
+    stack: ["Next.js", "FastAPI", "PostgreSQL", "Green IT"],
+    visual: {
+      kind: "image",
+      src: "/projects/promptoptim.webp",
+      alt: { en: "PromptOptim interface", fr: "Interface PromptOptim" },
+    },
+    link: "https://prompt-optim.3geeks.fr/",
+    linkLabel: "prompt-optim.3geeks.fr",
+    accent: "#3fbf6f",
+  },
   {
     id: "express-divorce",
     name: "Express Divorce USA",
+    tier: "studio",
     origin: "3geeks",
-    category: { en: "3geeks Studio · Legal-tech SaaS", fr: "3geeks Studio · SaaS legal-tech" },
+    category: { en: "Legal-tech SaaS", fr: "SaaS legal-tech" },
     context: { en: "Client · in production", fr: "Client · en production" },
     description: {
       en: "A regulated-sector SaaS that guides US couples through the divorce paperwork of their own state. Multi-state compliance, personal-data security and data sovereignty were constraints from day one, not an afterthought.",
@@ -142,59 +198,67 @@ export const featuredWork: Work[] = [
     accent: "#4aa8f0",
   },
   {
-    id: "green-jardin",
-    name: "Green Jardin",
-    origin: "client",
-    category: {
-      en: "Omnichannel retail · online + in-store",
-      fr: "Retail omnicanal · en ligne + boutique",
-    },
-    context: { en: "Client · in production", fr: "Client · en production" },
+    id: "callkitchen",
+    name: "CallKitchen",
+    tier: "studio",
+    origin: "3geeks",
+    category: { en: "AI voice agent", fr: "Agent vocal IA" },
+    context: { en: "Product · live", fr: "Produit · en ligne" },
     description: {
-      en: "One shop, three surfaces that had to agree: a Shopify storefront, a gram-scale point of sale at the counter, and a live TV menu on the wall. I built the private ops platform that keeps prices, stock and a 14% loyalty programme in sync in real time.",
-      fr: "Une boutique, trois surfaces qui devaient rester d'accord : une vitrine Shopify, une caisse au gramme au comptoir, et un menu TV en direct au mur. J'ai construit la plateforme d'exploitation privée qui synchronise prix, stock et fidélité 14% en temps réel.",
+      en: "A restaurant loses orders every time the phone rings mid-service and nobody can pick up. CallKitchen answers it around the clock — takeaway orders, bookings and menu questions drawn from an approved menu — then confirms by SMS and pushes the order through to the kitchen.",
+      fr: "Un restaurant perd des commandes chaque fois que le téléphone sonne en plein service sans que personne puisse décrocher. CallKitchen répond 24h/24 — commandes à emporter, réservations et questions menu puisées dans une carte validée — puis confirme par SMS et transmet la commande en cuisine.",
     },
     metrics: [
-      { value: "3", label: { en: "channels synced live", fr: "canaux synchronisés" } },
-      { value: "14%", label: { en: "loyalty programme", fr: "programme fidélité" } },
+      { value: "24/7", label: { en: "phone answered", fr: "au téléphone" } },
+      { value: "SMS", label: { en: "confirm + kitchen push", fr: "confirmation + envoi cuisine" } },
     ],
-    stack: ["Shopify GraphQL", "Firebase RTDB", "POS", "Next.js"],
+    stack: ["AI voice", "Next.js", "SaaS"],
     visual: {
       kind: "image",
-      src: "/projects/green-jardin-tv.webp",
-      alt: { en: "Green Jardin live TV menu", fr: "Menu TV en direct Green Jardin" },
+      src: "/projects/callkitchen.webp",
+      alt: { en: "CallKitchen landing", fr: "Landing CallKitchen" },
     },
-    link: "https://green-jardin.fr",
-    linkLabel: "green-jardin.fr",
-    caseStudy: "/projects/green-jardin",
-    accent: "#3fbf6f",
+    link: "https://call-kitchen-landing.vercel.app/",
+    linkLabel: "call-kitchen-landing.vercel.app",
+    accent: "#f472b6",
   },
+
+  /* ---------- 3geeks Studio — what runs them ---------- */
   {
-    id: "prompt-hub",
-    name: "Prompt Hub",
+    id: "3geeks-infra",
+    name: "3geeks Infra",
+    tier: "infra",
     origin: "3geeks",
     category: {
-      en: "3geeks Studio · Multi-agent planning",
-      fr: "3geeks Studio · Planification multi-agents",
+      en: "Co-founder & DevOps",
+      fr: "Co-fondateur & DevOps",
     },
-    context: { en: "Product · beta", fr: "Produit · bêta" },
+    context: { en: "Infrastructure", fr: "Infrastructure" },
     description: {
-      en: "A vague idea in a chat window never becomes a build plan. Prompt Hub turns a short brief into phased steps and copy-paste prompts, orchestrated by seven specialised agents over a dependency graph, with versioned and reversible plans.",
-      fr: "Une idée floue dans une fenêtre de chat ne devient jamais un plan de build. Prompt Hub transforme un brief court en étapes séquencées et prompts prêts à coller, orchestrés par sept agents spécialisés sur un graphe de dépendances, avec des plans versionnés et réversibles.",
+      en: "Every product above runs on this. Our apps were scattered across Vercel with drifting env vars and no single view of production; I consolidated every 3geeks service onto one Mac Mini — Coolify, Traefik, Cloudflare Tunnel — with a golden path from git push to a live HTTPS domain, plus three Vercel migrations behind permanent redirects.",
+      fr: "Tous les produits ci-dessus tournent là-dessus. Nos apps étaient éparpillées sur Vercel, variables d'environnement à la dérive, sans vue d'ensemble de la prod ; j'ai consolidé tous les services 3geeks sur un Mac Mini — Coolify, Traefik, Cloudflare Tunnel — avec un chemin direct du git push au domaine HTTPS, plus trois migrations Vercel derrière des redirections permanentes.",
     },
     metrics: [
-      { value: "7+", label: { en: "specialised agents", fr: "agents spécialisés" } },
-      { value: "< 1 min", label: { en: "idea to plan", fr: "de l'idée au plan" } },
+      { value: "13", label: { en: "apps in production", fr: "apps en production" } },
+      { value: "10+", label: { en: "domains routed", fr: "domaines routés" } },
+      { value: "3", label: { en: "Vercel migrations", fr: "migrations Vercel" } },
     ],
-    stack: ["Multi-agent", "FastAPI", "React", "PostgreSQL"],
+    stack: ["Docker", "Coolify", "Traefik", "Cloudflare", "PostgreSQL"],
     visual: {
-      kind: "image",
-      src: "/projects/prompt-hub.webp",
-      alt: { en: "Prompt Hub interface", fr: "Interface Prompt Hub" },
+      kind: "panel",
+      title: { en: "Deploy path", fr: "Chemin de déploiement" },
+      rows: [
+        { k: "push", v: "GitHub main" },
+        { k: "build", v: "Coolify · Dockerfile" },
+        { k: "route", v: "Traefik :443" },
+        { k: "expose", v: "Cloudflare Tunnel" },
+        { k: "live", v: "3geeks.fr" },
+      ],
     },
-    link: "https://prompt-hub.3geeks.fr",
-    linkLabel: "prompt-hub.3geeks.fr",
-    accent: "#a78bfa",
+    link: "https://www.3geeks.fr",
+    linkLabel: "3geeks.fr",
+    caseStudy: "/projects/3geeks-infra",
+    accent: "#f0b429",
   },
 ];
 
@@ -215,38 +279,17 @@ export type SideProject = {
 
 export const otherWork: SideProject[] = [
   {
+    // Private to the studio: described, never linked, no repository access.
+    // The point of the entry is the guardrail design, not the trading.
     name: "Trading Orchestrator",
     origin: "3geeks",
     tagline: {
-      en: "3geeks live trading desk on Kraken spot: a LangGraph workflow with no LLM anywhere on the decision path, and a fail-closed risk manager that holds sole approval authority.",
-      fr: "Desk de trading 3geeks sur Kraken spot : un workflow LangGraph sans aucun LLM sur le chemin de décision, et un risk manager fail-closed seul détenteur de l'autorité d'approbation.",
+      en: "A deterministic execution engine where the model never touches the decision path: a LangGraph workflow proposes, and a fail-closed risk manager holds sole approval authority. Four isolated modes, from fully mocked to live, so nothing reaches a real account by accident.",
+      fr: "Un moteur d'exécution déterministe où le modèle ne touche jamais au chemin de décision : un workflow LangGraph propose, un risk manager fail-closed détient seul l'autorité d'approbation. Quatre modes isolés, du tout-simulé au réel, pour qu'aucun ordre ne parte par accident.",
     },
-    stack: ["Python", "LangGraph", "ccxt", "PostgreSQL", "Docker"],
-    status: { en: "Running in production", fr: "En production" },
+    stack: ["Python", "LangGraph", "PostgreSQL", "Docker"],
+    status: { en: "Private — 3geeks studio", fr: "Privé — 3geeks studio" },
     accent: "#f0b429",
-  },
-  {
-    name: "VIPA",
-    origin: "3geeks",
-    tagline: {
-      en: "iOS productivity assistant — AI planning, tasks, notes and habits on an Expo + Supabase monorepo, with its own billing API in production.",
-      fr: "Assistant de productivité iOS — planning IA, tâches, notes et habitudes sur un monorepo Expo + Supabase, avec son API de facturation en production.",
-    },
-    stack: ["Expo", "TypeScript", "Supabase", "FastAPI", "Stripe"],
-    status: { en: "In development", fr: "En développement" },
-    accent: "#4aa8f0",
-  },
-  {
-    name: "Two",
-    origin: "client",
-    tagline: {
-      en: "All-in-one iOS space for couples — shared calendar, expenses, memories and a geolocated photo map. Data stays between the two partners, never sold.",
-      fr: "Espace iOS tout-en-un pour les couples — calendrier partagé, dépenses, souvenirs et carte photo géolocalisée. Les données restent entre les deux partenaires, jamais revendues.",
-    },
-    stack: ["Swift", "SwiftUI", "Firebase"],
-    status: { en: "On the App Store", fr: "Sur l'App Store" },
-    link: "https://apps.apple.com/fr/app/two/id6758867716",
-    accent: "#2dd4bf",
   },
   {
     name: "3geeks API Hub",
@@ -258,18 +301,6 @@ export const otherWork: SideProject[] = [
     stack: ["FastAPI", "Ollama", "SQLite", "React"],
     status: { en: "Internal, in production", fr: "Interne, en production" },
     accent: "#8b7ef8",
-  },
-  {
-    name: "PromptOptim",
-    origin: "3geeks",
-    tagline: {
-      en: "Same intent, fewer tokens: a prompt optimiser that surfaces the CO₂ cost of every request and favours European models.",
-      fr: "Même intention, moins de tokens : un optimiseur de prompts qui affiche le coût CO₂ de chaque requête et privilégie les modèles européens.",
-    },
-    stack: ["Next.js", "FastAPI", "Green IT"],
-    status: { en: "Live and open", fr: "En ligne, ouvert" },
-    link: "https://prompt-optim.3geeks.fr/",
-    accent: "#3fbf6f",
   },
   {
     name: "3geeks",
@@ -285,28 +316,16 @@ export const otherWork: SideProject[] = [
     accent: "#3fbf6f",
   },
   {
-    name: "CallKitchen",
-    origin: "3geeks",
+    name: "Two",
+    origin: "client",
     tagline: {
-      en: "An AI voice agent that answers a restaurant's phone 24/7 — takeout, bookings and menu questions, with SMS confirmation and a kitchen dashboard.",
-      fr: "Un agent vocal IA qui répond au téléphone d'un restaurant 24h/24 — commandes, réservations et questions menu, avec confirmation SMS et dashboard cuisine.",
+      en: "All-in-one iOS space for couples — shared calendar, expenses, memories and a geolocated photo map. Data stays between the two partners, never sold.",
+      fr: "Espace iOS tout-en-un pour les couples — calendrier partagé, dépenses, souvenirs et carte photo géolocalisée. Les données restent entre les deux partenaires, jamais revendues.",
     },
-    stack: ["AI voice", "Next.js", "SaaS"],
-    status: { en: "Live landing", fr: "Landing en ligne" },
-    link: "https://call-kitchen-landing.vercel.app/",
-    accent: "#f472b6",
-  },
-  {
-    name: "Filament",
-    origin: "3geeks",
-    tagline: {
-      en: "A 4v4 .io game in Canvas 2D — territory painting, filaments between teammates and heart destruction, with a bot benchmark to balance matches.",
-      fr: "Un jeu .io 4v4 en Canvas 2D — peinture de territoire, filaments entre coéquipiers et destruction du Cœur adverse, avec un benchmark de bots pour équilibrer les parties.",
-    },
-    stack: ["Next.js", "Canvas 2D", "Game loop"],
-    status: { en: "Live", fr: "En ligne" },
-    link: "https://filament.3geeks.fr",
-    accent: "#a78bfa",
+    stack: ["Swift", "SwiftUI", "Firebase"],
+    status: { en: "On the App Store", fr: "Sur l'App Store" },
+    link: "https://apps.apple.com/fr/app/two/id6758867716",
+    accent: "#2dd4bf",
   },
   {
     name: "AI Travel Planner",
@@ -321,8 +340,19 @@ export const otherWork: SideProject[] = [
     accent: "#f0b429",
   },
   {
-    // Client work under NDA — described by its architecture only, with no
-    // brand, sector or operator detail.
+    // Client work, anonymised: architecture only, no brand, sector or location.
+    name: "Retail ops platform",
+    origin: "client",
+    tagline: {
+      en: "One shop, three surfaces that had to agree: an online storefront, a scale-driven point of sale at the counter and a live wall display. A private ops platform keeps prices, stock and loyalty in sync in real time.",
+      fr: "Une boutique, trois surfaces qui devaient rester d'accord : une vitrine en ligne, une caisse au poids au comptoir et un affichage mural en direct. Une plateforme d'exploitation privée synchronise prix, stock et fidélité en temps réel.",
+    },
+    stack: ["Shopify GraphQL", "Firebase RTDB", "POS", "Next.js"],
+    status: { en: "Client project, in production", fr: "Projet client, en production" },
+    accent: "#3fbf6f",
+  },
+  {
+    // Client work, anonymised: architecture only, no brand, sector or operator.
     name: "Telegram Mini-App",
     origin: "client",
     tagline: {

@@ -13,16 +13,11 @@ import { useEffect, useRef } from "react";
 
 const shots: { src: string; alt: string }[] = [
   { src: "/projects/nokia-dashboard.webp", alt: "Nokia Feature Analyzer dashboard" },
-  { src: "/projects/express-divorce.webp", alt: "Express Divorce USA" },
   { src: "/projects/prompt-hub.webp", alt: "Prompt Hub" },
-  { src: "/projects/green-jardin-storefront.webp", alt: "Green Jardin storefront" },
-  { src: "/projects/two.webp", alt: "Two iOS app" },
   { src: "/projects/promptoptim.webp", alt: "PromptOptim" },
-  { src: "/projects/ai-travel-planner.webp", alt: "AI Travel Planner" },
-  { src: "/projects/green-jardin-tv.webp", alt: "Green Jardin live TV menu" },
+  { src: "/projects/express-divorce.webp", alt: "Express Divorce USA" },
   { src: "/projects/callkitchen.webp", alt: "CallKitchen" },
-  { src: "/projects/web-gen.webp", alt: "3geeks web generator" },
-  { src: "/projects/green-jardin-pos.webp", alt: "Green Jardin point of sale" },
+  { src: "/projects/two.webp", alt: "Two iOS app" },
 ];
 
 const words = [

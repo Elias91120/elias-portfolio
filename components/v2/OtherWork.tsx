@@ -28,8 +28,8 @@ export default function OtherWork() {
             </p>
             <h2 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-tight text-white sm:text-4xl">
               {t({
-                en: "Ten more products, tools and experiments that made it to production.",
-                fr: "Dix autres produits, outils et expérimentations arrivés jusqu'en production.",
+                en: "The rest of the shipped work — studio tools, client builds and one award-winning student project.",
+                fr: "Le reste du travail livré — outils du studio, projets clients et un projet étudiant primé.",
               })}
             </h2>
           </div>
