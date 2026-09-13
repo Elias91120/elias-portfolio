@@ -128,13 +128,16 @@ export default async function OpenGraphImage() {
               boxShadow: "0 0 110px rgba(167,139,250,0.4)",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* Satori does not clip a child image to the parent's radius, so
+                the circle has to be carried by the image itself — otherwise the
+                square corners of the artwork show through the ring.
+                eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={avatarSrc}
               alt=""
               width={340}
               height={340}
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", borderRadius: 999 }}
             />
           </div>
         </div>
