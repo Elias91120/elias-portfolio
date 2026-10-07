@@ -174,9 +174,7 @@ export default function WebGenCaseStudy() {
             do just one job. Charles, a friend and former partner, now brings us
             projects as a business referrer. I work across the product: LLM orchestration and
             prompt design, the Next.js front end, and the pipeline that turns
-            generated structure into rendered UI. The same AI-native workflow I
-            use at Nokia — Cursor, Claude, agents — is how we ship here, at
-            startup speed.
+            generated structure into rendered UI.
           </p>
         </section>
 
