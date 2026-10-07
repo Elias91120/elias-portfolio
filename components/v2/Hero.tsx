@@ -68,6 +68,10 @@ export default function Hero() {
           >
             {t(profile.heroLine)}
           </p>
+          <p className="mt-4 font-display text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-white sm:text-[0.9rem]">
+            Nokia <span className="text-white/30">·</span> Cleva{" "}
+            <span className="text-white/30">·</span> 3geeks
+          </p>
         </FadeIn>
 
         <FadeIn

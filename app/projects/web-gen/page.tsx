@@ -6,7 +6,7 @@ import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
 export const metadata: Metadata = {
   title: "3geeks — Case Study",
   description:
-    "How three friends built 3geeks, an intent-to-website generator: LLM orchestration, GenUI and Next.js turning a text brief into a fully laid-out site.",
+    "How two friends built 3geeks, an intent-to-website generator: LLM orchestration, GenUI and Next.js turning a text brief into a fully laid-out site.",
   alternates: { canonical: "/projects/web-gen" },
   openGraph: {
     title: "3geeks — Case Study · Elias Elloumi",
@@ -19,7 +19,7 @@ const stack = [
   { label: "LLM orchestration", detail: "Multi-step prompting turns a brief into structure" },
   { label: "GenUI", detail: "Generated layouts rendered as real components" },
   { label: "Next.js", detail: "App Router, streaming, deployed on Coolify" },
-  { label: "Made in France", detail: "Built by the 3geeks studio — Elias, Noam & Charles" },
+  { label: "Made in France", detail: "Built by the 3geeks studio — Elias & Noam" },
 ];
 
 const shipped = [
@@ -170,8 +170,9 @@ export default function WebGenCaseStudy() {
             My role
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
-            3geeks is three friends — Noam, Charles and me — and no one gets to
-            do just one job. I work across the product: LLM orchestration and
+            3geeks is two friends and partners — Noam and me — and no one gets to
+            do just one job. Charles, a friend and former partner, now brings us
+            projects as a business referrer. I work across the product: LLM orchestration and
             prompt design, the Next.js front end, and the pipeline that turns
             generated structure into rendered UI. The same AI-native workflow I
             use at Nokia — Cursor, Claude, agents — is how we ship here, at

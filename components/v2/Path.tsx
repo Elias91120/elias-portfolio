@@ -13,19 +13,19 @@ export default function Path() {
   const { t } = useLocale();
 
   return (
-    <section className="relative px-5 py-20 sm:px-8 sm:py-24 md:px-12 md:py-28">
+    <section className="relative px-5 py-16 sm:px-8 sm:py-20 md:px-12 md:py-24">
       <div className="mx-auto max-w-4xl">
         <FadeIn y={26}>
           <p className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-accent">
-            {t({ en: "The path", fr: "Le parcours" })}
+            {t({ en: "Education", fr: "Formation" })}
           </p>
           <h2
-            className="mt-4 font-display font-semibold leading-[1.08] tracking-tight text-white"
+            className="mt-4 text-balance font-display font-semibold leading-[1.08] tracking-tight text-white"
             style={{ fontSize: "clamp(1.75rem, 4.4vw, 3.4rem)" }}
           >
             {t({
-              en: "From soldering irons to production infrastructure.",
-              fr: "Du fer à souder à l'infrastructure de production.",
+              en: "Three steps, from electronics to data engineering.",
+              fr: "Trois étapes, de l'électronique à la data engineering.",
             })}
           </h2>
         </FadeIn>

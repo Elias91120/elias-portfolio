@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ViewTransition } from "react";
 import CaseStudyShell from "@/components/case-study/CaseStudyShell";
 import CaseStudySection from "@/components/case-study/CaseStudySection";
@@ -148,24 +147,8 @@ export default function AiTravelPlannerCaseStudy() {
                     "Generated itinerary — day-by-day cards with stops, timing, and context.",
                   mock: <TravelItineraryMock />,
                 },
-                {
-                  imageSrc: "/case-study/ece-presentation.webp",
-                  imageAlt: "Elias presenting the AI travel planner on stage at ECE",
-                  linkLabel: "ECE Paris · Best Bachelor",
-                  caption:
-                    "Presenting on stage at ECE — the moment the project earned best Bachelor recognition.",
-                },
               ]}
             />
-            <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-white/10">
-              <Image
-                src="/case-study/ece-presentation.webp"
-                alt="Elias presenting AI Travel Planner at ECE Paris"
-                width={1400}
-                height={600}
-                className="h-48 w-full object-cover object-top sm:h-56"
-              />
-            </div>
           </CaseStudySection>
 
           <CaseStudyCta

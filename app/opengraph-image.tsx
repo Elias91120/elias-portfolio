@@ -72,7 +72,7 @@ export default async function OpenGraphImage() {
               letterSpacing: -1,
             }}
           >
-            Data pipelines, AI agents, and products that ship.
+            Unify the data. Fine-tune the models. Ship fast.
           </div>
 
           <div

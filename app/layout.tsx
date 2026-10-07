@@ -20,7 +20,7 @@ const body = Inter({
 
 const title = "Elias Elloumi — Data & AI Engineer";
 const description =
-  "Data pipelines, AI agents and production systems — Nokia, 3geeks studio, EFREI Paris and apprenticeship at Cleva Solutions (ClevAI). Shipped work and verified recommendations.";
+  "Data & AI engineer. Unified internal data into one live dashboard at Nokia, fine-tunes and self-hosts open-source models at Cleva Solutions, co-founder of 3geeks. Mastère Data Engineering & IA at EFREI Paris.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://elias-elloumi.com"),

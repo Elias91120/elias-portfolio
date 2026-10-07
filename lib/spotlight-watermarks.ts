@@ -16,7 +16,7 @@ export const SPOTLIGHT_WATERMARKS: SpotlightWatermark[] = [
     zone: "hero",
   },
   {
-    text: "AI agents developer",
+    text: "fine-tuned & self-hosted",
     top: "74%",
     left: "58%",
     rotate: 3,
@@ -30,14 +30,14 @@ export const SPOTLIGHT_WATERMARKS: SpotlightWatermark[] = [
     zone: "proof",
   },
   {
-    text: "FastAPI · React · GSAP",
+    text: "FastAPI · React",
     top: "26%",
     left: "12%",
     rotate: 5,
     zone: "projects",
   },
   {
-    text: "open to apprenticeship 2026",
+    text: "ship fast, then harden",
     top: "68%",
     left: "18%",
     rotate: -3,
@@ -51,7 +51,7 @@ export const SPOTLIGHT_WATERMARKS: SpotlightWatermark[] = [
     chapterId: "nokia",
   },
   {
-    text: "3 friends · 1 product",
+    text: "built with a friend",
     top: "62%",
     left: "30%",
     rotate: -5,

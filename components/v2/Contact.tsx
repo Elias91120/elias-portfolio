@@ -38,8 +38,8 @@ export default function Contact() {
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
               {t({
-                en: "Open to freelance work through 3geeks",
-                fr: "Ouvert au freelance via 3geeks",
+                en: "Apprentice @ Cleva Solutions · Mastère EFREI Paris",
+                fr: "Alternant @ Cleva Solutions · Mastère EFREI Paris",
               })}
             </span>
           </FadeIn>
@@ -62,8 +62,8 @@ export default function Contact() {
               style={{ fontSize: "clamp(0.95rem, 1.4vw, 1.15rem)" }}
             >
               {t({
-                en: "Freelance projects, product collaborations, or just a question about something you saw here — my inbox is open.",
-                fr: "Projets en freelance, collaborations produit, ou simplement une question sur ce que vous avez vu ici — ma boîte mail est ouverte.",
+                en: "Roles, collaborations, or a question about something you saw here — my inbox is open.",
+                fr: "Un poste, une collaboration, ou simplement une question sur ce que vous avez vu ici — ma boîte mail est ouverte.",
               })}
             </p>
           </FadeIn>

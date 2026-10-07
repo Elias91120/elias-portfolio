@@ -15,6 +15,7 @@ import { ui } from "@/lib/content";
 import { useLocale } from "@/lib/i18n";
 import { useIsMobile } from "@/lib/use-is-mobile";
 import { FadeIn } from "@/components/v2/Primitives";
+import FlowDiagram from "@/components/v2/FlowDiagram";
 
 const SCALE_STEP = 0.03;
 
@@ -45,10 +46,10 @@ export default function WorkStack() {
 
       <div ref={listRef} className="mx-auto mt-12 max-w-6xl sm:mt-16">
         {featuredWork.map((work, i) => (
-          <div key={work.id}>
+          <div key={work.id} id={work.id}>
             {/* Printed once, when the tier changes: it is this heading that
-                separates paid professional work from the studio's own
-                products, rather than leaving a visitor to guess. */}
+                says which employer or venture the next cards belong to,
+                rather than leaving a visitor to guess. */}
             {work.tier !== featuredWork[i - 1]?.tier && (
               <FadeIn y={16}>
                 <p className="section-kicker mb-5 pt-6 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-accent sm:mb-7 sm:pt-10">
@@ -250,7 +251,7 @@ function Visual({ work }: { work: Work }) {
             </span>
           </div>
           <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-0.5 font-mono text-xs font-medium text-amber-300">
-            13 apps en prod
+            {t({ en: "13 apps in prod", fr: "13 apps en prod" })}
           </span>
         </div>
 
@@ -283,6 +284,17 @@ function Visual({ work }: { work: Work }) {
           <span className="font-mono text-amber-300">3geeks studio infra</span>
         </div>
       </div>
+    );
+  }
+
+  if (visual.kind === "flow") {
+    return (
+      <FlowDiagram
+        title={visual.title}
+        nodes={visual.nodes}
+        badge={visual.badge}
+        accent={work.accent}
+      />
     );
   }
 

@@ -44,6 +44,9 @@ export function hasNavigationIntent(message: string): boolean {
 }
 
 const PROJECT_ALIASES: Record<string, string> = {
+  cleva: "cleva-voice",
+  "voice model": "cleva-voice",
+  "fine-tun": "cleva-voice",
   nokia: "feature-analyzer",
   "feature analyzer": "feature-analyzer",
   "feature-analyzer": "feature-analyzer",
@@ -67,11 +70,11 @@ const SECTION_HASH: Record<
   Extract<AgentAction, { type: "scroll_section" }>["section"],
   string
 > = {
-  story: "#story",
-  projects: "#projects",
+  story: "#about",
+  projects: "#work",
   skills: "#skills",
   contact: "#contact",
-  proof: "#proof",
+  proof: "#about",
 };
 
 const SECTION_KEYWORDS: Record<string, AgentAction> = {
@@ -153,7 +156,7 @@ export function parseAgentActions(
 
   const slug = resolveProjectSlug(msg);
   if (slug) {
-    return [{ type: "scroll", target: "#projects", highlight: slug }];
+    return [{ type: "scroll", target: "#work", highlight: slug }];
   }
 
   for (const [keyword, action] of Object.entries(SECTION_KEYWORDS)) {

@@ -8,7 +8,7 @@ export default function Skills() {
   const { t } = useLocale();
 
   return (
-    <section className="relative px-5 py-20 sm:px-8 sm:py-24 md:px-12 md:py-28">
+    <section id="skills" className="relative px-5 py-20 sm:px-8 sm:py-24 md:px-12 md:py-28">
       <div className="mx-auto max-w-6xl">
         <FadeIn y={26}>
           <p className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-accent">
@@ -19,8 +19,8 @@ export default function Skills() {
             style={{ fontSize: "clamp(1.75rem, 4.4vw, 3.4rem)" }}
           >
             {t({
-              en: "What I reach for.",
-              fr: "Ce que j'utilise au quotidien.",
+              en: "What I work with, grouped by what it is for.",
+              fr: "Ce que j'utilise, groupé par usage.",
             })}
           </h2>
         </FadeIn>

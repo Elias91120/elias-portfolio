@@ -6,9 +6,11 @@ import ScrollProgress from "@/components/ScrollProgress";
 import Nav from "@/components/v2/Nav";
 import Hero from "@/components/v2/Hero";
 import Marquee from "@/components/v2/Marquee";
-import About from "@/components/v2/About";
+import Proof from "@/components/v2/Proof";
+import Capabilities from "@/components/v2/Capabilities";
 import WorkStack from "@/components/v2/WorkStack";
 import OtherWork from "@/components/v2/OtherWork";
+import Posts from "@/components/v2/Posts";
 import Path from "@/components/v2/Path";
 import Skills from "@/components/v2/Skills";
 import Recommendations from "@/components/v2/Recommendations";
@@ -29,10 +31,12 @@ export default function HomeExperience() {
       <ScrollProgress />
       <Nav />
       <Hero />
+      <Proof />
+      <Capabilities />
       <Marquee />
-      <About />
       <WorkStack />
       <OtherWork />
+      <Posts />
       <Path />
       <Skills />
       <GlobalReach />

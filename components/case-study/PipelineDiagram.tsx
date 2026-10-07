@@ -1,8 +1,8 @@
 const steps = [
-  { label: "Sources", detail: "7+ heterogeneous data feeds" },
-  { label: "FastAPI", detail: "Collect · analyze · correlate" },
-  { label: "React dashboard", detail: "Real-time unified view" },
-  { label: "Reports", detail: "Actionable insights for teams" },
+  { label: "Sources", detail: "Jira + 6 other internal systems" },
+  { label: "FastAPI", detail: "Collect · analyse · correlate" },
+  { label: "React dashboard", detail: "One live view" },
+  { label: "AI summary", detail: "A conclusion in one read" },
 ];
 
 export default function PipelineDiagram() {

@@ -1,7 +1,7 @@
 # Elias Elloumi — Portfolio
 
-Data & AI engineer portfolio: a 3D portrait hero, a scroll-driven proof band, and
-a stack of project cards backed by real numbers. Bilingual (EN / FR), dark, and
+Data & AI engineer portfolio: a 3D portrait hero, a three-employer proof band, a
+"what I bring" section, and four flagship cards with animated pipeline diagrams. Bilingual (EN / FR), dark, and
 deliberately light on the wire.
 
 Live: [elias-elloumi.com](https://elias-elloumi.com)
@@ -79,10 +79,11 @@ point it at a production build instead.
 ## Structure
 
 - `app/` — layout, page, global styles, OG card, case-study routes
-- `components/v2/` — the landing page: `Hero`, `Head3D`, `Marquee`, `About`,
-  `Expertise`, `WorkStack`, `OtherWork`, `Path`, `Skills`, `Recommendations`, `Contact`
+- `components/v2/` — the landing page: `Hero`, `Head3D`, `Proof` (Cleva · Nokia · 3geeks),
+  `Capabilities`, `Marquee`, `WorkStack` + `FlowDiagram`, `OtherWork`, `Path` (education),
+  `Skills`, `Recommendations`, `Contact`
 - `components/case-study/` — the per-project deep dives
-- `lib/content.ts` — identity, navigation, about copy, expertise
+- `lib/content.ts` — identity, navigation, `experience` (the proof band) and `capabilities`
 - `lib/work.ts` — the featured project cards and the secondary grid
 - `lib/people.ts` — recommendations, career path, skills, contact
 - `lib/i18n.tsx` — the EN/FR provider; every string is a `{ en, fr }` pair

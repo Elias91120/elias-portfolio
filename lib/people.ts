@@ -108,7 +108,7 @@ export const clientQuotes: ClientQuote[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Path                                                               */
+/*  Education — the employers live in `experience` (lib/content.ts)    */
 /* ------------------------------------------------------------------ */
 
 export type PathStep = {
@@ -116,10 +116,36 @@ export type PathStep = {
   title: string;
   subtitle: L;
   detail: L;
-  status: "past" | "current" | "next";
+  status: "past" | "current";
 };
 
 export const path: PathStep[] = [
+  {
+    period: { en: "2026 — 2028", fr: "2026 — 2028" },
+    title: "EFREI Paris",
+    subtitle: {
+      en: "Mastère Data Engineering & AI — RNCP level 7",
+      fr: "Mastère Data Engineering & IA — RNCP niveau 7",
+    },
+    detail: {
+      en: "Data architecture, structural AI and cloud governance, alongside the Cleva apprenticeship.",
+      fr: "Architecture de données, IA structurelle et gouvernance cloud, en alternance chez Cleva.",
+    },
+    status: "current",
+  },
+  {
+    period: { en: "2023 — 2026", fr: "2023 — 2026" },
+    title: "ECE Paris",
+    subtitle: {
+      en: "Bachelor in Artificial Intelligence — licence grade",
+      fr: "Bachelor Intelligence Artificielle — grade de licence",
+    },
+    detail: {
+      en: "Final year as an apprentice at Nokia, closed by the best Bachelor project of the year.",
+      fr: "Dernière année en alternance chez Nokia, clôturée par le meilleur projet de Bachelor de la promotion.",
+    },
+    status: "past",
+  },
   {
     period: { en: "2020 — 2023", fr: "2020 — 2023" },
     title: "Baccalauréat STI2D · SIN",
@@ -128,160 +154,59 @@ export const path: PathStep[] = [
       fr: "Lycée Parc de Vilgenis, Massy",
     },
     detail: {
-      en: "Electronics, embedded systems and the first real circuits — where tinkering turned into engineering.",
-      fr: "Électronique, systèmes embarqués et premiers vrais circuits — le moment où bricoler est devenu concevoir.",
+      en: "Electronics and embedded systems.",
+      fr: "Électronique et systèmes embarqués.",
     },
     status: "past",
-  },
-  {
-    period: { en: "2023 — 2026", fr: "2023 — 2026" },
-    title: "ECE Paris",
-    subtitle: {
-      en: "Bachelor in Computer Science — Data & AI",
-      fr: "Bachelor Informatique — Data & IA",
-    },
-    detail: {
-      en: "Three years of data and AI fundamentals, closed by the best Bachelor project of the year.",
-      fr: "Trois années de fondamentaux data et IA, clôturées par le meilleur projet de Bachelor de la promotion.",
-    },
-    status: "past",
-  },
-  {
-    period: { en: "2023 — 2024", fr: "2023 — 2024" },
-    title: "La Chorba",
-    subtitle: {
-      en: "Volunteer — customer service",
-      fr: "Bénévole — service clients",
-    },
-    detail: {
-      en: "Fifteen months of regular volunteering with an association fighting poverty.",
-      fr: "Quinze mois de bénévolat régulier auprès d'une association de lutte contre la pauvreté.",
-    },
-    status: "past",
-  },
-  {
-    period: { en: "2025 — 2026", fr: "2025 — 2026" },
-    title: "Nokia",
-    subtitle: {
-      en: "Data & AI Tools Specialist",
-      fr: "Data & AI Tools Specialist",
-    },
-    detail: {
-      en: "A six-month internship became a full apprenticeship: one real-time analysis platform, automated workflows, and AI tooling adopted across four teams.",
-      fr: "Un stage de six mois devenu une alternance complète : une plateforme d'analyse temps réel, des workflows automatisés, et un outillage IA adopté par quatre équipes.",
-    },
-    status: "past",
-  },
-  {
-    period: { en: "2025 — now", fr: "2025 — aujourd'hui" },
-    title: "3geeks",
-    subtitle: {
-      en: "Co-founder — studio & self-hosted production",
-      fr: "Co-fondateur — studio & production auto-hébergée",
-    },
-    detail: {
-      en: "With Noam and Charles: shipped products, real clients, and an infrastructure we operate ourselves on our own hardware.",
-      fr: "Avec Noam et Charles : des produits livrés, de vrais clients, et une infrastructure que nous opérons nous-mêmes sur notre propre matériel.",
-    },
-    status: "current",
-  },
-  {
-    period: { en: "2026 — 2028", fr: "2026 — 2028" },
-    title: "EFREI Paris",
-    subtitle: {
-      en: "M.Sc. Data Engineering & AI — RNCP level 7",
-      fr: "M.Sc. Data Engineering & IA — RNCP niveau 7",
-    },
-    detail: {
-      en: "Data architecture, structural AI and cloud governance. Started this September.",
-      fr: "Architecture de données, IA structurelle et gouvernance cloud. Rentrée effectuée en septembre.",
-    },
-    status: "current",
-  },
-  {
-    period: { en: "2026 — 2028", fr: "2026 — 2028" },
-    title: "Cleva Solutions — ClevAI",
-    subtitle: {
-      en: "Apprentice, Data & AI (ClevAI Hub)",
-      fr: "Alternant, Data & IA (Hub ClevAI)",
-    },
-    detail: {
-      en: "Data & AI engineering inside Cleva's AI hub, on a two-year apprenticeship running alongside the M.Sc.",
-      fr: "Ingénierie Data & IA au sein du hub IA de Cleva, en alternance sur deux ans, adossée au M.Sc.",
-    },
-    status: "current",
   },
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Skills                                                             */
+/*  Skills — grouped by what they were used for, kept short on purpose */
 /* ------------------------------------------------------------------ */
 
 export type SkillGroup = { title: L; skills: string[] };
 
 export const skillGroups: SkillGroup[] = [
   {
-    title: { en: "Data & AI", fr: "Data & IA" },
+    title: { en: "AI & models", fr: "IA & modèles" },
     skills: [
-      "Python",
-      "Pandas",
-      "ETL / data pipelines",
+      "Fine-tuning open-source models",
+      "Serving on self-hosted GPU",
       "LLM & RAG",
-      "AI agents",
-      "LangGraph",
-      "Multi-agent orchestration",
-      "Gemini",
-      "Ollama",
-      "Power BI",
-      "SQL / PostgreSQL",
-      "MongoDB",
-      "Data governance",
+      "AI agents (LangGraph)",
+      "Prompt engineering & guardrails",
+      "Gemini · Ollama",
     ],
   },
   {
-    title: { en: "Web & Product", fr: "Web & Produit" },
+    title: { en: "Data", fr: "Data" },
     skills: [
-      "TypeScript",
-      "React",
-      "Next.js",
-      "FastAPI",
-      "Node.js",
-      "Expo / React Native",
-      "Swift / SwiftUI",
-      "Tailwind CSS",
-      "Framer Motion",
-      "Three.js",
-      "REST & GraphQL",
-      "Playwright",
+      "Python · Pandas",
+      "ETL / data pipelines",
+      "SQL · PostgreSQL",
+      "MongoDB",
+      "Power BI",
     ],
   },
   {
-    title: { en: "Cloud & Infra", fr: "Cloud & Infra" },
+    title: { en: "Backend & product", fr: "Backend & produit" },
+    skills: [
+      "FastAPI",
+      "TypeScript · React · Next.js",
+      "Node.js",
+      "Swift · SwiftUI",
+      "REST & GraphQL",
+    ],
+  },
+  {
+    title: { en: "Infra & delivery", fr: "Infra & delivery" },
     skills: [
       "Docker",
-      "Coolify",
-      "Traefik",
-      "Cloudflare (DNS · Tunnel)",
+      "Coolify · Traefik · Cloudflare",
       "AWS (EC2 · S3 · IAM)",
-      "PostgreSQL",
-      "Supabase",
-      "Firebase",
-      "Git / GitLab CI",
-      "Self-hosting",
-      "Monitoring",
-    ],
-  },
-  {
-    title: { en: "AI-native workflow", fr: "Workflow AI-native" },
-    skills: [
-      "Cursor",
-      "Claude",
-      "MCP servers & skills",
-      "Prompt engineering",
-      "LLM guardrails & eval",
-      "n8n",
-      "Technical mentoring",
-      "Agile / Jira",
+      "GitLab CI",
+      "Jira · Agile",
     ],
   },
 ];

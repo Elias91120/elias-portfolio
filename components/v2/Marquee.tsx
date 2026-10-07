@@ -12,7 +12,6 @@ import { useEffect, useRef } from "react";
  */
 
 const shots: { src: string; alt: string }[] = [
-  { src: "/projects/nokia-dashboard.webp", alt: "Nokia Feature Analyzer dashboard" },
   { src: "/projects/prompt-hub.webp", alt: "Prompt Hub" },
   { src: "/projects/promptoptim.webp", alt: "PromptOptim" },
   { src: "/projects/express-divorce.webp", alt: "Express Divorce USA" },
@@ -22,6 +21,9 @@ const shots: { src: string; alt: string }[] = [
 
 const words = [
   "Data pipelines",
+  "Fine-tuning",
+  "Voice AI",
+  "GPU serving",
   "AI agents",
   "RAG",
   "FastAPI",

@@ -79,14 +79,14 @@ export function buildSafeFallback(userMessage: string): string {
     )
   ) {
     return lang === "fr"
-      ? `Elias est actuellement en alternance chez Cleva Solutions (branche ClevAI), en parallèle de son M.Sc. Data Engineering & AI à l'EFREI Paris (RNCP niveau 7). Il reste ouvert au freelance via 3geeks. Contact : ${contact.email}`
-      : `Elias is currently an apprentice at Cleva Solutions (ClevAI), alongside his M.Sc. in Data Engineering & AI at EFREI Paris (RNCP level 7). He stays open to freelance work through 3geeks. Contact: ${contact.email}`;
+      ? `Elias est actuellement en alternance chez Cleva Solutions (branche ClevAI), en parallèle de son Mastère Data Engineering & IA à l'EFREI Paris (RNCP niveau 7). Contact : ${contact.email}`
+      : `Elias is currently an apprentice at Cleva Solutions (ClevAI), alongside his Mastère in Data Engineering & AI at EFREI Paris (RNCP level 7). Contact: ${contact.email}`;
   }
 
   if (/nokia|feature analyzer|feature-analyzer|dashboard/.test(msg)) {
     return lang === "fr"
-      ? `Elias a conçu et développé le Feature Analyzer Dashboard 2.0 — plateforme FastAPI + React unifiant 7+ sources de données en pipelines d'analyse temps réel. Il a aussi piloté l'adoption de Cursor (portail RAG, démos équipes). Case study : ${PORTFOLIO_URL}/projects/nokia-dashboard`
-      : `Elias built the Feature Analyzer Dashboard 2.0 — a FastAPI + React platform unifying 7+ data sources into real-time feature analysis pipelines. He also led Cursor adoption with a RAG knowledge portal and team demos. Case study: ${PORTFOLIO_URL}/projects/nokia-dashboard`;
+      ? `Elias a conçu et développé le Feature Analyzer chez Nokia — plateforme FastAPI + React qui réunit Jira et d'autres sources internes (7+) dans un dashboard unique, avec un résumé IA par-dessus. Il a aussi piloté l'adoption de Cursor (portail RAG, démos dans 4 équipes). Case study : ${PORTFOLIO_URL}/projects/nokia-dashboard`
+      : `Elias built the Feature Analyzer at Nokia — a FastAPI + React platform that brings Jira and other internal sources (7+) into one live dashboard, with an AI summary on top. He also led Cursor adoption (RAG portal, demos across 4 teams). Case study: ${PORTFOLIO_URL}/projects/nokia-dashboard`;
   }
 
   if (/contact|email|reach|joindre|linkedin|fiverr/.test(msg)) {

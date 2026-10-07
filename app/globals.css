@@ -366,7 +366,25 @@ section[id] {
   background: color-mix(in srgb, currentColor 50%, transparent);
 }
 
+/* Pipeline diagrams: a short bright segment sliding down each connector. */
+@keyframes flow-pulse {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(calc(100% + 3rem));
+  }
+}
+
+.flow-pulse {
+  animation: flow-pulse 2.2s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .flow-pulse {
+    display: none;
+  }
+
   @view-transition {
     navigation: none;
   }
