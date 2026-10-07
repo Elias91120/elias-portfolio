@@ -142,7 +142,7 @@ export default function ExpressDivorceCaseStudy() {
           </CaseStudySection>
 
           <CaseStudyCta
-            description="Express Divorce is one of 3geeks's production ships — the portfolio reads like a book, from a Minecraft kid to production AI systems at Nokia."
+            description="Express Divorce is one of 3geeks's production ships — the portfolio reads like a book, from a Minecraft kid to data and AI engineering."
           />
         </div>
       </ViewTransition>

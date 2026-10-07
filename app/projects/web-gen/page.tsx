@@ -94,7 +94,7 @@ export default function WebGenCaseStudy() {
               </span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-              The flagship of our three-person studio: describe the site you
+              The flagship of our two-person studio: describe the site you
               want in plain words, and 3geeks turns that brief into a fully
               laid-out, ready-to-ship website — live at www.3geeks.fr.
             </p>
@@ -185,7 +185,7 @@ export default function WebGenCaseStudy() {
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
             3geeks became the engine of the studio. Around it, we shipped real
-            products for real clients — each one proof that a three-person team
+            products for real clients — each one proof that a two-person team
             with an AI-native workflow can deliver production software:
           </p>
           <ul className="mt-8 space-y-3">
@@ -219,11 +219,11 @@ export default function WebGenCaseStudy() {
           </h2>
           <p className="mt-4 max-w-xl leading-relaxed text-muted">
             3geeks is one chapter — the portfolio reads like a book, from a
-            Minecraft kid to production AI systems at Nokia.
+            Minecraft kid to data and AI engineering.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/#story"
+              href="/#about"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-[#0c0a16] transition-transform duration-300 hover:scale-[1.03]"
             >
               Read the story

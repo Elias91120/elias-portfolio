@@ -11,8 +11,8 @@ type CaseStudyCtaProps = {
 
 export default function CaseStudyCta({
   title = "Want the full story?",
-  description = "This project is one chapter — the portfolio reads like a book, from a Minecraft kid to production AI systems at Nokia.",
-  storyHref = "/#story",
+  description = "This project is one chapter — the portfolio reads like a book, from a Minecraft kid to data and AI engineering.",
+  storyHref = "/#about",
   storyLabel = "Read the story",
   contactHref = "/#contact",
   contactLabel = "Get in touch",
