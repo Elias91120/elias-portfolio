@@ -25,8 +25,8 @@ export type Tier = "now" | "pro" | "studio";
 
 export const tierLabel: Record<Tier, L> = {
   now: {
-    en: "Right now — Cleva Solutions",
-    fr: "En ce moment — Cleva Solutions",
+    en: "Cleva Solutions — right now",
+    fr: "Cleva Solutions — en ce moment",
   },
   pro: {
     en: "Nokia — 2025 · 2026",
@@ -58,46 +58,45 @@ export type Work = {
 
 /** The cards that stack on scroll, grouped by tier. */
 export const featuredWork: Work[] = [
-  /* ---------------- Right now — Cleva Solutions ---------------- */
+  /* ---------------- Cleva Solutions ---------------- */
   {
-    id: "cleva-voice",
-    name: "Voice model, fine-tuned & served in-house",
+    id: "ai-models",
+    name: "AI models in practice",
     tier: "now",
     category: {
-      en: "AI engineer — fine-tuning & deployment",
-      fr: "Ingénieur IA — fine-tuning & déploiement",
+      en: "AI engineering",
+      fr: "Ingénierie IA",
     },
-    context: { en: "In progress · Cleva Solutions", fr: "En cours · Cleva Solutions" },
+    context: { en: "Now · Cleva Solutions", fr: "En ce moment · Cleva Solutions" },
     description: {
-      en: "Clients ask what AI could do for them, and slides do not convince. I am fine-tuning an open-source voice model under a commercial licence — ElevenLabs-style, without the hosted service — and serving it on an in-house GPU, so we can put a working demo in front of a client and show it can be deployed.",
-      fr: "Les clients demandent ce que l'IA peut faire pour eux, et des slides ne convainquent pas. Je fine-tune un modèle vocal open source sous licence commerciale — style ElevenLabs, sans le service hébergé — et je le sers sur un GPU interne, pour mettre une démo qui tourne devant un client et montrer que c'est déployable.",
+      en: "Clients want to know what AI can do for them, and a slide will not tell them. I take existing open-source models, adapt them to a precise need, deploy them locally and put a working proof of concept in front of the client. It is where I work every day — and only the beginning.",
+      fr: "Les clients veulent savoir ce que l'IA peut faire pour eux, et une slide ne le leur dira pas. Je prends des modèles open source existants, je les adapte à un besoin précis, je les déploie en local et je mets un POC fonctionnel devant le client. C'est là que je travaille chaque jour — et ce n'est que le début.",
     },
     metrics: [
-      { value: "OSS", label: { en: "commercial-licence base model", fr: "modèle de base sous licence commerciale" } },
-      { value: "GPU", label: { en: "served in-house", fr: "servi en interne" } },
-      { value: "POC", label: { en: "built for client demos", fr: "conçu pour les démos clients" } },
+      { value: "POC", label: { en: "working demos, not slides", fr: "des démos qui marchent, pas des slides" } },
+      { value: "Local", label: { en: "deployment, on our own infrastructure", fr: "déploiement, sur notre propre infrastructure" } },
     ],
-    stack: ["Fine-tuning", "Voice AI", "Self-hosted GPU", "Open source"],
+    stack: ["Fine-tuning", "Open-source models", "Local deployment", "AI integration"],
     visual: {
       kind: "flow",
-      title: { en: "From open model to client demo", fr: "Du modèle ouvert à la démo client" },
-      badge: { en: "In progress", fr: "En cours" },
+      title: { en: "From open model to client proof", fr: "Du modèle ouvert à la preuve client" },
+      badge: { en: "Ongoing", fr: "En cours" },
       nodes: [
         {
-          label: { en: "Open-source voice model", fr: "Modèle vocal open source" },
-          sub: { en: "commercial licence", fr: "licence commerciale" },
+          label: { en: "Open-source model", fr: "Modèle open source" },
+          sub: { en: "picked for the need", fr: "choisi pour le besoin" },
         },
         {
-          label: { en: "Fine-tune", fr: "Fine-tuning" },
-          sub: { en: "adapted to the client's need", fr: "adapté au besoin du client" },
+          label: { en: "Adapt", fr: "Adapter" },
+          sub: { en: "fine-tuned to the use case", fr: "fine-tuné sur le cas d'usage" },
         },
         {
-          label: { en: "Served in-house", fr: "Servi en interne" },
-          sub: { en: "on our own GPU", fr: "sur notre propre GPU" },
+          label: { en: "Deploy locally", fr: "Déployer en local" },
+          sub: { en: "on our own infrastructure", fr: "sur notre propre infrastructure" },
         },
         {
-          label: { en: "Client POC", fr: "POC client" },
-          sub: { en: "live demo → deployable", fr: "démo en direct → déployable" },
+          label: { en: "Client proof of concept", fr: "POC client" },
+          sub: { en: "shown working, on their case", fr: "démontré, sur leur cas" },
         },
       ],
     },
@@ -106,8 +105,8 @@ export const featuredWork: Work[] = [
 
   /* ---------------------- Nokia ---------------------- */
   {
-    id: "nokia-dashboard",
-    name: "Feature Analyzer",
+    id: "data-pipelines",
+    name: "Data pipelines & dashboards",
     tier: "pro",
     origin: "nokia",
     category: {
@@ -116,41 +115,37 @@ export const featuredWork: Work[] = [
     },
     context: { en: "Internal platform · Nokia", fr: "Plateforme interne · Nokia" },
     description: {
-      en: "Analysing a feature meant opening Jira and a string of other internal tools, then reconciling them by hand. I built the pipeline that collects all of it, correlates it and shows it in one live dashboard — with an AI summary on top, so a conclusion takes one read instead of a dozen tabs.",
-      fr: "Analyser une feature, c'était ouvrir Jira et une série d'autres outils internes, puis tout recouper à la main. J'ai construit le pipeline qui collecte tout, le corrèle et l'affiche dans un dashboard unique en direct — avec un résumé IA par-dessus, pour conclure en une lecture plutôt qu'en une douzaine d'onglets.",
+      en: "Information on a single topic was scattered across many internal tools, and every analysis meant reconciling them by hand. I built the pipeline that gathers it, links it together and presents it in one clean, live dashboard — with an AI summary on top.",
+      fr: "L'information sur un même sujet était éparpillée dans de nombreux outils internes, et chaque analyse demandait de les recouper à la main. J'ai construit le pipeline qui la réunit, la relie et la présente dans un dashboard unique, propre et en direct — avec un résumé IA par-dessus.",
     },
     metrics: [
-      { value: "7+", label: { en: "sources unified", fr: "sources unifiées" } },
-      { value: "1", label: { en: "live dashboard", fr: "dashboard unique" } },
+      { value: "7+", label: { en: "internal sources unified", fr: "sources internes unifiées" } },
+      { value: "1", label: { en: "clean live dashboard", fr: "dashboard propre et vivant" } },
       { value: "AI", label: { en: "summary on top", fr: "résumé par-dessus" } },
     ],
-    stack: ["FastAPI", "React", "Python", "Data pipeline"],
+    stack: ["Python", "Data pipelines", "Dashboards", "AI summary"],
     visual: {
       kind: "flow",
-      title: { en: "Collect → correlate → one view", fr: "Collecter → corréler → une vue" },
+      title: { en: "Many sources → one clear view", fr: "Plusieurs sources → une vue claire" },
       nodes: [
         {
-          label: { en: "Sources", fr: "Sources" },
-          chips: [
-            { en: "Jira", fr: "Jira" },
-            { en: "6+ internal systems", fr: "6+ systèmes internes" },
-          ],
+          label: { en: "7+ internal sources", fr: "7+ sources internes" },
+          sub: { en: "scattered across tools", fr: "éparpillées entre les outils" },
         },
         {
-          label: { en: "Collect", fr: "Collecte" },
-          sub: { en: "FastAPI services", fr: "services FastAPI" },
+          label: { en: "Collect", fr: "Collecter" },
+          sub: { en: "one automated pipeline", fr: "un pipeline automatisé" },
         },
         {
-          label: { en: "Analyse & correlate", fr: "Analyse & corrélation" },
-          sub: { en: "one model across sources", fr: "un seul modèle de données" },
+          label: { en: "Correlate", fr: "Corréler" },
+          sub: { en: "one shared picture", fr: "une vue commune" },
         },
         {
           label: { en: "Live dashboard + AI summary", fr: "Dashboard live + résumé IA" },
-          sub: { en: "React, read in one pass", fr: "React, lisible d'un coup" },
+          sub: { en: "read in one pass", fr: "lisible d'un coup" },
         },
       ],
     },
-    caseStudy: "/projects/nokia-dashboard",
     accent: "#8b7ef8",
   },
 
@@ -242,18 +237,6 @@ export type SideProject = {
 };
 
 export const otherWork: SideProject[] = [
-  {
-    name: "Cursor pour les nuls",
-    origin: "nokia",
-    tagline: {
-      en: "Internal portal with a RAG assistant on our own documentation, plus demos and one-to-one coaching across 4 teams. 1,019 views, 100+ questions answered.",
-      fr: "Portail interne avec un assistant RAG sur notre documentation, plus démos et coaching individuel dans 4 équipes. 1 019 vues, plus de 100 questions posées.",
-    },
-    stack: ["RAG", "MCP", "Cursor"],
-    status: { en: "Internal · 4 teams", fr: "Interne · 4 équipes" },
-    caseStudy: "/projects/cursor-portal",
-    accent: "#f08a3c",
-  },
   {
     // Private to the studio: described, never linked, no repository access.
     // The point of the entry is the guardrail design, not the trading.

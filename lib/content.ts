@@ -12,8 +12,8 @@ export const profile = {
     fr: "Ingénieur Data & IA",
   } satisfies L,
   heroLine: {
-    en: "Data & AI engineer — I unify data, fine-tune models and prototype fast",
-    fr: "Ingénieur Data & IA — j'unifie la donnée, je fine-tune des modèles, je prototype vite",
+    en: "Data & AI — I build the pipelines, the models and the products on top",
+    fr: "Data & IA — je construis les pipelines, les modèles et les produits qui vont avec",
   } satisfies L,
   status: {
     en: "Apprentice @ Cleva Solutions (ClevAI) · Mastère EFREI Paris",
@@ -83,21 +83,21 @@ export const experience: Experience[] = [
     current: true,
     accent: "#22d3ee",
     stat: {
-      value: "GPU",
-      label: { en: "fine-tuned model served in-house", fr: "modèle fine-tuné servi en interne" },
+      value: "POC",
+      label: { en: "working AI demos for clients", fr: "démos IA fonctionnelles pour les clients" },
     },
     points: [
       {
-        en: "Fine-tuning an open-source voice model and serving it on an in-house GPU.",
-        fr: "Fine-tuning d'un modèle vocal open source, servi sur un GPU interne.",
+        en: "Adapting and fine-tuning open-source AI models for client proofs of concept.",
+        fr: "Adaptation et fine-tuning de modèles IA open source pour des POC clients.",
       },
       {
-        en: "Building client proofs of concept that show what a fine-tuned model can do for their case.",
-        fr: "Des POC clients qui montrent ce qu'un modèle fine-tuné peut faire pour leur besoin.",
+        en: "Deploying them locally, to show what is possible on a real case.",
+        fr: "Déploiement en local, pour montrer ce qui est possible sur un cas réel.",
       },
       {
-        en: "Brought 3geeks tooling into the team's workflow.",
-        fr: "Outillage 3geeks intégré au workflow de l'équipe.",
+        en: "Only the start: the first of many builds.",
+        fr: "Seulement le début : le premier de nombreux chantiers.",
       },
     ],
   },
@@ -117,20 +117,20 @@ export const experience: Experience[] = [
     accent: "#8b7ef8",
     stat: {
       value: "7+",
-      label: { en: "sources in one live dashboard", fr: "sources dans un dashboard unique" },
+      label: { en: "internal sources, one live dashboard", fr: "sources internes, un dashboard unique" },
     },
     points: [
       {
-        en: "Feature Analyzer: Jira and the other internal sources unified into one dashboard, with an AI summary on top.",
-        fr: "Feature Analyzer : Jira et les autres sources internes réunis dans un dashboard, avec un résumé IA par-dessus.",
+        en: "Built the data pipeline and the dashboard that bring scattered internal data together, with an AI summary on top.",
+        fr: "Pipeline de données et dashboard qui réunissent la donnée interne éparpillée, avec un résumé IA par-dessus.",
       },
       {
-        en: "AI adoption across 4 teams: a RAG assistant, demos and one-to-one coaching.",
-        fr: "Adoption de l'IA dans 4 équipes : assistant RAG, démos et coaching individuel.",
+        en: "Helped several teams adopt AI tooling, through demos and one-to-one coaching.",
+        fr: "Adoption des outils IA dans plusieurs équipes, par des démos et du coaching individuel.",
       },
       {
-        en: "Brought Prompt Hub, built at 3geeks, into the company.",
-        fr: "Prompt Hub, conçu chez 3geeks, intégré dans l'entreprise.",
+        en: "Brought tools built at 3geeks into the company.",
+        fr: "Outils conçus chez 3geeks intégrés dans l'entreprise.",
       },
     ],
     note: {
@@ -172,39 +172,41 @@ export const experience: Experience[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  What I bring — three things, each backed by a project below        */
+/*  What I bring — kept general on purpose                             */
+/*  Employer work is described by what it shows I can do, never by     */
+/*  internal tool names; the studio's own products can be specific.    */
 /* ------------------------------------------------------------------ */
 
 export type Capability = {
   title: L;
   body: L;
-  /** The project that proves it. */
+  /** The card below that backs the claim. */
   proof: { label: L; target: string };
 };
 
 export const capabilities = {
-  heading: { en: "What I bring to a team", fr: "Ce que j'apporte à une équipe" } satisfies L,
+  heading: { en: "What I can bring to your team", fr: "Ce que je peux apporter à votre équipe" } satisfies L,
   items: [
     {
-      title: { en: "Make scattered data legible", fr: "Rendre la donnée éparpillée lisible" },
+      title: { en: "Turn scattered data into one clear picture", fr: "Transformer une donnée éparpillée en une vue claire" },
       body: {
-        en: "I walk into a company, find the data spread across its tools, and build the pipeline that brings it into one live dashboard — with an AI summary on top, so reaching a conclusion no longer means opening a dozen tabs.",
-        fr: "J'arrive dans une entreprise, je repère la donnée éparpillée entre ses outils et je construis le pipeline qui la réunit dans un dashboard vivant — avec un résumé IA par-dessus, pour qu'une conclusion ne demande plus douze onglets.",
+        en: "I build data pipelines that pull many sources together, and the dashboards that make them readable — with an AI summary on top, so a conclusion no longer takes a dozen tabs.",
+        fr: "Je construis des pipelines de données qui réunissent de nombreuses sources, et les dashboards qui les rendent lisibles — avec un résumé IA par-dessus, pour qu'une conclusion ne demande plus une douzaine d'onglets.",
       },
       proof: {
-        label: { en: "Feature Analyzer · Nokia", fr: "Feature Analyzer · Nokia" },
-        target: "nokia-dashboard",
+        label: { en: "Pipelines & dashboards", fr: "Pipelines & dashboards" },
+        target: "data-pipelines",
       },
     },
     {
-      title: { en: "Go past the API call", fr: "Aller plus loin que l'appel d'API" },
+      title: { en: "Make AI work on a real need", fr: "Faire marcher l'IA sur un vrai besoin" },
       body: {
-        en: "Wiring in a hosted model is the easy part. I fine-tune open-source models, serve them on our own hardware, and put a working demo in front of a client.",
-        fr: "Brancher un modèle hébergé, c'est la partie facile. Je fine-tune des modèles open source, je les sers sur notre propre matériel et je mets une démo qui tourne devant un client.",
+        en: "Calling a hosted model is the easy part. I fine-tune open-source models, deploy them locally and integrate AI into real workflows — then show it working on the case at hand.",
+        fr: "Appeler un modèle hébergé, c'est la partie facile. Je fine-tune des modèles open source, je les déploie en local et j'intègre l'IA dans de vrais workflows — puis je la montre à l'œuvre sur le cas concret.",
       },
       proof: {
-        label: { en: "Voice model · Cleva Solutions", fr: "Modèle vocal · Cleva Solutions" },
-        target: "cleva-voice",
+        label: { en: "AI models in practice", fr: "Les modèles IA en pratique" },
+        target: "ai-models",
       },
     },
     {
@@ -214,9 +216,13 @@ export const capabilities = {
         fr: "Je conceptualise vite et je mets un premier prototype fonctionnel entre les mains des gens tôt, au lieu de lire de la documentation pendant des mois. Un client décide plus vite quand il voit un résultat.",
       },
       proof: {
-        label: { en: "3geeks · adapted inside Nokia and Cleva", fr: "3geeks · adapté chez Nokia et Cleva" },
+        label: { en: "3geeks · adapted inside companies", fr: "3geeks · adapté dans les entreprises" },
         target: "prompt-hub",
       },
     },
   ] satisfies Capability[],
+  outro: {
+    en: "Still an apprentice, still learning fast — and what I build now is the base of what I can bring to your team tomorrow.",
+    fr: "Encore alternant, et j'apprends vite — ce que je construis aujourd'hui est la base de ce que je peux apporter à votre équipe demain.",
+  } satisfies L,
 };

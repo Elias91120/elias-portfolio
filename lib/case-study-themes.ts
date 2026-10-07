@@ -22,16 +22,6 @@ export const caseStudyThemes: Record<string, CaseStudyTheme> = {
     card: "#0f1f35",
     grain: false,
   },
-  "nokia-dashboard": {
-    bg: "#030f1d",
-    bgTo: "#062037",
-    fg: "#e8f4fc",
-    muted: "#7a9bb5",
-    accent: "#38bdf8",
-    kickerColor: "#38bdf8",
-    card: "#0a1a2e",
-    grain: false,
-  },
   "ai-travel-planner": {
     bg: "#1a1035",
     bgTo: "#2d1b4e",
@@ -50,16 +40,6 @@ export const caseStudyThemes: Record<string, CaseStudyTheme> = {
     accent: "#fbbf24",
     kickerColor: "#fbbf24",
     card: "#1f1808",
-    grain: false,
-  },
-  "cursor-portal": {
-    bg: "#1a0f08",
-    bgTo: "#0f0804",
-    fg: "#fef3e8",
-    muted: "#c4a48a",
-    accent: "#fb923c",
-    kickerColor: "#fb923c",
-    card: "#241408",
     grain: false,
   },
 };

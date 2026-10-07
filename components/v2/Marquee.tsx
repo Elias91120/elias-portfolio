@@ -22,7 +22,6 @@ const shots: { src: string; alt: string }[] = [
 const words = [
   "Data pipelines",
   "Fine-tuning",
-  "Voice AI",
   "GPU serving",
   "AI agents",
   "RAG",

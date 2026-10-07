@@ -13,6 +13,17 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Retired case studies: they named internal tools, so they are gone.
+      {
+        source: "/projects/nokia-dashboard",
+        destination: "/#about",
+        permanent: true,
+      },
+      {
+        source: "/projects/cursor-portal",
+        destination: "/#about",
+        permanent: true,
+      },
       {
         source: "/:path*",
         has: [{ type: "host", value: "elias-elloumi.vercel.app" }],

@@ -100,10 +100,19 @@ export default function Capabilities() {
           <li aria-hidden className="h-px bg-white/[0.14]" />
         </ol>
 
+        <FadeIn y={22} className="mt-10 max-w-2xl">
+          <p
+            className="text-balance font-display font-medium leading-[1.35] tracking-tight text-[#D7E2EA]"
+            style={{ fontSize: "clamp(1.1rem, 1.8vw, 1.45rem)" }}
+          >
+            {t(capabilities.outro)}
+          </p>
+        </FadeIn>
+
         <FadeIn
           delay={0.1}
           y={22}
-          className="mt-12 flex flex-wrap items-center gap-3 sm:gap-4"
+          className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4"
         >
           <Magnet padding={70} strength={8}>
             <PrimaryButton href="#contact">{t(ui.contactCta)}</PrimaryButton>

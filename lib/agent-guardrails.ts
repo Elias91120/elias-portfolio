@@ -83,10 +83,10 @@ export function buildSafeFallback(userMessage: string): string {
       : `Elias is currently an apprentice at Cleva Solutions (ClevAI), alongside his Mastère in Data Engineering & AI at EFREI Paris (RNCP level 7). Contact: ${contact.email}`;
   }
 
-  if (/nokia|feature analyzer|feature-analyzer|dashboard/.test(msg)) {
+  if (/nokia|dashboard|pipeline/.test(msg)) {
     return lang === "fr"
-      ? `Elias a conçu et développé le Feature Analyzer chez Nokia — plateforme FastAPI + React qui réunit Jira et d'autres sources internes (7+) dans un dashboard unique, avec un résumé IA par-dessus. Il a aussi piloté l'adoption de Cursor (portail RAG, démos dans 4 équipes). Case study : ${PORTFOLIO_URL}/projects/nokia-dashboard`
-      : `Elias built the Feature Analyzer at Nokia — a FastAPI + React platform that brings Jira and other internal sources (7+) into one live dashboard, with an AI summary on top. He also led Cursor adoption (RAG portal, demos across 4 teams). Case study: ${PORTFOLIO_URL}/projects/nokia-dashboard`;
+      ? `Chez Nokia, Elias a construit un pipeline de données et un dashboard unique sur 7+ sources internes, avec un résumé IA par-dessus, et aidé plusieurs équipes à adopter les outils IA. Le détail est interne : pour en savoir plus, écrivez-lui : ${contact.email}`
+      : `At Nokia, Elias built a data pipeline and one clean dashboard over 7+ internal sources, with an AI summary on top, and helped several teams adopt AI tooling. The specifics are internal — for more, email him: ${contact.email}`;
   }
 
   if (/contact|email|reach|joindre|linkedin|fiverr/.test(msg)) {
