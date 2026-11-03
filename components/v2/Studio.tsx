@@ -50,18 +50,18 @@ export default function Studio() {
         className="pointer-events-none absolute -right-[20vw] top-1/2 h-[70vh] w-[70vw] -translate-y-1/2 opacity-30 blur-[120px]"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(240,180,41,0.35) 0%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(16,234,170,0.28) 0%, rgba(194,251,4,0.12) 40%, transparent 70%)",
         }}
       />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.05fr_1fr] md:gap-16">
         <FadeIn y={28} className="flex flex-col items-start gap-7">
           <Image
-            src="/brands/3geeks.png"
+            src="/brands/3geeks-wordmark.webp"
             alt="3geeks"
-            width={338}
-            height={117}
-            className="h-9 w-auto opacity-90 sm:h-10"
+            width={600}
+            height={146}
+            className="h-9 w-auto sm:h-11"
           />
           <h2
             className="font-display font-bold leading-[1.02] tracking-[-0.03em]"
@@ -96,7 +96,7 @@ export default function Studio() {
                   <h3 className="font-display text-lg font-bold tracking-[-0.01em] sm:text-xl">
                     {t(o.name)}
                   </h3>
-                  <span className="text-sm font-medium text-[#f0b429]">
+                  <span className="text-sm font-medium text-[#c2fb04]">
                     {t(o.price)}
                   </span>
                 </div>

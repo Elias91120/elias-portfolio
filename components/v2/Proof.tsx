@@ -87,9 +87,7 @@ export default function Proof() {
                     className={
                       job.logo.plate
                         ? "inline-flex items-center rounded-xl bg-white px-4 py-2.5"
-                        : job.logo.crop
-                          ? "inline-flex h-11 w-40 items-center justify-center overflow-hidden rounded-xl"
-                          : "inline-flex items-center"
+                        : "inline-flex items-center"
                     }
                   >
                     <Image
@@ -101,9 +99,7 @@ export default function Proof() {
                       className={
                         job.logo.plate
                           ? "h-6 w-auto"
-                          : job.logo.crop
-                            ? "h-full w-full origin-[48%_50%] scale-[1.45] object-cover"
-                            : "h-9 w-auto sm:h-10"
+                          : "h-9 w-auto sm:h-10"
                       }
                     />
                   </span>

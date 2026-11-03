@@ -53,8 +53,6 @@ export type Experience = {
     width: number;
     height: number;
     plate?: boolean;
-    /** Trim the empty margin baked into the source file (our own logo only). */
-    crop?: boolean;
   };
   /** One line on what the company is, so the name alone is enough to place it. */
   tagline: L;
@@ -142,7 +140,7 @@ export const experience: Experience[] = [
   {
     id: "3geeks",
     company: "3geeks",
-    logo: { src: "/brands/3geeks.png", width: 338, height: 117, crop: true },
+    logo: { src: "/brands/3geeks-wordmark.webp", width: 600, height: 146 },
     tagline: {
       en: "Studio I co-founded · clients worldwide",
       fr: "Studio que j'ai co-fondé · clients dans le monde",
@@ -150,7 +148,7 @@ export const experience: Experience[] = [
     role: { en: "Co-founder, studio & self-hosted production", fr: "Co-fondateur, studio & production auto-hébergée" },
     period: { en: "2025 - now", fr: "2025 - aujourd'hui" },
     current: true,
-    accent: "#f0b429",
+    accent: "#c2fb04",
     stat: {
       value: "14",
       label: { en: "apps in production", fr: "apps en production" },
