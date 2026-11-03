@@ -5,9 +5,10 @@
 
 ## Jalons
 
-État : la nuit du 03/11, Elias a demandé de tout faire jusqu'au déploiement sans attendre son feu vert. J0 est
-fait ; J1 à J4 sont codés et en attente de sa relecture (« à vérifier ») ; J5 (mise en ligne) est détaillé
-plus bas. Les points laissés à son arbitrage sont listés sous J3 et en fin de fichier.
+État : la nuit du 03/11, Elias a demandé de tout faire jusqu'au déploiement sans attendre son feu vert. Tout est
+en ligne sur elias-elloumi.com depuis le 03/11 (J5 fait). J1 à J4 restent « à vérifier » : relecture d'Elias,
+plus les vérifications listées sous chaque jalon. Les points laissés à son arbitrage sont sous J3 et dans
+« À trancher » en fin de fichier.
 Constat de départ : le dernier
 commit date du 13/09 ; la fiche « 3geeks » décrit encore un « générateur de sites par intention » alors que
 3geeks.fr vend aujourd'hui des sites à partir de 300 €, des applications et de l'IA pour les entreprises ; les
@@ -145,12 +146,26 @@ Dr Amel Elloumi Jellouli, Radar appels d'offres) ; aucun encart ne renvoie vers 
   - sitemap : `/fr` ajouté, avec ses alternates de langue ;
   - `@vercel/analytics` 2.0.1 ajouté dans le layout ;
   - `scripts/verify.mjs` réécrit en vrai contrôle (14 vérifications sur `/` et `/fr`) : tout passe en local.
+- *Vérifié le 03/11 en production* : Lighthouse sur `/fr` : **SEO 100**, bonnes pratiques 100, accessibilité 96
+  (seul échec : `color-contrast`, des textes gris trop pâles, déjà là avant). Web Analytics activé sur le projet
+  Vercel, script servi (200). **Pas vérifié** : le test des résultats enrichis de Google sur le JSON-LD, et
+  l'indexation réelle de `/fr` (à suivre dans Search Console d'ici quelques jours).
 
 ### J5 — Mise en ligne et vérification
-- État : à faire
+- État : fait
 - Objectif : la nouvelle version en production, vérifiée.
 - Contenu : `npm run verify`, `npm run build`, déploiement Vercel, contrôle sur le vrai domaine.
 - Fini quand : elias-elloumi.com sert la nouvelle version ; LCP mobile < 2,5 s ; liens externes tous vérifiés.
+- *Fait le 03/11* : commit a836594 poussé sur `main` (via la branche `portfolio-refresh-nov`, fusionnée en
+  avance rapide), déployé par `vercel --prod` : elias-elloumi-42bulgr9b, Ready, alias elias-elloumi.com.
+  - Premier essai refusé : la CLI envoyait `public/3d/avatar-raw.glb` (118 Mo > limite de 100 Mo). Ajout d'un
+    `.vercelignore` qui reprend le `.gitignore` (le rapport PDF et l'export Meshy de la racine ne partent plus
+    chez Vercel non plus).
+  - `VERIFY_URL=https://elias-elloumi.com npm run verify` : 14/14. Toutes les pages et les liens externes
+    (3geeks.fr avec UTM, site du Cabinet) répondent 200 ; `avatar-raw.glb` répond 404 en prod.
+  - Mesures en prod (Playwright) : LCP 0,2 s sur mobile, 0,5 s sur ordinateur ; **2,16 s en 4G lente avec un
+    processeur bridé ×4**. Les 3,4 s de J0 venaient de l'image de l'affiche pas encore en cache chez Vercel.
+    Poids transféré : 2,4 à 2,7 Mo selon la page et l'écran, dont 1,45 Mo de modèle 3D chargé après la page.
 
 ## Décisions
 
@@ -165,3 +180,14 @@ Dr Amel Elloumi Jellouli, Radar appels d'offres) ; aucun encart ne renvoie vers 
 - Le poids de page est une exigence : chaque nouvel élément est budgété, différé ou sauté sur connexion lente.
 - Client privé = architecture seulement, ni marque ni secteur. Un client qui figure déjà publiquement sur
   3geeks.fr peut être nommé, après validation d'Elias.
+
+## À trancher (03/11)
+
+- **Sécurité, urgent** : dans Coolify, l'application `job-aggregator` a un jeton Forgejo écrit en clair dans
+  l'adresse de son dépôt Git. Le révoquer dans Forgejo et passer par une clé de déploiement. Rien n'a été touché.
+- Textures du modèle 3D en 1024 px ou on garde 2048 (voir J3).
+- Petits titres en capitales et numéros de section : on garde l'identité actuelle ou on allège (voir J3).
+- Contraste : quelques textes gris trop pâles (Lighthouse `color-contrast`).
+- Le chiffre « 1,000 tests » de Workspace, à confirmer par Noam.
+- Projet Workspace : il n'y a pas de projet « Portfolio » dans workspace.3geeks.fr ; à créer si on veut y suivre
+  ce site.

@@ -1,0 +1,17 @@
+# `vercel deploy` uploads the working folder; keep it to what git tracks.
+# Mirrors .gitignore: the raw avatar alone is over Vercel's 100 MB file limit,
+# and local documents (PDF reports) must never leave this machine.
+node_modules
+.next
+out
+build
+coverage
+screenshots
+.agents
+.env*
+*.pem
+*.tsbuildinfo
+*.pdf
+!public/CV_Elias_Elloumi_FR.pdf
+Meshy_*.glb
+public/3d/avatar-raw.glb
