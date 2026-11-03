@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ViewTransition } from "react";
 import ProjectBrowserPreview from "@/components/ProjectBrowserPreview";
+import CaseStudyCta from "@/components/case-study/CaseStudyCta";
 
 export const metadata: Metadata = {
-  title: "3geeks — Case Study",
+  title: "3geeks · Case Study",
   description:
     "How two friends built 3geeks, an intent-to-website generator: LLM orchestration, GenUI and Next.js turning a text brief into a fully laid-out site.",
   alternates: { canonical: "/projects/web-gen" },
   openGraph: {
-    title: "3geeks — Case Study · Elias Elloumi",
+    title: "3geeks · Case Study · Elias Elloumi",
     description:
-      "Intent-to-website generator and studio landing on www.3geeks.fr — the flagship product of the 3geeks studio.",
+      "How 3geeks started: an intent-to-website generator, the first product of the studio behind www.3geeks.fr.",
   },
 };
 
@@ -19,7 +20,7 @@ const stack = [
   { label: "LLM orchestration", detail: "Multi-step prompting turns a brief into structure" },
   { label: "GenUI", detail: "Generated layouts rendered as real components" },
   { label: "Next.js", detail: "App Router, streaming, deployed on Coolify" },
-  { label: "Made in France", detail: "Built by the 3geeks studio — Elias & Noam" },
+  { label: "Made in France", detail: "Built by the 3geeks studio: Elias & Noam" },
 ];
 
 const shipped = [
@@ -41,7 +42,7 @@ const shipped = [
   {
     name: "Retail ops platform",
     detail:
-      "Client project — online storefront, counter point of sale and a live wall display kept in sync",
+      "Client project: online storefront, counter point of sale and a live wall display kept in sync",
   },
   {
     name: "PromptOptim",
@@ -53,7 +54,7 @@ const shipped = [
 export default function WebGenCaseStudy() {
   return (
     <main className="relative min-h-screen">
-      {/* Minimal chrome — this page is a reading room, not the homepage */}
+      {/* Minimal chrome, this page is a reading room, not the homepage */}
       <header
         className="fixed inset-x-0 top-0 z-50 bg-[#08060f]/70 backdrop-blur-md border-b border-white/5"
         style={{ viewTransitionName: "site-header" }}
@@ -88,7 +89,7 @@ export default function WebGenCaseStudy() {
               CASE STUDY
             </span>
             <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              3geeks —{" "}
+              3geeks:{" "}
               <span className="font-serif italic font-semibold text-[#f5f0e4]">
                 intent to website
               </span>
@@ -96,7 +97,7 @@ export default function WebGenCaseStudy() {
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
               The flagship of our two-person studio: describe the site you
               want in plain words, and 3geeks turns that brief into a fully
-              laid-out, ready-to-ship website — live at www.3geeks.fr.
+              laid-out, ready-to-ship website, live at www.3geeks.fr.
             </p>
           </div>
         </ViewTransition>
@@ -128,9 +129,9 @@ export default function WebGenCaseStudy() {
           </p>
           <p className="mt-4 leading-relaxed text-[#c5c0da]">
             Large language models changed that equation. If a model can
-            understand intent, then a plain-language brief — &ldquo;a warm
-            landing page for my bakery, with our story and opening hours&rdquo;
-            — contains everything needed to design a site. The missing piece
+            understand intent, then a plain-language brief (&ldquo;a warm
+            landing page for my bakery, with our story and opening hours&rdquo;)
+            contains everything needed to design a site. The missing piece
             was the machinery to go from that sentence to real, structured
             pages.
           </p>
@@ -144,7 +145,7 @@ export default function WebGenCaseStudy() {
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
             3geeks is an intent-to-website generator: one flow takes a text
             brief, extracts the intent, plans the site structure, and renders
-            a fully laid-out website. No canvas, no drag-and-drop — the brief
+            a fully laid-out website. No canvas, no drag-and-drop: the brief
             is the interface.
           </p>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -170,7 +171,7 @@ export default function WebGenCaseStudy() {
             My role
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
-            3geeks is two friends and partners — Noam and me — and no one gets to
+            3geeks is two friends and partners, Noam and me, and no one gets to
             do just one job. Charles, a friend and former partner, now brings us
             projects as a business referrer. I work across the product: LLM orchestration and
             prompt design, the Next.js front end, and the pipeline that turns
@@ -185,7 +186,7 @@ export default function WebGenCaseStudy() {
           </h2>
           <p className="mt-5 leading-relaxed text-[#c5c0da]">
             3geeks became the engine of the studio. Around it, we shipped real
-            products for real clients — each one proof that a two-person team
+            products for real clients, each one proof that a two-person team
             with an AI-native workflow can deliver production software:
           </p>
           <ul className="mt-8 space-y-3">
@@ -212,30 +213,7 @@ export default function WebGenCaseStudy() {
           </ul>
         </section>
 
-        {/* CTA */}
-        <section className="mt-20 rounded-3xl bg-card p-8 ring-1 ring-white/12 sm:p-10">
-          <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-            Want the full story?
-          </h2>
-          <p className="mt-4 max-w-xl leading-relaxed text-muted">
-            3geeks is one chapter — the portfolio reads like a book, from a
-            Minecraft kid to data and AI engineering.
-          </p>
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/#about"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-[#0c0a16] transition-transform duration-300 hover:scale-[1.03]"
-            >
-              Read the story
-            </Link>
-            <Link
-              href="/#contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white/5 px-6 py-3 font-medium text-white ring-1 ring-white/15 transition-all duration-300 hover:bg-white/10 hover:ring-white/30"
-            >
-              Get in touch
-            </Link>
-          </div>
-        </section>
+        <CaseStudyCta />
           </div>
         </ViewTransition>
       </article>

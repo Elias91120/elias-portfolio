@@ -11,7 +11,7 @@ export type FlowNode = {
 
 export type Visual =
   | { kind: "image"; src: string; alt: L }
-  | { kind: "panel"; title: L; rows: { k: string; v: string }[] }
+  | { kind: "panel"; title: L; rows: { k: string; v: string | L }[] }
   | { kind: "flow"; title: L; nodes: FlowNode[]; badge?: L };
 
 /**
@@ -25,16 +25,16 @@ export type Tier = "now" | "pro" | "studio";
 
 export const tierLabel: Record<Tier, L> = {
   now: {
-    en: "Cleva Solutions — right now",
-    fr: "Cleva Solutions — en ce moment",
+    en: "Cleva Solutions, right now",
+    fr: "Cleva Solutions, en ce moment",
   },
   pro: {
-    en: "Nokia — 2025 · 2026",
-    fr: "Nokia — 2025 · 2026",
+    en: "Nokia, 2025 - 2026",
+    fr: "Nokia, 2025 - 2026",
   },
   studio: {
-    en: "3geeks — co-founded, built to be adapted inside companies",
-    fr: "3geeks — co-fondé, conçu pour s'adapter aux entreprises",
+    en: "3geeks, co-founded and built to be adapted inside companies",
+    fr: "3geeks, co-fondé et conçu pour s'adapter aux entreprises",
   },
 };
 
@@ -55,6 +55,17 @@ export type Work = {
   accent: string;
 };
 
+/**
+ * One slug per project, shared by the cards (data-project-slug) and the
+ * assistant, which uses it to scroll to and highlight a card.
+ */
+export function projectSlug(p: { id?: string; name: string; caseStudy?: string }): string {
+  return (
+    p.id ??
+    p.caseStudy?.match(/\/projects\/([^/]+)\/?$/)?.[1] ??
+    p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+  );
+}
 
 /** The cards that stack on scroll, grouped by tier. */
 export const featuredWork: Work[] = [
@@ -69,8 +80,8 @@ export const featuredWork: Work[] = [
     },
     context: { en: "Now · Cleva Solutions", fr: "En ce moment · Cleva Solutions" },
     description: {
-      en: "Clients want to know what AI can do for them, and a slide will not tell them. I take existing open-source models, adapt them to a precise need, deploy them locally and put a working proof of concept in front of the client. It is where I work every day — and only the beginning.",
-      fr: "Les clients veulent savoir ce que l'IA peut faire pour eux, et une slide ne le leur dira pas. Je prends des modèles open source existants, je les adapte à un besoin précis, je les déploie en local et je mets un POC fonctionnel devant le client. C'est là que je travaille chaque jour — et ce n'est que le début.",
+      en: "Clients want to know what AI can do for them, and a slide will not tell them. I take existing open-source models, adapt them to a precise need, deploy them locally and put a working proof of concept in front of the client. It is where I work every day, and it is only the beginning.",
+      fr: "Les clients veulent savoir ce que l'IA peut faire pour eux, et une slide ne le leur dira pas. Je prends des modèles open source existants, je les adapte à un besoin précis, je les déploie en local et je mets un POC fonctionnel devant le client. C'est là que je travaille chaque jour, et ce n'est que le début.",
     },
     metrics: [
       { value: "POC", label: { en: "working demos, not slides", fr: "des démos qui marchent, pas des slides" } },
@@ -115,8 +126,8 @@ export const featuredWork: Work[] = [
     },
     context: { en: "Internal platform · Nokia", fr: "Plateforme interne · Nokia" },
     description: {
-      en: "Information on a single topic was scattered across many internal tools, and every analysis meant reconciling them by hand. I built the pipeline that gathers it, links it together and presents it in one clean, live dashboard — with an AI summary on top.",
-      fr: "L'information sur un même sujet était éparpillée dans de nombreux outils internes, et chaque analyse demandait de les recouper à la main. J'ai construit le pipeline qui la réunit, la relie et la présente dans un dashboard unique, propre et en direct — avec un résumé IA par-dessus.",
+      en: "Information on a single topic was scattered across many internal tools, and every analysis meant reconciling them by hand. I built the pipeline that gathers it, links it together and presents it in one clean, live dashboard, with an AI summary on top.",
+      fr: "L'information sur un même sujet était éparpillée dans de nombreux outils internes, et chaque analyse demandait de les recouper à la main. J'ai construit le pipeline qui la réunit, la relie et la présente dans un dashboard unique, propre et en direct, avec un résumé IA par-dessus.",
     },
     metrics: [
       { value: "7+", label: { en: "internal sources unified", fr: "sources internes unifiées" } },
@@ -192,11 +203,11 @@ export const featuredWork: Work[] = [
     },
     context: { en: "Infrastructure", fr: "Infrastructure" },
     description: {
-      en: "Every 3geeks product runs on this. The studio's apps were scattered across Vercel with drifting environment variables; I consolidated them onto one self-hosted stack — Coolify, Traefik, Cloudflare Tunnel — with a straight path from git push to a live HTTPS domain.",
-      fr: "Tous les produits 3geeks tournent là-dessus. Les apps du studio étaient éparpillées sur Vercel, variables d'environnement à la dérive ; je les ai consolidées sur une stack auto-hébergée — Coolify, Traefik, Cloudflare Tunnel — avec un chemin direct du git push au domaine HTTPS.",
+      en: "Every 3geeks product runs on this. The studio's apps were scattered across Vercel with drifting environment variables; I consolidated them onto one self-hosted stack (Coolify, Traefik, Cloudflare Tunnel) with a straight path from git push to a live HTTPS domain. Our single sign-on and our Git forge now run on the same machine.",
+      fr: "Tous les produits 3geeks tournent là-dessus. Les apps du studio étaient éparpillées sur Vercel, variables d'environnement à la dérive ; je les ai consolidées sur une stack auto-hébergée (Coolify, Traefik, Cloudflare Tunnel) avec un chemin direct du git push au domaine HTTPS. Notre authentification unique et notre forge Git tournent désormais sur la même machine.",
     },
     metrics: [
-      { value: "13", label: { en: "apps in production", fr: "apps en production" } },
+      { value: "14", label: { en: "apps in production", fr: "apps en production" } },
       { value: "10+", label: { en: "domains routed", fr: "domaines routés" } },
       { value: "3", label: { en: "Vercel migrations", fr: "migrations Vercel" } },
     ],
@@ -216,6 +227,66 @@ export const featuredWork: Work[] = [
     linkLabel: "3geeks.fr",
     caseStudy: "/projects/3geeks-infra",
     accent: "#f0b429",
+  },
+  {
+    // Internal tool: described, never linked.
+    id: "workspace",
+    name: "Workspace",
+    tier: "studio",
+    origin: "3geeks",
+    category: { en: "Internal platform", fr: "Plateforme interne" },
+    context: { en: "Internal · in daily use", fr: "Interne · utilisé chaque jour" },
+    description: {
+      en: "Where every 3geeks project lives: tasks, documentation, decisions and deployment status in one place. It ships its own MCP server, so the AI agents we code with keep the projects up to date as they work, and a human only validates the decisions.",
+      fr: "Là où vit chaque projet 3geeks : tâches, documentation, décisions et état des déploiements au même endroit. Il embarque son propre serveur MCP : les agents IA avec lesquels on code tiennent les projets à jour pendant qu'ils travaillent, et un humain n'a plus qu'à valider les décisions.",
+    },
+    metrics: [
+      { value: "MCP", label: { en: "server for AI agents", fr: "serveur pour les agents IA" } },
+      { value: "1,000", label: { en: "automated tests", fr: "tests automatisés" } },
+    ],
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "MCP"],
+    visual: {
+      kind: "panel",
+      title: { en: "One project, one page", fr: "Un projet, une page" },
+      rows: [
+        { k: "tasks", v: "Todo → Review → Done" },
+        { k: "docs", v: { en: "written as we ship", fr: "écrite au fil des livraisons" } },
+        { k: "decisions", v: { en: "proposed by AI, validated by us", fr: "proposées par l'IA, validées par nous" } },
+        { k: "deploys", v: { en: "live Coolify status", fr: "état Coolify en direct" } },
+        { k: "agents", v: { en: "MCP server", fr: "serveur MCP" } },
+      ],
+    },
+    accent: "#8b7ef8",
+  },
+  {
+    // Internal tool: described, never linked.
+    id: "geeks-code",
+    name: "Geeks Code",
+    tier: "studio",
+    origin: "3geeks",
+    category: { en: "Studio IDE", fr: "IDE du studio" },
+    context: { en: "Internal · the team's editor", fr: "Interne · l'éditeur de l'équipe" },
+    description: {
+      en: "Onboarding a developer used to mean an afternoon of accounts, tokens and config files. Geeks Code is our own build of VS Code: one sign-in through the studio's single sign-on, and the Git forge, Workspace, the infrastructure and Claude are wired in, with updates shipped from our own server.",
+      fr: "Accueillir un développeur, c'était un après-midi de comptes, de jetons et de fichiers de config. Geeks Code est notre propre version de VS Code : une seule connexion par l'authentification unique du studio, et la forge Git, Workspace, l'infrastructure et Claude sont branchés, avec des mises à jour servies par notre propre serveur.",
+    },
+    metrics: [
+      { value: "1", label: { en: "sign-in to be ready", fr: "connexion pour être prêt" } },
+      { value: "SSO", label: { en: "self-hosted", fr: "auto-hébergé" } },
+    ],
+    stack: ["VS Code", "TypeScript", "Authentik SSO", "Forgejo"],
+    visual: {
+      kind: "panel",
+      title: { en: "Ready in one sign-in", fr: "Prêt en une connexion" },
+      rows: [
+        { k: "sso", v: { en: "one studio account", fr: "un seul compte studio" } },
+        { k: "git", v: "Git Geeks (Forgejo)" },
+        { k: "work", v: { en: "Workspace + milestones", fr: "Workspace + jalons" } },
+        { k: "infra", v: { en: "deploys and logs", fr: "déploiements et logs" } },
+        { k: "ai", v: { en: "Claude, preconfigured", fr: "Claude, préconfiguré" } },
+      ],
+    },
+    accent: "#3fbf6f",
   },
 ];
 
@@ -247,7 +318,7 @@ export const otherWork: SideProject[] = [
       fr: "Un moteur d'exécution déterministe : un workflow LangGraph propose, un risk manager fail-closed est seul à approuver. Quatre modes isolés, du tout-simulé au réel.",
     },
     stack: ["Python", "LangGraph", "PostgreSQL"],
-    status: { en: "Private — 3geeks", fr: "Privé — 3geeks" },
+    status: { en: "Private, 3geeks", fr: "Privé, 3geeks" },
     accent: "#f0b429",
   },
   {
@@ -266,8 +337,8 @@ export const otherWork: SideProject[] = [
     name: "CallKitchen",
     origin: "3geeks",
     tagline: {
-      en: "An AI voice agent that answers a restaurant's phone around the clock — takeaway, bookings, menu questions — then confirms by SMS and sends the order to the kitchen.",
-      fr: "Un agent vocal IA qui répond au téléphone d'un restaurant 24h/24 — commandes, réservations, questions menu — puis confirme par SMS et envoie la commande en cuisine.",
+      en: "An AI voice agent that answers a restaurant's phone around the clock (takeaway, bookings, menu questions), then confirms by SMS and sends the order to the kitchen.",
+      fr: "Un agent vocal IA qui répond au téléphone d'un restaurant 24h/24 (commandes, réservations, questions menu), puis confirme par SMS et envoie la commande en cuisine.",
     },
     stack: ["AI voice", "Next.js", "SaaS"],
     status: { en: "Live", fr: "En ligne" },
@@ -288,11 +359,23 @@ export const otherWork: SideProject[] = [
     accent: "#4aa8f0",
   },
   {
+    name: "Cabinet Dr Amel Elloumi Jellouli",
+    origin: "client",
+    tagline: {
+      en: "A bilingual French and Arabic site for a dermatology practice in Tunis. It mirrors the practice's Facebook page on its own, every post and video within minutes, next to Google reviews and booking.",
+      fr: "Un site bilingue français et arabe pour un cabinet de dermatologie à Tunis. Il reflète tout seul la page Facebook du cabinet, chaque publication et vidéo en quelques minutes, à côté des avis Google et de la prise de rendez-vous.",
+    },
+    stack: ["Next.js", "Facebook Graph API", "Schema.org"],
+    status: { en: "Client site, live", fr: "Site client, en ligne" },
+    link: "https://www.amel-jellouli-elloumi.com",
+    accent: "#c9a46a",
+  },
+  {
     name: "3geeks API Hub",
     origin: "3geeks",
     tagline: {
-      en: "A fully local, OpenAI-compatible gateway in front of Ollama — personal tokens, live usage stats and model management for the whole studio.",
-      fr: "Une passerelle 100 % locale compatible OpenAI devant Ollama — tokens personnels, statistiques d'usage en direct et gestion des modèles pour tout le studio.",
+      en: "A fully local, OpenAI-compatible gateway in front of Ollama: personal tokens, live usage stats and model management for the whole studio.",
+      fr: "Une passerelle 100 % locale compatible OpenAI devant Ollama : tokens personnels, statistiques d'usage en direct et gestion des modèles pour tout le studio.",
     },
     stack: ["FastAPI", "Ollama", "React"],
     status: { en: "Internal, in production", fr: "Interne, en production" },
@@ -302,10 +385,10 @@ export const otherWork: SideProject[] = [
     name: "3geeks",
     origin: "3geeks",
     tagline: {
-      en: "The studio flagship: an intent-to-website generator where a written brief becomes a fully laid-out site.",
-      fr: "Le produit phare du studio : un générateur de sites à partir d'une intention, où un brief écrit devient un site entièrement mis en page.",
+      en: "The studio Noam and I run: websites from €300, web and iOS apps, and AI wired into the tools a business already uses. Small requests ship in 24 to 48 hours, and nothing is paid until the client is satisfied.",
+      fr: "Le studio que je dirige avec Noam : des sites à partir de 300 €, des applications web et iOS, et de l'IA branchée sur les outils qu'une entreprise utilise déjà. Les petites demandes sont livrées en 24 à 48 h, et rien n'est payé avant que le client soit satisfait.",
     },
-    stack: ["Next.js", "LLM", "GenUI"],
+    stack: ["Websites", "Apps", "AI for business"],
     status: { en: "Live", fr: "En ligne" },
     link: "https://www.3geeks.fr",
     caseStudy: "/projects/web-gen",
@@ -315,8 +398,8 @@ export const otherWork: SideProject[] = [
     name: "Two",
     origin: "client",
     tagline: {
-      en: "An iOS space for couples — shared calendar, expenses, memories and a geolocated photo map. The data stays between the two partners.",
-      fr: "Un espace iOS pour les couples — calendrier partagé, dépenses, souvenirs et carte photo géolocalisée. Les données restent entre les deux partenaires.",
+      en: "An iOS space for couples: shared calendar, expenses, memories and a geolocated photo map. The data stays between the two partners.",
+      fr: "Un espace iOS pour les couples : calendrier partagé, dépenses, souvenirs et carte photo géolocalisée. Les données restent entre les deux partenaires.",
     },
     stack: ["Swift", "SwiftUI", "Firebase"],
     status: { en: "On the App Store", fr: "Sur l'App Store" },
@@ -340,8 +423,8 @@ export const otherWork: SideProject[] = [
     name: "Retail ops platform",
     origin: "client",
     tagline: {
-      en: "One shop, three surfaces that must agree — storefront, scale-driven point of sale, live wall display — kept in sync in real time by a private ops platform.",
-      fr: "Une boutique, trois surfaces qui doivent rester d'accord — vitrine, caisse au poids, affichage mural — synchronisées en temps réel par une plateforme d'exploitation privée.",
+      en: "One shop, three surfaces that must agree (storefront, scale-driven point of sale, live wall display), kept in sync in real time by a private ops platform.",
+      fr: "Une boutique, trois surfaces qui doivent rester d'accord (vitrine, caisse au poids, affichage mural), synchronisées en temps réel par une plateforme d'exploitation privée.",
     },
     stack: ["Shopify GraphQL", "Firebase RTDB", "Next.js"],
     status: { en: "Client project", fr: "Projet client" },

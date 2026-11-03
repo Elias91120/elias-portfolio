@@ -12,8 +12,8 @@ export const profile = {
     fr: "Ingénieur Data & IA",
   } satisfies L,
   heroLine: {
-    en: "Data & AI — I build the pipelines, the models and the products on top",
-    fr: "Data & IA — je construis les pipelines, les modèles et les produits qui vont avec",
+    en: "Data & AI. I build the pipelines, the models and the products on top",
+    fr: "Data & IA. Je construis les pipelines, les modèles et les produits qui vont avec",
   } satisfies L,
   status: {
     en: "Apprentice @ Cleva Solutions (ClevAI) · Mastère EFREI Paris",
@@ -24,6 +24,7 @@ export const profile = {
 export const nav: { id: string; label: L }[] = [
   { id: "about", label: { en: "About", fr: "Profil" } },
   { id: "work", label: { en: "Work", fr: "Projets" } },
+  { id: "studio", label: { en: "Studio", fr: "Studio" } },
   { id: "contact", label: { en: "Contact", fr: "Contact" } },
 ];
 
@@ -78,8 +79,8 @@ export const experience: Experience[] = [
       en: "Insurance software · ClevAI, its AI hub",
       fr: "Logiciels d'assurance · ClevAI, son hub IA",
     },
-    role: { en: "Apprentice, Data & AI — ClevAI hub", fr: "Alternant, Data & IA — hub ClevAI" },
-    period: { en: "2026 — now", fr: "2026 — aujourd'hui" },
+    role: { en: "Apprentice, Data & AI, ClevAI hub", fr: "Alternant, Data & IA, hub ClevAI" },
+    period: { en: "2026 - now", fr: "2026 - aujourd'hui" },
     current: true,
     accent: "#22d3ee",
     stat: {
@@ -110,10 +111,10 @@ export const experience: Experience[] = [
       fr: "Entreprise mondiale des télécoms",
     },
     role: {
-      en: "Data & AI Tools Specialist — internship, then apprenticeship",
-      fr: "Data & AI Tools Specialist — stage, puis alternance",
+      en: "Data & AI Tools Specialist, internship then apprenticeship",
+      fr: "Data & AI Tools Specialist, stage puis alternance",
     },
-    period: { en: "2025 — 2026", fr: "2025 — 2026" },
+    period: { en: "2025 - 2026", fr: "2025 - 2026" },
     accent: "#8b7ef8",
     stat: {
       value: "7+",
@@ -146,12 +147,12 @@ export const experience: Experience[] = [
       en: "Studio I co-founded · clients worldwide",
       fr: "Studio que j'ai co-fondé · clients dans le monde",
     },
-    role: { en: "Co-founder — studio & self-hosted production", fr: "Co-fondateur — studio & production auto-hébergée" },
-    period: { en: "2025 — now", fr: "2025 — aujourd'hui" },
+    role: { en: "Co-founder, studio & self-hosted production", fr: "Co-fondateur, studio & production auto-hébergée" },
+    period: { en: "2025 - now", fr: "2025 - aujourd'hui" },
     current: true,
     accent: "#f0b429",
     stat: {
-      value: "13",
+      value: "14",
       label: { en: "apps in production", fr: "apps en production" },
     },
     points: [
@@ -160,8 +161,8 @@ export const experience: Experience[] = [
         fr: "Des outils qui gardent le code écrit avec l'IA structuré et maintenable.",
       },
       {
-        en: "One base solution, adapted to each company's stack — GitLab, Jira — with Claude Code or any IDE.",
-        fr: "Une solution de base, adaptée à la stack de chaque entreprise — GitLab, Jira — avec Claude Code ou n'importe quel IDE.",
+        en: "One base solution, adapted to each company's stack (GitLab, Jira), with Claude Code or any IDE.",
+        fr: "Une solution de base, adaptée à la stack de chaque entreprise (GitLab, Jira), avec Claude Code ou n'importe quel IDE.",
       },
       {
         en: "Runs its own production on its own hardware.",
@@ -190,8 +191,8 @@ export const capabilities = {
     {
       title: { en: "Turn scattered data into one clear picture", fr: "Transformer une donnée éparpillée en une vue claire" },
       body: {
-        en: "I build data pipelines that pull many sources together, and the dashboards that make them readable — with an AI summary on top, so a conclusion no longer takes a dozen tabs.",
-        fr: "Je construis des pipelines de données qui réunissent de nombreuses sources, et les dashboards qui les rendent lisibles — avec un résumé IA par-dessus, pour qu'une conclusion ne demande plus une douzaine d'onglets.",
+        en: "I build data pipelines that pull many sources together, and the dashboards that make them readable, with an AI summary on top, so a conclusion no longer takes a dozen tabs.",
+        fr: "Je construis des pipelines de données qui réunissent de nombreuses sources, et les dashboards qui les rendent lisibles, avec un résumé IA par-dessus, pour qu'une conclusion ne demande plus une douzaine d'onglets.",
       },
       proof: {
         label: { en: "Pipelines & dashboards", fr: "Pipelines & dashboards" },
@@ -201,8 +202,8 @@ export const capabilities = {
     {
       title: { en: "Make AI work on a real need", fr: "Faire marcher l'IA sur un vrai besoin" },
       body: {
-        en: "Calling a hosted model is the easy part. I fine-tune open-source models, deploy them locally and integrate AI into real workflows — then show it working on the case at hand.",
-        fr: "Appeler un modèle hébergé, c'est la partie facile. Je fine-tune des modèles open source, je les déploie en local et j'intègre l'IA dans de vrais workflows — puis je la montre à l'œuvre sur le cas concret.",
+        en: "Calling a hosted model is the easy part. I fine-tune open-source models, deploy them locally and integrate AI into real workflows, then show it working on the case at hand.",
+        fr: "Appeler un modèle hébergé, c'est la partie facile. Je fine-tune des modèles open source, je les déploie en local et j'intègre l'IA dans de vrais workflows, puis je la montre à l'œuvre sur le cas concret.",
       },
       proof: {
         label: { en: "AI models in practice", fr: "Les modèles IA en pratique" },
@@ -222,7 +223,7 @@ export const capabilities = {
     },
   ] satisfies Capability[],
   outro: {
-    en: "Still an apprentice, still learning fast — and what I build now is the base of what I can bring to your team tomorrow.",
-    fr: "Encore alternant, et j'apprends vite — ce que je construis aujourd'hui est la base de ce que je peux apporter à votre équipe demain.",
+    en: "Still an apprentice, still learning fast, and what I build now is the base of what I can bring to your team tomorrow.",
+    fr: "Encore alternant, et j'apprends vite : ce que je construis aujourd'hui est la base de ce que je peux apporter à votre équipe demain.",
   } satisfies L,
 };

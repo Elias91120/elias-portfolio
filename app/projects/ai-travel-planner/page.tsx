@@ -15,14 +15,14 @@ import { getCaseStudyTheme } from "@/lib/case-study-themes";
 const theme = getCaseStudyTheme("ai-travel-planner");
 
 export const metadata: Metadata = {
-  title: "AI Travel Planner — Case Study",
+  title: "AI Travel Planner · Case Study",
   description:
-    "Intent-based travel planning powered by Gemini — day-by-day tailor-made trips from what travelers actually want. Best Bachelor project at ECE Paris.",
+    "Intent-based travel planning powered by Gemini: day-by-day tailor-made trips from what travelers actually want. Best Bachelor project at ECE Paris.",
   alternates: { canonical: "/projects/ai-travel-planner" },
   openGraph: {
-    title: "AI Travel Planner — Case Study · Elias Elloumi",
+    title: "AI Travel Planner · Case Study · Elias Elloumi",
     description:
-      "Gemini-powered travel planner elected best Bachelor project at ECE Paris — brief to itinerary in one flow.",
+      "Gemini-powered travel planner elected best Bachelor project at ECE Paris: brief to itinerary in one flow.",
   },
 };
 
@@ -46,13 +46,13 @@ export default function AiTravelPlannerCaseStudy() {
             CASE STUDY
           </span>
           <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            AI Travel Planner —{" "}
+            AI Travel Planner:{" "}
             <span className="font-serif italic font-semibold text-[var(--cs-fg)]">
               trips from intent
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--cs-muted)]">
-            An intent-based travel app powered by Gemini — describe what you
+            An intent-based travel app powered by Gemini: describe what you
             actually want, and get a day-by-day itinerary tailored to you. Elected
             best Bachelor project at ECE Paris.
           </p>
@@ -87,7 +87,7 @@ export default function AiTravelPlannerCaseStudy() {
         <div>
           <CaseStudySection title="The problem">
             <p>
-              Generic travel sites give you hotels and flights — not what you
+              Generic travel sites give you hotels and flights, not what you
               actually want from a trip. &ldquo;3 days in Barcelona&rdquo; ignores
               the brief: food markets, quiet neighborhoods, sunset spots, budget
               constraints.
@@ -99,7 +99,7 @@ export default function AiTravelPlannerCaseStudy() {
 
           <CaseStudySection title="Intent-based planning">
             <p>
-              Users write a natural-language brief — who they&apos;re traveling with,
+              Users write a natural-language brief: who they&apos;re traveling with,
               what they care about, what to avoid. Gemini interprets the intent,
               and SaaS APIs enrich the plan with real-world data. The output is a
               day-by-day itinerary, not a list of links.
@@ -112,7 +112,7 @@ export default function AiTravelPlannerCaseStudy() {
 
           <CaseStudySection title="Recognition">
             <p>
-              The project was elected <em>best Bachelor project</em> at ECE Paris —
+              The project was elected <em>best Bachelor project</em> at ECE Paris,
               recognition that intent-based AI products can be both technically
               sound and genuinely useful.
             </p>
@@ -120,7 +120,7 @@ export default function AiTravelPlannerCaseStudy() {
 
           <CaseStudySection title="My role">
             <p>
-              Team project at ECE. I focused on AI integration — Gemini
+              Team project at ECE. I focused on AI integration: Gemini
               orchestration, prompt design, and the product UX that turns model
               output into something travelers can actually follow.
             </p>
@@ -128,7 +128,7 @@ export default function AiTravelPlannerCaseStudy() {
 
           <CaseStudySection title="Use-case screens">
             <p>
-              From trip brief to generated day cards — the interface makes AI
+              From trip brief to generated day cards, the interface makes AI
               output feel like a travel companion, not a chatbot dump.
             </p>
             <UseCaseScreenGrid
@@ -137,23 +137,21 @@ export default function AiTravelPlannerCaseStudy() {
                   linkLabel: "travel-planner.ece/brief",
                   imageAlt: "Trip brief input screen",
                   caption:
-                    "Trip brief — natural language in, structured intent out.",
+                    "Trip brief: natural language in, structured intent out.",
                   mock: <TravelBriefMock />,
                 },
                 {
                   linkLabel: "travel-planner.ece/itinerary",
                   imageAlt: "Generated day-by-day itinerary",
                   caption:
-                    "Generated itinerary — day-by-day cards with stops, timing, and context.",
+                    "Generated itinerary: day-by-day cards with stops, timing, and context.",
                   mock: <TravelItineraryMock />,
                 },
               ]}
             />
           </CaseStudySection>
 
-          <CaseStudyCta
-            description="The ECE chapter is where coding became shipping — read the full story from Minecraft worlds to production AI systems."
-          />
+          <CaseStudyCta />
         </div>
       </ViewTransition>
     </CaseStudyShell>

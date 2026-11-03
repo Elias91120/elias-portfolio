@@ -44,7 +44,7 @@ export const STORY_BRANCH_POINTS: StoryBranchPoint[] = [
   {
     atChapterId: "ece",
     revealAtProgress: 0.8,
-    prompt: "Two paths opened at once — which first?",
+    prompt: "Two paths opened at once. Which first?",
     choices: [
       {
         id: "nokia-first",

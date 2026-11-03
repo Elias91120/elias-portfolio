@@ -14,6 +14,7 @@ import Posts from "@/components/v2/Posts";
 import Path from "@/components/v2/Path";
 import Skills from "@/components/v2/Skills";
 import Recommendations from "@/components/v2/Recommendations";
+import Studio from "@/components/v2/Studio";
 import Contact from "@/components/v2/Contact";
 
 // Below-the-fold and interaction-only surfaces: kept out of the first bundle
@@ -41,6 +42,7 @@ export default function HomeExperience() {
       <Skills />
       <GlobalReach />
       <Recommendations />
+      <Studio />
       <Contact />
       <AskWidget />
     </AgentChatProvider>

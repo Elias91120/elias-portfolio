@@ -46,7 +46,7 @@ export default function WorkStack() {
 
       <div ref={listRef} className="mx-auto mt-12 max-w-6xl sm:mt-16">
         {featuredWork.map((work, i) => (
-          <div key={work.id} id={work.id}>
+          <div key={work.id} id={work.id} data-project-slug={work.id}>
             {/* Printed once, when the tier changes: it is this heading that
                 says which employer or venture the next cards belong to,
                 rather than leaving a visitor to guess. */}
@@ -329,7 +329,7 @@ function Visual({ work }: { work: Work }) {
           >
             {row.k}
           </span>
-          <span className="text-sm text-[#C9C4DC]">{row.v}</span>
+          <span className="text-sm text-[#C9C4DC]">{t(row.v)}</span>
         </div>
       ))}
     </div>

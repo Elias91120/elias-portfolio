@@ -6,13 +6,14 @@
  * portfolio assistant, the dev terminal and the world map — none of which are
  * localized, and all of which want one array to iterate over.
  */
-import { featuredWork, otherWork } from "@/lib/work";
+import { featuredWork, otherWork, projectSlug } from "@/lib/work";
 import {
   contact as contactSource,
   skillGroups as skillSource,
 } from "@/lib/people";
 
 export type Project = {
+  slug: string;
   name: string;
   role: string;
   description: string;
@@ -30,6 +31,7 @@ function slugFromCaseStudy(caseStudy?: string): string | undefined {
 
 export const projects: Project[] = [
   ...featuredWork.map((w) => ({
+    slug: projectSlug(w),
     name: w.name,
     role: w.category.en,
     description: w.description.en,
@@ -41,6 +43,7 @@ export const projects: Project[] = [
     accent: w.accent,
   })),
   ...otherWork.map((w) => ({
+    slug: projectSlug(w),
     name: w.name,
     role: w.stack.slice(0, 2).join(" · "),
     description: w.tagline.en,

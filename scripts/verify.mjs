@@ -1,59 +1,54 @@
+/**
+ * Smoke test of the home pages. Run against a running build:
+ *   npm run build && npx next start -p 3000   (then)   npm run verify
+ * or against production: VERIFY_URL=https://elias-elloumi.com npm run verify
+ */
 import { chromium } from "playwright";
-import { mkdirSync } from "node:fs";
-import { join } from "node:path";
 
-const BASE = process.env.VERIFY_URL ?? "http://localhost:3000";
-const OUT = join(process.cwd(), "screenshots", "story-verify");
+const BASE = (process.env.VERIFY_URL ?? "http://localhost:3000").replace(/\/$/, "");
+const failures = [];
+const check = (ok, label) => {
+  console.log(`${ok ? "ok  " : "FAIL"} ${label}`);
+  if (!ok) failures.push(label);
+};
 
-async function main() {
-  mkdirSync(OUT, { recursive: true });
+const browser = await chromium.launch();
 
-  const browser = await chromium.launch();
-  const page = await browser.newPage({
-    viewport: { width: 1440, height: 900 },
-  });
+for (const [path, lang, heading] of [
+  ["/", "en", "A project to build?"],
+  ["/fr", "fr", "Ça passe par le studio."],
+]) {
+  // A fresh context per page: no stored language preference carries over.
+  const context = await browser.newContext({ locale: "en-US" });
+  const page = await context.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  // The analytics script only exists once deployed on Vercel.
+  page.on("console", (m) => m.type() === "error" && !/404/.test(m.text()) && errors.push(m.text()));
+  page.on("response", (r) => r.status() >= 400 && !r.url().includes("/_vercel/") && errors.push(`${r.status()} ${r.url()}`));
 
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  // Server-rendered HTML, before any script runs: this is what crawlers index.
+  const html = await (await context.request.get(BASE + path)).text();
+  check(html.includes(heading), `${path} server HTML is in ${lang}`);
+  check(/hreflang="fr"/i.test(html) && /hreflang="en"/i.test(html), `${path} declares hreflang en + fr`);
 
-  const story = page.locator("#story");
-  await story.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(800);
-
-  await page.screenshot({ path: join(OUT, "desktop-story-start.png") });
-
-  const pinSpacer = page.locator(".pin-spacer").first();
-  const spacerBox = await pinSpacer.boundingBox();
-  if (!spacerBox) throw new Error("Story pin spacer not found");
-
-  const midY = spacerBox.y + spacerBox.height * 0.5;
-  await page.evaluate((y) => window.scrollTo(0, y), midY);
-  await page.waitForTimeout(1200);
-  await page.screenshot({ path: join(OUT, "desktop-story-mid.png") });
-
-  const endY = spacerBox.y + spacerBox.height - 4;
-  await page.evaluate((y) => window.scrollTo(0, y), endY);
-  await page.waitForTimeout(1200);
-  await page.screenshot({ path: join(OUT, "desktop-story-end.png") });
-
-  const checks = [
-    await page.locator("#story .story-page").count(),
-    await page.locator("#story video").count(),
-    await page.locator(".story-grain").count(),
-  ];
-
-  console.log("Story pages:", checks[0]);
-  console.log("Story videos:", checks[1]);
-  console.log("Grain overlay:", checks[2]);
-  console.log("Screenshots saved to", OUT);
-
-  if (checks[0] !== 7 || checks[1] !== 7) {
-    throw new Error("Expected 7 story pages and 7 videos");
-  }
-
-  await browser.close();
+  await page.goto(BASE + path, { waitUntil: "load" });
+  await page.waitForTimeout(1500);
+  check((await page.locator("h1").count()) === 1, `${path} has one h1`);
+  check(await page.locator("#studio").isVisible(), `${path} shows the studio section`);
+  const studioHref = await page.locator("#studio a[href*='3geeks.fr']").first().getAttribute("href");
+  check(Boolean(studioHref?.includes("utm_source=")), `${path} studio link is tagged`);
+  check(
+    (await page.locator("[data-project-slug]").count()) >= 5,
+    `${path} cards carry data-project-slug`,
+  );
+  check(errors.length === 0, `${path} no console errors${errors.length ? `: ${errors[0]}` : ""}`);
+  await context.close();
 }
 
-main().catch((err) => {
-  console.error(err);
+await browser.close();
+if (failures.length) {
+  console.error(`\n${failures.length} check(s) failed`);
   process.exit(1);
-});
+}
+console.log("\nAll checks passed");

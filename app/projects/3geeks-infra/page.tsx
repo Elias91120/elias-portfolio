@@ -22,18 +22,18 @@ const impactMetrics = [
 const infraTags = ["Coolify", "Traefik", "Cloudflare Tunnel", "Docker"];
 
 const hostedServices = [
-  { href: "https://www.3geeks.fr", label: "3geeks.fr — studio landing" },
-  { href: "https://prompt-hub.3geeks.fr", label: "prompt-hub.3geeks.fr — Prompt Hub" },
-  { href: "https://prompt-optim.3geeks.fr", label: "prompt-optim.3geeks.fr — PromptOptim" },
+  { href: "https://www.3geeks.fr", label: "3geeks.fr: studio landing" },
+  { href: "https://prompt-hub.3geeks.fr", label: "prompt-hub.3geeks.fr: Prompt Hub" },
+  { href: "https://prompt-optim.3geeks.fr", label: "prompt-optim.3geeks.fr: PromptOptim" },
 ];
 
 export const metadata: Metadata = {
-  title: "3geeks Infra — Case Study",
+  title: "3geeks Infra · Case Study",
   description:
-    "Self-hosted production stack for 3geeks — 3 Mac Mini servers; Coolify, Traefik, and Cloudflare Tunnel on the prod node powering 8+ live apps on *.3geeks.fr.",
+    "Self-hosted production stack for 3geeks: three Mac Mini servers, with Coolify, Traefik and Cloudflare Tunnel on the prod node powering 14 live apps on *.3geeks.fr.",
   alternates: { canonical: "/projects/3geeks-infra" },
   openGraph: {
-    title: "3geeks Infra — Case Study · Elias Elloumi",
+    title: "3geeks Infra · Case Study · Elias Elloumi",
     description:
       "From Vercel to a home-lab prod cluster: Coolify deploys, Traefik routing, Cloudflare Tunnel ingress.",
   },
@@ -65,13 +65,13 @@ export default function ThreeGeeksInfraCaseStudy() {
             />
           </div>
           <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            3geeks Infra —{" "}
+            3geeks Infra:{" "}
             <span className="font-serif italic font-semibold text-[var(--cs-fg)]">
               self-hosted prod
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--cs-muted)]">
-            The production backbone behind 3geeks — the studio runs three Mac
+            The production backbone behind 3geeks. The studio runs three Mac
             Mini servers; I consolidated every live{" "}
             <em className="font-serif text-[var(--cs-fg)]">*.3geeks.fr</em>{" "}
             service on one of them with Coolify, Traefik, and Cloudflare Tunnel
@@ -101,7 +101,7 @@ export default function ThreeGeeksInfraCaseStudy() {
         <div>
           <CaseStudySection title="Impact at a glance">
             <p>
-              Real infrastructure running real products — not a homelab demo.
+              Real infrastructure running real products, not a homelab demo.
               Every green-stack tool on this portfolio that ends in{" "}
               <code className="rounded bg-white/5 px-1.5 py-0.5 text-sm text-[var(--cs-fg)]">
                 .3geeks.fr
@@ -113,13 +113,13 @@ export default function ThreeGeeksInfraCaseStudy() {
 
           <CaseStudySection title="The problem">
             <p>
-              3geeks ships fast — Prompt Hub, PromptOptim, and more — but
+              3geeks ships fast (Prompt Hub, PromptOptim and more), but
               Vercel bills add up, env vars scatter across dashboards, and there
               is no single place to see what is actually running in production.
             </p>
             <p>
               The studio needed sovereign hosting: one deploy pipeline, one
-              reverse proxy, one tunnel — and the ability to migrate apps off
+              reverse proxy, one tunnel, and the ability to migrate apps off
               Vercel without rewriting them.
             </p>
           </CaseStudySection>
@@ -130,16 +130,16 @@ export default function ThreeGeeksInfraCaseStudy() {
               <code className="rounded bg-white/5 px-1.5 py-0.5 text-sm text-[var(--cs-fg)]">
                 *.3geeks.fr
               </code>{" "}
-              runs on one of them — OrbStack with a Linux VM hosting Coolify.
+              runs on one of them: OrbStack with a Linux VM hosting Coolify.
               Traefik terminates TLS on port 443 inside the private network.
-              Cloudflare Tunnel exposes selected hostnames to the internet —
+              Cloudflare Tunnel exposes selected hostnames to the internet;
               every public route goes through Traefik, never directly to a
               container port.
             </p>
             <InfraStackDiagram />
           </CaseStudySection>
 
-          <CaseStudySection title="Golden path — ship to prod">
+          <CaseStudySection title="Golden path: ship to prod">
             <p>
               The deploy workflow is repeatable for every new service: push code
               with a Dockerfile and a health endpoint, let Coolify build and
@@ -152,7 +152,7 @@ export default function ThreeGeeksInfraCaseStudy() {
 
           <CaseStudySection title="What runs on it">
             <p>
-              The cluster hosts the studio&apos;s live products — frontends,
+              The cluster hosts the studio&apos;s live products: frontends,
               APIs, and PostgreSQL databases managed by Coolify:
             </p>
             <ul className="mt-4 space-y-2">
@@ -178,14 +178,14 @@ export default function ThreeGeeksInfraCaseStudy() {
             </ul>
             <p className="mt-4">
               Private studio services (internal APIs, team tools) stay off the
-              public ingress — only documented public products are exposed
+              public ingress: only documented public products are exposed
               through the tunnel.
             </p>
           </CaseStudySection>
 
           <CaseStudySection title="What I operate">
             <p>
-              I designed and run the prod stack on our primary Mac Mini —
+              I designed and run the prod stack on our primary Mac Mini:
               Coolify app provisioning, Traefik routing rules, Cloudflare DNS
               and tunnel ingress, PostgreSQL on Coolify, env-var management,
               health monitoring, and Vercel migrations with zero-downtime
@@ -193,7 +193,7 @@ export default function ThreeGeeksInfraCaseStudy() {
               workloads outside this case study.
             </p>
             <p>
-              The goal is not &ldquo;cheap hosting&rdquo; — it is{" "}
+              The goal is not &ldquo;cheap hosting&rdquo;. It is{" "}
               <em className="font-serif text-[var(--cs-fg)]">
                 controlled hosting
               </em>
@@ -202,7 +202,7 @@ export default function ThreeGeeksInfraCaseStudy() {
             </p>
           </CaseStudySection>
 
-          <CaseStudyCta description="3geeks Infra is the platform layer under every green-stack product at 3geeks — from intent-to-website generation to mindful AI tools." />
+          <CaseStudyCta />
         </div>
       </ViewTransition>
     </CaseStudyShell>

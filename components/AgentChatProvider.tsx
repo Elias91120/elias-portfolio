@@ -177,7 +177,7 @@ export function AgentChatProvider({ children }: { children: ReactNode }) {
             content:
               err instanceof Error && err.message !== "Failed to fetch"
                 ? err.message
-                : "Sorry — I couldn't reach the assistant. You can always email Elias directly.",
+                : "Sorry, I couldn't reach the assistant. You can always email Elias directly.",
           },
         ]);
         if (!panelOpen) setHasUnread(true);

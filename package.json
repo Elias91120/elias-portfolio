@@ -13,6 +13,7 @@
     "audit:responsive": "node scripts/responsive-audit.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.40.0",
     "next": "16.2.10",

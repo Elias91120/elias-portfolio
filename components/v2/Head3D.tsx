@@ -8,7 +8,7 @@ import Image from "next/image";
  *
  * Loading is deliberately staged so the page is never held hostage by it:
  *   1. a lightweight poster image paints immediately (this is the LCP element);
- *   2. three.js + the 568 KB model are fetched only after the page is idle,
+ *   2. three.js + the ~1.4 MB model are fetched only after the page is idle,
  *      and only when the connection and the user's motion preference allow it;
  *   3. the canvas cross-fades in once the first frame is actually rendered.
  *

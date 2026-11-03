@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { OTHER_WORK_VISIBLE, otherWork, type SideProject } from "@/lib/work";
+import { OTHER_WORK_VISIBLE, otherWork, projectSlug, type SideProject } from "@/lib/work";
 import { useLocale } from "@/lib/i18n";
 import { FadeIn } from "@/components/v2/Primitives";
 
@@ -38,7 +38,8 @@ export default function OtherWork() {
           </h2>
         </FadeIn>
 
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.06] sm:grid-cols-2 lg:grid-cols-3">
+        {/* The last card stretches over the row so the grid never ends on an empty cell. */}
+        <ul className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.06] sm:grid-cols-2 lg:grid-cols-3 sm:max-lg:[&>li:last-child:nth-child(odd)]:col-span-2 lg:[&>li:last-child:nth-child(3n+1)]:col-span-3 lg:[&>li:last-child:nth-child(3n+2)]:col-span-2">
           {visible.map((item, i) => {
             const href = item.caseStudy ?? item.link;
             const badge = item.origin ? originBadge[item.origin] : undefined;
@@ -90,12 +91,15 @@ export default function OtherWork() {
                     {...(item.caseStudy
                       ? {}
                       : { target: "_blank", rel: "noreferrer" })}
+                    data-project-slug={projectSlug(item)}
                     className={`${base} hover:bg-[#100D1C]`}
                   >
                     {inner}
                   </Link>
                 ) : (
-                  <div className={base}>{inner}</div>
+                  <div data-project-slug={projectSlug(item)} className={base}>
+                    {inner}
+                  </div>
                 )}
               </FadeIn>
             );

@@ -9,6 +9,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
+      alternates: { languages: { en: BASE_URL, fr: `${BASE_URL}/fr` } },
+    },
+    {
+      url: `${BASE_URL}/fr`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 1,
+      alternates: { languages: { en: BASE_URL, fr: `${BASE_URL}/fr` } },
     },
     {
       url: `${BASE_URL}/projects/web-gen`,

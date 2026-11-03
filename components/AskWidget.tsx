@@ -16,6 +16,9 @@ const AgentMessageContent = dynamic(
 import { useAgentChat } from "@/components/AgentChatProvider";
 import { prefersReducedMotion } from "@/lib/scroll-to-section";
 import { useIsMobile } from "@/lib/use-is-mobile";
+import { useLocale } from "@/lib/i18n";
+
+const ASK_LABEL = { en: "Ask my portfolio", fr: "Interroger mon portfolio" };
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -52,6 +55,7 @@ function ChatPanel({
   isMobile: boolean;
 }) {
   const { messages, busy, streaming, ask } = useAgentChat();
+  const { t } = useLocale();
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const reducedMotion = prefersReducedMotion();
@@ -99,7 +103,7 @@ function ChatPanel({
         </span>
         <div className="min-w-0">
           <div className="font-display text-sm font-semibold text-white">
-            Ask my portfolio
+            {t(ASK_LABEL)}
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -132,7 +136,7 @@ function ChatPanel({
         {messages.length === 0 && (
           <div className="space-y-3">
             <p className="text-sm leading-relaxed text-muted">
-              Hi! I&apos;m the AI assistant of this portfolio — ask me
+              Hi! I&apos;m the AI assistant of this portfolio. Ask me
               anything about Elias, his projects, or his story.
             </p>
             <div className="flex flex-wrap gap-2">
@@ -302,6 +306,8 @@ export default function AskWidget() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [panelOpen, setPanelOpen]);
 
+  const { t } = useLocale();
+
   useEffect(() => {
     if (!panelOpen || !isMobile) return;
     document.body.style.overflow = "hidden";
@@ -327,7 +333,7 @@ export default function AskWidget() {
           aria-label={
             panelOpen
               ? "Close the portfolio assistant"
-              : "Ask my portfolio — AI assistant"
+              : `${t(ASK_LABEL)}, AI assistant`
           }
         >
           <svg
@@ -342,7 +348,7 @@ export default function AskWidget() {
             <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
             <circle cx="12" cy="12" r="4" />
           </svg>
-          Ask my portfolio
+          {t(ASK_LABEL)}
           {hasUnread && !panelOpen && (
             <span
               className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-accent ring-2 ring-[#181230]"

@@ -121,11 +121,11 @@ export type PathStep = {
 
 export const path: PathStep[] = [
   {
-    period: { en: "2026 — 2028", fr: "2026 — 2028" },
+    period: { en: "2026 - 2028", fr: "2026 - 2028" },
     title: "EFREI Paris",
     subtitle: {
-      en: "Mastère Data Engineering & AI — RNCP level 7",
-      fr: "Mastère Data Engineering & IA — RNCP niveau 7",
+      en: "Mastère Data Engineering & AI, RNCP level 7",
+      fr: "Mastère Data Engineering & IA, RNCP niveau 7",
     },
     detail: {
       en: "Data architecture, structural AI and cloud governance, alongside the Cleva apprenticeship.",
@@ -134,11 +134,11 @@ export const path: PathStep[] = [
     status: "current",
   },
   {
-    period: { en: "2023 — 2026", fr: "2023 — 2026" },
+    period: { en: "2023 - 2026", fr: "2023 - 2026" },
     title: "ECE Paris",
     subtitle: {
-      en: "Bachelor in Artificial Intelligence — licence grade",
-      fr: "Bachelor Intelligence Artificielle — grade de licence",
+      en: "Bachelor in Artificial Intelligence, licence grade",
+      fr: "Bachelor Intelligence Artificielle, grade de licence",
     },
     detail: {
       en: "Final year as an apprentice at Nokia, closed by the best Bachelor project of the year.",
@@ -147,7 +147,7 @@ export const path: PathStep[] = [
     status: "past",
   },
   {
-    period: { en: "2020 — 2023", fr: "2020 — 2023" },
+    period: { en: "2020 - 2023", fr: "2020 - 2023" },
     title: "Baccalauréat STI2D · SIN",
     subtitle: {
       en: "Lycée Parc de Vilgenis, Massy",
@@ -212,9 +212,9 @@ export const skillGroups: SkillGroup[] = [
 ];
 
 export const certifications = [
-  { name: "IA & GenAI — Prompt Engineering N1", issuer: "Liora", year: "2026" },
-  { name: "AWS Academy — Machine Learning Foundations", issuer: "Amazon Web Services", year: "2026" },
-  { name: "AWS Academy — Cloud Architecting", issuer: "Amazon Web Services", year: "2026" },
+  { name: "IA & GenAI: Prompt Engineering N1", issuer: "Liora", year: "2026" },
+  { name: "AWS Academy: Machine Learning Foundations", issuer: "Amazon Web Services", year: "2026" },
+  { name: "AWS Academy: Cloud Architecting", issuer: "Amazon Web Services", year: "2026" },
   { name: "Python for Data Scientists", issuer: "DataScientest", year: "2025" },
 ];
 
@@ -231,6 +231,9 @@ export const contact = {
   location: { en: "Palaiseau (91), France", fr: "Palaiseau (91), France" } satisfies L,
   studio: "https://www.3geeks.fr",
   studioLabel: "3geeks studio",
+  // Tagged so 3geeks.fr can count the visitors this site sends.
+  studioHref:
+    "https://www.3geeks.fr/?utm_source=elias-elloumi.com&utm_medium=referral&utm_campaign=portfolio",
   languages: {
     en: "French native · English C1 · Arabic basics",
     fr: "Français natif · Anglais C1 · Arabe notions de base",

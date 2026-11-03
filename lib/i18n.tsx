@@ -21,6 +21,9 @@ export function pick(value: L | string, locale: Locale): string {
 
 const STORAGE_KEY = "ee-locale";
 
+/** The home page exists at "/" (English) and "/fr" (French). */
+const pathFor = (l: Locale) => (l === "fr" ? "/fr" : "/");
+
 type Ctx = {
   locale: Locale;
   setLocale: (l: Locale) => void;
@@ -33,19 +36,39 @@ const LocaleContext = createContext<Ctx>({
   t: (v) => pick(v, "en"),
 });
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  // Always start on "en" so server and client markup match; the stored or
-  // browser preference is applied right after hydration.
-  const [locale, setLocaleState] = useState<Locale>("en");
+/**
+ * `initial` is the language the server renders, so "/" and "/fr" are each
+ * indexable in their own language. On "/", a visitor's stored or browser
+ * preference for French still switches the page after hydration.
+ */
+export function LocaleProvider({
+  children,
+  initial = "en",
+}: {
+  children: React.ReactNode;
+  initial?: Locale;
+}) {
+  const [locale, setLocaleState] = useState<Locale>(initial);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "fr" || stored === "en") {
-      setLocaleState(stored);
-      return;
+    // The URL already says French: nothing to detect.
+    if (initial === "fr") return;
+    let preferred: string | null = null;
+    try {
+      preferred = window.localStorage.getItem(STORAGE_KEY);
+    } catch {
+      // Storage blocked: fall back to the browser language.
     }
-    if (navigator.language?.toLowerCase().startsWith("fr")) setLocaleState("fr");
-  }, []);
+    if (preferred !== "fr" && preferred !== "en") {
+      preferred = navigator.language?.toLowerCase().startsWith("fr") ? "fr" : "en";
+    }
+    if (preferred === "fr") {
+      // Applied after hydration on purpose, so server and client markup match.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setLocaleState("fr");
+      window.history.replaceState(null, "", pathFor("fr") + window.location.hash);
+    }
+  }, [initial]);
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -53,10 +76,12 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
+    // Keep the address in step with the language, so a shared link opens in it.
+    window.history.replaceState(null, "", pathFor(l) + window.location.hash);
     try {
       window.localStorage.setItem(STORAGE_KEY, l);
     } catch {
-      // Private mode / storage disabled — the choice just won't persist.
+      // Private mode / storage disabled: the choice just won't persist.
     }
   }, []);
 

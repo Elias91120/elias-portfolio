@@ -19,9 +19,10 @@ The hero is a real 3D model of Elias, generated with Meshy from a photograph.
 Getting it onto a landing page without hurting anyone on a weak connection took
 three steps:
 
-1. **The model is compressed.** The Meshy export is ~9.7 MB. `gltf-transform`
-   simplifies the mesh to 56k triangles, resizes the three textures to 1024 and
-   converts them to WebP, then applies meshopt quantisation — **568 KB**.
+1. **The model is compressed.** The raw Meshy export (118 MB, kept out of git)
+   goes through `scripts/optimize-avatar.mjs`: `gltf-transform` simplifies the
+   mesh, resizes the textures to 2048 and converts them to WebP, then applies
+   meshopt quantisation, for **1.45 MB**.
 2. **A poster paints first.** `scripts/render-head-poster.mjs` renders the model
    once, headless, with exactly the lighting used at runtime, and saves a 50 KB
    transparent WebP. It is server-rendered and is the LCP element.

@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const alt =
-  "Elias Elloumi — Data & AI Engineer. Pipelines, AI agents and production products at Nokia, 3geeks and Cleva.";
+  "Elias Elloumi, Data & AI Engineer. Pipelines, AI agents and production products at Nokia, 3geeks and Cleva.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

@@ -62,8 +62,8 @@ export default function Contact() {
               style={{ fontSize: "clamp(0.95rem, 1.4vw, 1.15rem)" }}
             >
               {t({
-                en: "Roles, collaborations, or a question about something you saw here — my inbox is open.",
-                fr: "Un poste, une collaboration, ou simplement une question sur ce que vous avez vu ici — ma boîte mail est ouverte.",
+                en: "Roles, collaborations, or a question about something you saw here: my inbox is open.",
+                fr: "Un poste, une collaboration, ou simplement une question sur ce que vous avez vu ici : ma boîte mail est ouverte.",
               })}
             </p>
           </FadeIn>
@@ -115,7 +115,7 @@ export default function Contact() {
           <p>
             © {year} Elias Elloumi ·{" "}
             <a
-              href={contact.studio}
+              href={contact.studioHref}
               target="_blank"
               rel="noreferrer"
               className="-my-3.5 inline-block py-3.5 transition-colors duration-300 hover:text-foreground"

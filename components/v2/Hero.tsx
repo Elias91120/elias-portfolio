@@ -43,7 +43,7 @@ export default function Hero() {
         // Centred on a phone, where anchoring it to the baseline would leave a
         // hole under the name and push the hand into the strapline; anchored
         // low from sm up, where the wider frame gives it room to sit.
-        className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[min(96vw,52vh,660px)] -translate-x-1/2 -translate-y-[52%] sm:top-auto sm:-bottom-[6vh] sm:w-[min(90vw,56vh,660px)] sm:translate-y-0"
+        className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[min(96vw,52vh,660px)] -translate-x-1/2 -translate-y-[52%] sm:top-auto sm:-bottom-[6vh] sm:w-[min(90vw,60vh,660px)] sm:translate-y-0"
       >
         <FadeIn delay={0.15} y={36} duration={0.95} onMount fade={false}>
           <Head3D className="aspect-square w-full" />

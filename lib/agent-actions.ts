@@ -1,17 +1,15 @@
 import { projects, type Project } from "@/lib/data";
 
 export function getProjectSlug(project: Project): string {
-  return (
-    project.caseStudySlug ??
-    project.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
-  );
+  return project.slug;
 }
 
 export function findProjectBySlug(slug: string): Project | undefined {
   const norm = slug.toLowerCase().trim();
   return projects.find(
     (p) =>
-      getProjectSlug(p).toLowerCase() === norm ||
+      p.slug === norm ||
+      norm.startsWith(`${p.slug}-`) ||
       p.caseStudySlug?.toLowerCase() === norm ||
       p.name.toLowerCase() === norm
   );
@@ -184,7 +182,7 @@ export function applyAgentAction(
         onAnnounce(`Scrolling to ${project.name}`);
       }
       window.setTimeout(
-        () => highlightProjectCard(action.highlight!),
+        () => highlightProjectCard(project?.slug ?? action.highlight!),
         reduced ? 100 : 400
       );
     }

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Kanit, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import SpotlightCursor from "@/components/SpotlightCursor";
 import ViewTransitionRoot from "@/components/ViewTransitionRoot";
-import { LocaleProvider } from "@/lib/i18n";
 import "./globals.css";
 
 const kanit = Kanit({
@@ -18,9 +18,9 @@ const body = Inter({
   display: "swap",
 });
 
-const title = "Elias Elloumi — Data & AI Engineer";
+const title = "Elias Elloumi, Data & AI Engineer";
 const description =
-  "Data & AI engineer. Data pipelines and dashboards at Nokia, AI engineering at Cleva Solutions, co-founder of 3geeks. Mastère Data Engineering & IA at EFREI Paris.";
+  "Data & AI engineer: data pipelines and dashboards at Nokia, AI engineering at Cleva Solutions, co-founder of the 3geeks studio (websites, apps and AI for businesses). Mastère Data Engineering & IA at EFREI Paris.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://elias-elloumi.com"),
@@ -45,7 +45,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Elias Elloumi", url: "https://elias-elloumi.com" }],
   creator: "Elias Elloumi",
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "https://elias-elloumi.com",
@@ -64,6 +63,15 @@ const personJsonLd = {
   name: "Elias Elloumi",
   url: "https://elias-elloumi.com",
   jobTitle: "Data & AI Engineer",
+  worksFor: [
+    { "@type": "Organization", name: "Cleva Solutions" },
+    {
+      "@type": "Organization",
+      name: "3geeks",
+      url: "https://www.3geeks.fr",
+      description: "Web and AI studio co-founded by Elias Elloumi and Noam Leclapart-Jublot.",
+    },
+  ],
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "ECE Paris" },
     { "@type": "CollegeOrUniversity", name: "EFREI Paris" },
@@ -97,10 +105,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        <LocaleProvider>
-          <ViewTransitionRoot>{children}</ViewTransitionRoot>
-          <SpotlightCursor />
-        </LocaleProvider>
+        <ViewTransitionRoot>{children}</ViewTransitionRoot>
+        <SpotlightCursor />
+        <Analytics />
       </body>
     </html>
   );

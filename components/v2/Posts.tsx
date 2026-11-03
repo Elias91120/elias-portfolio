@@ -20,12 +20,12 @@ const posts: { id: string; height: number; caption: L }[] = [
   {
     id: "7484058242340458496",
     height: 877,
-    caption: { en: "Prompt Hub — update", fr: "Prompt Hub — mise à jour" },
+    caption: { en: "Prompt Hub, update", fr: "Prompt Hub, mise à jour" },
   },
   {
     id: "7483245826916454400",
     height: 877,
-    caption: { en: "Prompt Hub — first look", fr: "Prompt Hub — premier aperçu" },
+    caption: { en: "Prompt Hub, first look", fr: "Prompt Hub, premier aperçu" },
   },
 ];
 
@@ -59,7 +59,7 @@ export default function Posts() {
               <div className="overflow-hidden rounded-[24px] border border-white/[0.1] bg-white/[0.04]">
                 <iframe
                   src={`https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:${post.id}`}
-                  title={`${t(post.caption)} — LinkedIn`}
+                  title={`${t(post.caption)} (LinkedIn)`}
                   loading="lazy"
                   allowFullScreen
                   className="block w-full max-w-full border-0"

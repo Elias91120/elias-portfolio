@@ -59,8 +59,8 @@ export default function GlobalReach({
             {isCompactLayout ? (
               <>
                 {t({
-                  en: "Real places where I've collaborated — Nokia, 3geeks, open source, clients, friends & family.",
-                  fr: "Des lieux réels où j'ai collaboré — Nokia, 3geeks, open source, clients, proches.",
+                  en: "Real places where I've collaborated: Nokia, 3geeks, open source, clients, friends & family.",
+                  fr: "Des lieux réels où j'ai collaboré : Nokia, 3geeks, open source, clients, proches.",
                 })}{" "}
                 {collaborationLocations.length}{" "}
                 {t({ en: "cities across four continents.", fr: "villes sur quatre continents." })}
@@ -68,8 +68,8 @@ export default function GlobalReach({
             ) : (
               <>
                 {t({
-                  en: "Every pin is a real place where I've worked with someone — not a client list on a map, but genuine connection points across the whole journey: Nokia teammates, freelance deliveries, 3geeks, open-source contributors, and projects for friends & family.",
-                  fr: "Chaque point est un lieu réel où j'ai travaillé avec quelqu'un — pas une liste de clients sur une carte, mais de vrais points de contact tout au long du parcours : collègues Nokia, livraisons en freelance, 3geeks, contributeurs open source, et projets pour des proches.",
+                  en: "Every pin is a real place where I've worked with someone. Not a client list on a map, but genuine connection points across the whole journey: Nokia teammates, freelance deliveries, 3geeks, open-source contributors, and projects for friends & family.",
+                  fr: "Chaque point est un lieu réel où j'ai travaillé avec quelqu'un. Pas une liste de clients sur une carte, mais de vrais points de contact tout au long du parcours : collègues Nokia, livraisons en freelance, 3geeks, contributeurs open source, et projets pour des proches.",
                 })}{" "}
                 {collaborationLocations.length}{" "}
                 {t({ en: "cities, four continents.", fr: "villes, quatre continents." })}
@@ -101,12 +101,12 @@ export default function GlobalReach({
             <p className="mb-4 text-center text-[0.7rem] leading-relaxed text-muted sm:mb-5 sm:text-sm">
               {isCompactLayout
                 ? t({
-                    en: "Each city is a real collaboration point — colleagues, clients, contributors, or people close to me.",
-                    fr: "Chaque ville est un vrai point de collaboration — collègues, clients, contributeurs ou proches.",
+                    en: "Each city is a real collaboration point: colleagues, clients, contributors, or people close to me.",
+                    fr: "Chaque ville est un vrai point de collaboration : collègues, clients, contributeurs ou proches.",
                   })
                 : t({
-                    en: "Each city marks where I've actually collaborated with someone — colleagues, clients, contributors, or people close to me. Nothing decorative, nothing made up.",
-                    fr: "Chaque ville marque un endroit où j'ai réellement collaboré avec quelqu'un — collègues, clients, contributeurs ou proches. Rien de décoratif, rien d'inventé.",
+                    en: "Each city marks where I've actually collaborated with someone: colleagues, clients, contributors, or people close to me. Nothing decorative, nothing made up.",
+                    fr: "Chaque ville marque un endroit où j'ai réellement collaboré avec quelqu'un : collègues, clients, contributeurs ou proches. Rien de décoratif, rien d'inventé.",
                   })}
             </p>
 
