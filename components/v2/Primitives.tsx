@@ -48,7 +48,9 @@ export function FadeIn({
   fade?: boolean;
 }) {
   const reduce = useReducedMotion();
-  const Tag = motion.create(as);
+  // The built-in motion components are stable; motion.create() here made a new
+  // component type on every render, which remounted everything inside.
+  const Tag = motion[as];
   const from = reduce ? false : fade ? { opacity: 0, x, y } : { x, y };
   const to = fade ? { opacity: 1, x: 0, y: 0 } : { x: 0, y: 0 };
 

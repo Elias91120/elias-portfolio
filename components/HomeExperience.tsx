@@ -9,6 +9,7 @@ import Marquee from "@/components/v2/Marquee";
 import Proof from "@/components/v2/Proof";
 import Capabilities from "@/components/v2/Capabilities";
 import WorkStack from "@/components/v2/WorkStack";
+import GeeksCode from "@/components/v2/GeeksCode";
 import OtherWork from "@/components/v2/OtherWork";
 import Posts from "@/components/v2/Posts";
 import Path from "@/components/v2/Path";
@@ -36,6 +37,7 @@ export default function HomeExperience() {
       <Capabilities />
       <Marquee />
       <WorkStack />
+      <GeeksCode />
       <OtherWork />
       <Posts />
       <Path />

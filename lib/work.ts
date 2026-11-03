@@ -258,36 +258,6 @@ export const featuredWork: Work[] = [
     },
     accent: "#8b7ef8",
   },
-  {
-    // Internal tool: described, never linked.
-    id: "geeks-code",
-    name: "Geeks Code",
-    tier: "studio",
-    origin: "3geeks",
-    category: { en: "Studio IDE", fr: "IDE du studio" },
-    context: { en: "Internal · the team's editor", fr: "Interne · l'éditeur de l'équipe" },
-    description: {
-      en: "Onboarding a developer used to mean an afternoon of accounts, tokens and config files. Geeks Code is our own build of VS Code: one sign-in through the studio's single sign-on, and the Git forge, Workspace, the infrastructure and Claude are wired in, with updates shipped from our own server.",
-      fr: "Accueillir un développeur, c'était un après-midi de comptes, de jetons et de fichiers de config. Geeks Code est notre propre version de VS Code : une seule connexion par l'authentification unique du studio, et la forge Git, Workspace, l'infrastructure et Claude sont branchés, avec des mises à jour servies par notre propre serveur.",
-    },
-    metrics: [
-      { value: "1", label: { en: "sign-in to be ready", fr: "connexion pour être prêt" } },
-      { value: "SSO", label: { en: "self-hosted", fr: "auto-hébergé" } },
-    ],
-    stack: ["VS Code", "TypeScript", "Authentik SSO", "Forgejo"],
-    visual: {
-      kind: "panel",
-      title: { en: "Ready in one sign-in", fr: "Prêt en une connexion" },
-      rows: [
-        { k: "sso", v: { en: "one studio account", fr: "un seul compte studio" } },
-        { k: "git", v: "Git Geeks (Forgejo)" },
-        { k: "work", v: { en: "Workspace + milestones", fr: "Workspace + jalons" } },
-        { k: "infra", v: { en: "deploys and logs", fr: "déploiements et logs" } },
-        { k: "ai", v: { en: "Claude, preconfigured", fr: "Claude, préconfiguré" } },
-      ],
-    },
-    accent: "#3fbf6f",
-  },
 ];
 
 /* ------------------------------------------------------------------ */

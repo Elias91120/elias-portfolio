@@ -15,7 +15,7 @@ commit date du 13/09 ; la fiche « 3geeks » décrit encore un « générateur d
 projets de septembre à novembre manquent (Souvenia, Shams, Workspace, Geeks Code, 17 OCTOBRE, le site du Cabinet
 Dr Amel Elloumi Jellouli, Radar appels d'offres) ; aucun encart ne renvoie vers 3geeks.fr.
 
-**Ordre de passage** : J0 → J1 → J2 → J3 → J4 → J5
+**Ordre de passage** : J0 → J1 → J2 → J3 → J4 → J5 → J6
 
 ### J0 — Audit et inventaire
 - État : fait
@@ -166,6 +166,33 @@ Dr Amel Elloumi Jellouli, Radar appels d'offres) ; aucun encart ne renvoie vers 
   - Mesures en prod (Playwright) : LCP 0,2 s sur mobile, 0,5 s sur ordinateur ; **2,16 s en 4G lente avec un
     processeur bridé ×4**. Les 3,4 s de J0 venaient de l'image de l'affiche pas encore en cache chez Vercel.
     Poids transféré : 2,4 à 2,7 Mo selon la page et l'écran, dont 1,45 Mo de modèle 3D chargé après la page.
+
+### J6 — Geeks Code et Geeko sur l'accueil
+- État : à vérifier
+- Objectif (Elias, 03/11) : qu'on comprenne vraiment ce qu'est Geeks Code en lisant l'accueil, et qu'on voie Geeko
+  à côté, pour donner au site l'ADN 3Geeks.
+- Contenu : une section Geeks Code après la pile de projets, Geeko animé avec le vrai moteur, la grande carte Geeks
+  Code retirée (pour ne pas le dire deux fois) ; au passage, le nouveau logo 3geeks.
+- Fini quand : la section se lit seule sur ordinateur et à 400 px ; Geeko rejoue une session de Claude sans
+  recommencer ni déborder ; le poids de la page d'arrivée ne bouge pas ; Elias valide l'esprit.
+- *Codé le 03/11* :
+  - **Logo** : l'ancien PNG remplacé par le wordmark de la charte (`logo-wordmark.png` du dépôt WebGen, en WebP
+    600 px, 17 Ko) dans la section Studio et la carte 3geeks du parcours ; les touches 3geeks passent de l'ambre au
+    lime de la charte (#c2fb04). Option `crop` (rustine de l'ancien logo) supprimée. Déployé et vérifié en prod.
+  - **Section `components/v2/GeeksCode.tsx`** : ce qu'est Geeks Code et trois groupes de fonctionnalités, tous
+    marqués « fait » dans le PLAN.md de Geeks Code (SSO et configuration automatique J4-J5, Claude, mode agent et
+    salle des agents J14-J25, projet résumé, Jalons, Infra, Skills J10-J13), plus la mention « interne, pas de
+    téléchargement public ». À droite, Geeko rejoue une session : réfléchit → modifie les fichiers → lance les
+    commandes → c'est livré, avec une légende de l'étape en cours.
+  - **Moteur** : `lib/geeko/geeko.ts`, copie de `branding/geeko/geeko.ts` (source unique dans le dépôt Geeks
+    Code, à recopier quand il change). Chargé seulement à l'arrivée sur la section, arrêté quand elle sort de
+    l'écran ; avec « réduire les animations », le portrait fixe (`public/geeko/portrait.svg`) reste. Ses bulles
+    (écrites pour l'équipe, en tutoiement) sont coupées : la légende parle à sa place.
+  - **Bug corrigé dans `FadeIn`** (`Primitives.tsx`) : `motion.create(as)` recréait un composant à chaque rendu
+    et démontait tout son contenu (Geeko repartait à zéro à chaque étape). Remplacé par `motion[as]` ; deux
+    erreurs ESLint en moins.
+  Vérifié en local : la boucle des 4 scènes sur 26 s, rien ne dépasse du cadre (ordinateur et 400 px),
+  `npm run verify` 14/14. **Pas vérifié** : le rendu sur un vrai téléphone, et l'avis d'Elias sur l'esprit.
 
 ## Décisions
 
