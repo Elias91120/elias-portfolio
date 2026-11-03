@@ -210,6 +210,10 @@ Dr Amel Elloumi Jellouli, Radar appels d'offres) ; aucun encart ne renvoie vers 
 
 ## À trancher (03/11)
 
+- **Poids, important** : les 3 posts LinkedIn intégrés (section Posts) font charger environ **15 Mo** de scripts
+  LinkedIn, Google et anti-robots dès qu’on approche de la section (mesuré en prod le 03/11 : 7,5 Mo gstatic,
+  4,3 Mo + 1,2 Mo licdn, 1,8 Mo px-cloud / protechts). Le `loading="lazy"` ne suffit pas. Piste : des cartes
+  statiques (image + texte + lien vers le post), quelques dizaines de Ko. Pas touché sans l’accord d’Elias.
 - **Sécurité, urgent** : dans Coolify, l'application `job-aggregator` a un jeton Forgejo écrit en clair dans
   l'adresse de son dépôt Git. Le révoquer dans Forgejo et passer par une clé de déploiement. Rien n'a été touché.
 - Textures du modèle 3D en 1024 px ou on garde 2048 (voir J3).
